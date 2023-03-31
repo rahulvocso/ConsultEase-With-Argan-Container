@@ -1,0 +1,131 @@
+03/22 14:23:20: Launching 'app' on Pixel 5 API 32 2.
+Install successfully finished in 12 s 309 ms.
+$ adb shell am start -n "com.example.appname/com.example.appname.MainActivity" -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
+Connected to process 2624 on device 'Pixel_5_API_32_2 [emulator-5554]'.
+Capturing and displaying logcat messages from application. This behavior can be disabled in the "Logcat output" section of the "Debugger" settings page.
+I/example.appnam: Late-enabling -Xcheck:jni
+W/example.appnam: Unexpected CPU variant for X86 using defaults: x86_64
+I/example.appnam: Background young concurrent copying GC freed 9870(460KB) AllocSpace objects, 0(0B) LOS objects, 93% free, 1834KB/25MB, paused 338us,50us total 1.434s
+W/re-initialized>: type=1400 audit(0.0:14): avc: granted { execute } for path="/data/data/com.example.appname/code_cache/startup_agents/09f4021c-agent.so" dev="dm-30" ino=139991 scontext=u:r:untrusted_app:s0:c148,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c148,c256,c512,c768 tclass=file app=com.example.appname
+V/studio.deploy: Startup agent attached to VM
+V/studio.deploy: No existing instrumentation found. Loading instrumentation from instruments-a7e44b7b.jar
+W/example.appnam: DexFile /data/data/com.example.appname/code_cache/.studio/instruments-a7e44b7b.jar is in boot class path but is not in a known location
+V/studio.deploy: Applying transforms with cached classes
+W/example.appnam: Redefining intrinsic method java.lang.Thread java.lang.Thread.currentThread(). This may cause the unexpected use of the original definition of java.lang.Thread java.lang.Thread.currentThread()in methods that have already been compiled.
+W/example.appnam: Redefining intrinsic method boolean java.lang.Thread.interrupted(). This may cause the unexpected use of the original definition of boolean java.lang.Thread.interrupted()in methods that have already been compiled.
+D/CompatibilityChangeReporter: Compat change id reported: 171979766; UID 10148; state: ENABLED
+V/GraphicsEnvironment: ANGLE Developer option for 'com.example.appname' set to: 'default'
+V/GraphicsEnvironment: ANGLE GameManagerService for com.example.appname: false
+V/GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+D/NetworkSecurityConfig: No Network Security Config specified, using platform default
+D/NetworkSecurityConfig: No Network Security Config specified, using platform default
+D/WM-WrkMgrInitializer: Initializing WorkManager with default configuration.
+D/NOTIFEE: (context): received application context
+V/fb-UnpackingSoSource: locked dso store /data/user/0/com.example.appname/lib-main
+I/fb-UnpackingSoSource: dso store is up-to-date: /data/user/0/com.example.appname/lib-main
+V/fb-UnpackingSoSource: releasing dso store lock for /data/user/0/com.example.appname/lib-main
+W/unknown:ReactInstanceManagerBuilder: You're not setting the JS Engine Resolution Algorithm. We'll try to load JSC first, and if it fails we'll fallback to Hermes
+V/SoLoader: libjscexecutor.so not found on /data/data/com.example.appname/lib-main
+V/SoLoader: libjscexecutor.so not found on /data/app/~~aznWW_f91rKUbZawyrj6Uw==/com.example.appname-vYuznfuIRPw0Vdp5KZDGsA==/lib/x86_64
+V/SoLoader: libjscexecutor.so not found on /system/lib64
+V/SoLoader: libjscexecutor.so not found on /vendor/lib64
+E/SoLoader: couldn't find DSO to load: libjscexecutor.so
+    	SoSource 0: com.facebook.soloader.ApkSoSource[root = /data/data/com.example.appname/lib-main flags = 1]
+    	SoSource 1: com.facebook.soloader.DirectorySoSource[root = /data/app/~~aznWW_f91rKUbZawyrj6Uw==/com.example.appname-vYuznfuIRPw0Vdp5KZDGsA==/lib/x86_64 flags = 0]
+    	SoSource 2: com.facebook.soloader.DirectorySoSource[root = /system/lib64 flags = 2]
+    	SoSource 3: com.facebook.soloader.DirectorySoSource[root = /vendor/lib64 flags = 2]
+    	Native lib dir: /data/app/~~aznWW_f91rKUbZawyrj6Uw==/com.example.appname-vYuznfuIRPw0Vdp5KZDGsA==/lib/x86_64
+     result: 0
+V/SoLoader: libhermes.so not found on /data/data/com.example.appname/lib-main
+D/SoLoader: libhermes.so found on /data/app/~~aznWW_f91rKUbZawyrj6Uw==/com.example.appname-vYuznfuIRPw0Vdp5KZDGsA==/lib/x86_64
+D/SoLoader: Not resolving dependencies for libhermes.so
+W/System: A resource failed to call close. 
+D/CompatibilityChangeReporter: Compat change id reported: 160794467; UID 10148; state: ENABLED
+V/SoLoader: libhermes_executor.so not found on /data/data/com.example.appname/lib-main
+D/SoLoader: libhermes_executor.so found on /data/app/~~aznWW_f91rKUbZawyrj6Uw==/com.example.appname-vYuznfuIRPw0Vdp5KZDGsA==/lib/x86_64
+D/SoLoader: Not resolving dependencies for libhermes_executor.so
+V/SoLoader: libfbjni.so not found on /data/data/com.example.appname/lib-main
+D/SoLoader: libfbjni.so found on /data/app/~~aznWW_f91rKUbZawyrj6Uw==/com.example.appname-vYuznfuIRPw0Vdp5KZDGsA==/lib/x86_64
+D/SoLoader: Not resolving dependencies for libfbjni.so
+V/SoLoader: libflipper.so not found on /data/data/com.example.appname/lib-main
+D/SoLoader: libflipper.so found on /data/app/~~aznWW_f91rKUbZawyrj6Uw==/com.example.appname-vYuznfuIRPw0Vdp5KZDGsA==/lib/x86_64
+D/SoLoader: Not resolving dependencies for libflipper.so
+W/unknown:InspectorPackagerConnection: Couldn't connect to packager, will silently retry
+W/unknown:ReconnectingWebSocket: Couldn't connect to "ws://localhost:8081/message?device=sdk_gphone64_x86_64%20-%2012%20-%20API%2032&app=com.example.appname&clientid=BridgeDevSupportManager", will silently retry
+W/example.appnam: Accessing hidden field Landroid/view/View;->mKeyedTags:Landroid/util/SparseArray; (unsupported, reflection, allowed)
+W/example.appnam: Accessing hidden field Landroid/view/View;->mListenerInfo:Landroid/view/View$ListenerInfo; (unsupported, reflection, allowed)
+W/example.appnam: Accessing hidden field Landroid/view/View$ListenerInfo;->mOnClickListener:Landroid/view/View$OnClickListener; (unsupported, reflection, allowed)
+I/flipper: flipper: FlipperClient::addPlugin Inspector
+I/flipper: flipper: FlipperClient::addPlugin Databases
+I/flipper: flipper: FlipperClient::addPlugin Preferences
+I/flipper: flipper: FlipperClient::addPlugin CrashReporter
+I/flipper: flipper: FlipperClient::addPlugin Network
+D/libEGL: loaded /vendor/lib64/egl/libEGL_emulation.so
+D/libEGL: loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+D/libEGL: loaded /vendor/lib64/egl/libGLESv2_emulation.so
+W/System.err: SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+W/System.err: SLF4J: Defaulting to no-operation (NOP) logger implementation
+W/System.err: SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+W/unknown:ReactNative: The packager does not seem to be running as we got an IOException requesting its status: Failed to connect to localhost/127.0.0.1:8081
+W/example.appnam: Accessing hidden method Landroid/view/View;->computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (unsupported, reflection, allowed)
+W/example.appnam: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (unsupported, reflection, allowed)
+V/AsyncStorageExpoMigration: No scoped database found
+D/HostConnection: createUnique: call
+D/HostConnection: HostConnection::get() New Host Connection established 0x7f9a996bb750, tid 3289
+D/HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_2 
+W/OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+D/EGL_emulation: eglCreateContext: 0x7f9a996bb810: maj 2 min 0 rcv 2
+D/EGL_emulation: eglMakeCurrent: 0x7f9a996bb810: ver 2 0 (tinfo 0x7f9cb67fb080) (first time)
+W/unknown:ReconnectingWebSocket: Couldn't connect to "ws://localhost:8081/message?device=sdk_gphone64_x86_64%20-%2012%20-%20API%2032&app=com.example.appname&clientid=BridgeDevSupportManager", will silently retry
+I/Gralloc4: mapper 4.x is not supported
+D/HostConnection: createUnique: call
+D/HostConnection: HostConnection::get() New Host Connection established 0x7f9a996bcb90, tid 3289
+D/goldfish-address-space: allocate: Ask for block of size 0x100
+D/goldfish-address-space: allocate: ioctl allocate returned offset 0x3f3ffe000 size 0x2000
+W/Gralloc4: allocator 4.x is not supported
+D/HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_2 
+I/org.webrtc.Logging: NativeLibrary: Loading native library: jingle_peerconnection_so
+I/org.webrtc.Logging: LibraryLoader: Loading library: jingle_peerconnection_so
+I/example.appnam: Background young concurrent copying GC freed 4617(367KB) AllocSpace objects, 0(0B) LOS objects, 7% free, 3542KB/3836KB, paused 11.056ms,56us total 74.877ms
+I/Choreographer: Skipped 120 frames!  The application may be doing too much work on its main thread.
+I/org.webrtc.Logging: PeerConnectionFactory: PeerConnectionFactory was initialized without an injected Loggable. Any existing Loggable will be deleted.
+D/HostConnection: createUnique: call
+D/HostConnection: HostConnection::get() New Host Connection established 0x7f9a996bbe10, tid 3304
+D/HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_vulkan_async_qsri ANDROID_EMU_read_color_buffer_dma ANDROID_EMU_hwc_multi_configs GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_2 
+I/org.webrtc.Logging: EglBase14Impl: Using OpenGL ES version 2
+D/EGL_emulation: eglCreateContext: 0x7f9a996bd9d0: maj 2 min 0 rcv 2
+I/org.webrtc.Logging: WebRtcAudioManagerExternal: Sample rate is set to 44100 Hz
+I/org.webrtc.Logging: WebRtcAudioManagerExternal: Sample rate is set to 44100 Hz
+I/org.webrtc.Logging: JavaAudioDeviceModule: createAudioDeviceModule
+I/org.webrtc.Logging: JavaAudioDeviceModule: HW NS will not be used.
+I/org.webrtc.Logging: JavaAudioDeviceModule: HW AEC will not be used.
+I/org.webrtc.Logging: WebRtcAudioEffectsExternal: ctor@[name=create_react_context, id=54]
+I/org.webrtc.Logging: WebRtcAudioRecordExternal: ctor@[name=create_react_context, id=54]
+I/org.webrtc.Logging: WebRtcAudioTrackExternal: ctor@[name=create_react_context, id=54]
+I/org.webrtc.Logging: PeerConnectionFactory: onSignalingThreadReady
+I/org.webrtc.Logging: PeerConnectionFactory: onNetworkThreadReady
+I/org.webrtc.Logging: PeerConnectionFactory: onWorkerThreadReady
+I/CameraManagerGlobal: Connecting to camera service
+D/com.oney.WebRTCModule.WebRTCModule: Creating video capturer using Camera2 API.
+V/SoLoader: libreactnativejni.so not found on /data/data/com.example.appname/lib-main
+D/SoLoader: libreactnativejni.so found on /data/app/~~aznWW_f91rKUbZawyrj6Uw==/com.example.appname-vYuznfuIRPw0Vdp5KZDGsA==/lib/x86_64
+D/SoLoader: Not resolving dependencies for libreactnativejni.so
+W/unknown:ReactContext: initializeMessageQueueThreads() is called.
+E/unknown:ReactNative: Exception in native call
+    java.lang.RuntimeException: Unable to load script. Make sure you're either running Metro (run 'npx react-native start') or that your bundle 'index.android.bundle' is packaged correctly for release.
+        at com.facebook.react.bridge.CatalystInstanceImpl.jniLoadScriptFromAssets(Native Method)
+        at com.facebook.react.bridge.CatalystInstanceImpl.loadScriptFromAssets(CatalystInstanceImpl.java:239)
+        at com.facebook.react.bridge.JSBundleLoader$1.loadScript(JSBundleLoader.java:29)
+        at com.facebook.react.bridge.CatalystInstanceImpl.runJSBundle(CatalystInstanceImpl.java:268)
+        at com.facebook.react.ReactInstanceManager.createReactContext(ReactInstanceManager.java:1402)
+        at com.facebook.react.ReactInstanceManager.access$1200(ReactInstanceManager.java:135)
+        at com.facebook.react.ReactInstanceManager$5.run(ReactInstanceManager.java:1109)
+        at java.lang.Thread.run(Thread.java:920)
+D/CompatibilityChangeReporter: Compat change id reported: 171228096; UID 10148; state: ENABLED
+I/Choreographer: Skipped 71 frames!  The application may be doing too much work on its main thread.
+I/OpenGLRenderer: Davey! duration=1268ms; Flags=1, FrameTimelineVsyncId=7747, IntendedVsync=311708789604, Vsync=311775456268, InputEventId=0, HandleInputStart=311782376150, AnimationStart=311782399020, PerformTraversalsStart=311782429390, DrawStart=312846661810, FrameDeadline=311725456270, FrameInterval=311782345770, FrameStartTime=16666666, SyncQueued=312850198020, SyncStart=312850952030, IssueDrawCommandsStart=312851224750, SwapBuffers=312934501510, FrameCompleted=312977714290, DequeueBufferDuration=23210, QueueBufferDuration=6355620, GpuCompleted=312977571950, SwapBuffersCompleted=312977714290, DisplayPresentTime=0, 
+I/OpenGLRenderer: Davey! duration=1208ms; Flags=0, FrameTimelineVsyncId=7756, IntendedVsync=311792122934, Vsync=312975456220, InputEventId=0, HandleInputStart=312980265750, AnimationStart=312980289990, PerformTraversalsStart=312980621760, DrawStart=312980874350, FrameDeadline=311825456266, FrameInterval=312980074950, FrameStartTime=16666666, SyncQueued=312981318420, SyncStart=312981653950, IssueDrawCommandsStart=312982466670, SwapBuffers=312982953070, FrameCompleted=313000689760, DequeueBufferDuration=22530, QueueBufferDuration=610980, GpuCompleted=313000324200, SwapBuffersCompleted=313000689760, DisplayPresentTime=360288004566220877, 
+I/Choreographer: Skipped 61 frames!  The application may be doing too much work on its main thread.
+D/EGL_emulation: app_time_stats: avg=575.11ms min=22.97ms max=1127.26ms count=2
+I/OpenGLRenderer: Davey! duration=1052ms; Flags=0, FrameTimelineVsyncId=7779, IntendedVsync=313075456216, Vsync=314092122842, InputEventId=0, HandleInputStart=314101333550, AnimationStart=314101351300, PerformTraversalsStart=314101583070, DrawStart=314101712770, FrameDeadline=313092122882, FrameInterval=314101194290, FrameStartTime=16666666, SyncQueued=314101961950, SyncStart=314102436060, IssueDrawCommandsStart=314102552790, SwapBuffers=314104165250, FrameCompleted=314128431310, DequeueBufferDuration=24230, QueueBufferDuration=1155070, GpuCompleted=314127877670, SwapBuffersCompleted=314128431310, DisplayPresentTime=7318366574346240, 
+W/unknown:ReconnectingWebSocket: Couldn't connect to "ws://localhost:8081/message?device=sdk_gphone64_x86_64%20-%2012%20-%20API%2032&app=com.example.appname&clientid=BridgeDevSupportManager", will silently retry
