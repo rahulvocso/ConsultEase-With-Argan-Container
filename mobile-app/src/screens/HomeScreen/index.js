@@ -1,7 +1,7 @@
 import { Image, KeyboardAvoidingView, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from 'react-native-paper';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/images/logo.png';
 import MeetingKeyInput from './MeetingKeyInput';
 import config from '../../../config';
 import GoToButton from './GoToButton';
@@ -66,7 +66,7 @@ function HomeScreen() {
         </View>
         {config.demo && <DemoButton />}
         <MeetingKeyInput />
-        <Text variant="titleSmall" style={styles.text}>
+        <Text variant="titleSmall" style={styles.text }>
           - or -
         </Text>
         <GenerateRandomButton />

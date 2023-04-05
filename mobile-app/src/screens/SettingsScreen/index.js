@@ -1,7 +1,7 @@
 import { Image, KeyboardAvoidingView, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Text } from 'react-native-paper';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/images/logo.png';
 import NameInput from './NameInput';
 import EmailInput from './EmailInput';
 import Theme from '../../theme';

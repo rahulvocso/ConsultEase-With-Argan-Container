@@ -10,7 +10,9 @@
     "@react-native-community",
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:react/jsx-runtime"
+    "plugin:react/jsx-runtime",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:flowtype/recommended"
   ],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
@@ -26,7 +28,7 @@
       }
     }
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "react", "@typescript-eslint", "flowtype"],
   "rules": {
     "arrow-body-style": "off",
     "no-plusplus": "off",

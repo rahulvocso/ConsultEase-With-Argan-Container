@@ -2,7 +2,7 @@ import { Image, KeyboardAvoidingView, ScrollView, StatusBar, StyleSheet, View } 
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { Text } from 'react-native-paper';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/images/logo.png';
 import NameInput from './NameInput';
 import EmailInput from './EmailInput';
 import JoinButton from './JoinButton';

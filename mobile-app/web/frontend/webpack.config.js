@@ -10,6 +10,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js', '.html', '.jsx', '.tsx'],
+    alias: {
+      process: "process/browser"
+    },
   },
   module: {
     rules: [
@@ -47,33 +50,3 @@ module.exports = {
     ],
   },
 };
-
-// module.exports = {
-//   entry: './index.js', //'./src/index.ts',
-//   output: {
-//     filename: 'bundle.js',
-//     path: __dirname + '/dist',
-//   },
-//   resolve: {
-//     extensions: ['.ts', '.js', '.html', 'jsx', 'tsx'],
-//   },
-//   module: {
-//     rules: [
-//       {
-//         test: /\.ts$/,
-//         use: 'ts-loader',
-//         exclude: /node_modules/,
-//       },
-//       {
-//         test: /\.html$/,
-//         use: 'html-loader',
-//       },
-//     ],
-//   },
-//   plugins: [
-//     new HtmlWebpackPlugin({
-//       template: './src/StartCameraHTML.html',
-//       filename: 'index.html',
-//     }),
-//   ],
-// };

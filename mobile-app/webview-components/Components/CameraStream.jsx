@@ -29,7 +29,6 @@ import {
 
 import SvgUri from 'react-native-svg-uri';
 
-//import RNFetchBlob from 'rn-fetch-blob';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 
 const CameraStream = ({isCallViewOn, calleeDetails, setIsCallViewOn}) => {

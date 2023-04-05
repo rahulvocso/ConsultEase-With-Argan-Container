@@ -1,10 +1,9 @@
-
-import { Alert, AppState, Keyboard, Linking, Platform, StatusBar } from 'react-native';
+import { Alert, AppState, Keyboard, Linking, Platform, StatusBar, View ,Text} from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createDrawerNavigator, useDrawerStatus } from '@react-navigation/drawer';
@@ -14,14 +13,20 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import xss from 'xss';
 import Screens from './src/screens';
+import VideoCalleePromptScreen from './src/screens/CallScreen/VideoCalleePromptScreen';
+import VideoCallerPromptScreen from './src/screens/CallScreen/VideoCallerPromptScreen';
+import VideoCallScreen from './src/screens/CallScreen/VideoCallScreen';
 import Common from './src/common';
 import Utils from './src/utils';
 import Theme from './src/theme';
 import Actions from './src/actions';
 import config from './config';
 
+import {Immersive} from 'react-native-immersive';
 import WebViewHolder from "./webview-components/Components/WebViewHolder";
-import CamWebview from './webview-components/Components/CamWebview';
+import ConsultEaseWebview from './webview-components/Components/ConsultEaseWebview';
+// import Sound from 'react-native-sound';
+//import CameraStream from './webview-components/Components/CameraStream';
 
 function CustomAppBar({ navigation, route }) {
   const theme = useTheme();
@@ -97,9 +102,14 @@ CustomAppBar.propTypes = {
 };
 
 function ConditionalAppBar({ route, navigation }) {
-  return route.name !== 'Meeting' && route.name !== 'MeetingContent'
+  return (route.name !== 'Meeting'
+      && route.name !== 'MeetingContent'
+      && route.name !== 'VideoCalleePrompt'
+      && route.name !== 'VideoCallerPrompt'
+      && route.name !== 'VideoCall'
     ? CustomAppBar({ route, navigation })
-    : null;
+    : null
+    )
 }
 
 ConditionalAppBar.propTypes = {
@@ -241,14 +251,31 @@ const useInitialURL = () => {
 
 function App() {
   //
-  const [isCallViewOn, setIsCallViewOn] = useState(false)
-  const [calleeDetails, setCalleeDetails] = useState();
+  // const [isCallViewOn, setIsCallViewOn] = useState(false)
+  // const setCallView = setIsCallViewOn;
+  // const [calleeDetails, setCalleeDetails] = useState();
   //
   const { url: initialUrl } = useInitialURL();
   const socketId = useSelector((state) => state.socket.id);
   const device = useSelector((state) => state.media.device);
+  const isCallViewOn = useSelector((state) => state.webview.isCallViewOn);
+  // const CallViewOn = isCallViewOn;
+  const calleeDetails = useSelector((state) => state.webview.calleeDetails);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    // Immersive.on()
+    // navigation && navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: 'VideoCallerPrompt' }],
+    // });
+    // navigation && navigation.navigate('VideoCallerPrompt');
+    console.log("In Native Container UseEffect calleeDetails", calleeDetails, "isCallViewOn",isCallViewOn);
+    return (() => {
+      // Immersive.off()
+    })
+  },[calleeDetails, isCallViewOn])
 
   useEffect(() => {
     AsyncStorage.getItem('name')
@@ -301,20 +328,20 @@ function App() {
           screenOptions={{
             header: ConditionalAppBar,
           }}
-        >
+        > 
+          <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
+          <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
+          <Stack.Screen name="VideoCall" component={VideoCallScreen} />
           <Stack.Screen name="Home" component={Screens.HomeScreen} />
           <Stack.Screen name="Join" component={Screens.JoinScreen} />
           <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
           <Stack.Screen name="Meeting" component={MeetingNavigator} />
+          
         </Stack.Navigator>
         <Common.Snack />
       </>
       :
-      // <WebViewHolder setIsCallViewOn={setIsCallViewOn}/>
-      <CamWebview
-        setIsCallViewOn={setIsCallViewOn}
-        setCalleeDetails={setCalleeDetails}
-      />
+      <ConsultEaseWebview/>
     }
     </>
   );

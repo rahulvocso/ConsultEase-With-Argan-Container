@@ -32,7 +32,7 @@ import {
 
 import Immersive from 'react-native-immersive';
 
-import CamWebView from './CamWebview.jsx';
+import ConsultEaseWebView from './ConsultEaseWebview.jsx';
 import CameraStream from './CameraStream.jsx';
 
 
@@ -134,7 +134,7 @@ function WebViewHolder( { setIsCallViewOn } ): JSX.Element {
               setIsCallViewOn={setIsCallViewOn}
             />
           ) : ( */}
-            <CamWebView
+            <ConsultEaseWebView
               setIsCallViewOn={setIsCallViewOn}
               setCalleeDetails={setCalleeDetails}
             />

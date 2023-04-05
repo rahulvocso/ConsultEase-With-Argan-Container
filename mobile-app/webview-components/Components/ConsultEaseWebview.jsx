@@ -19,7 +19,7 @@ import {
   useWindowDimensions,
   TouchableOpacity,
 } from 'react-native';
-
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Colors,
   DebugInstructions,
@@ -35,7 +35,10 @@ import {WebView} from 'react-native-webview';
 // import StartCamera from './StartCamera';
 // import CameraStream from './CameraStream';
 
-function CamWebview({setIsCallViewOn, setCalleeDetails}) {
+function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
+  const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
+  const dispatch = useDispatch();
+
   const [renderedOnce, setRenderedOnce] = useState(false);
   const webviewRef = useRef();
   const isDarkMode = useColorScheme() === 'dark';
@@ -67,19 +70,19 @@ function CamWebview({setIsCallViewOn, setCalleeDetails}) {
   true; // note: this is required, or you'll sometimes get silent failures
   `;
 
-  useEffect(() => {
-    Immersive.on();
-    return () => {
-      Immersive.off();
-    };
-  });
+  // useEffect(() => {
+  //   Immersive.on();
+  //   return () => {
+  //     Immersive.off();
+  //   };
+  // });
 
   return (
     <View
       style={{
         flex: 1,
-        width: useWindowDimensions().width,
-        height: useWindowDimensions().height,
+        // width: useWindowDimensions().width,
+        // height: useWindowDimensions().height,
         backgroundColor: isDarkMode ? Colors.black : Colors.white,
       }}>
       <WebView
@@ -89,13 +92,14 @@ function CamWebview({setIsCallViewOn, setCalleeDetails}) {
         source={
           renderedOnce
             ? {
-                uri: 'http://10.0.2.2:3000',
-                // uri: ' http://192.168.0.138:3000',
+                // uri: 'http://10.0.2.2:3000',
+                uri: 'http://192.168.0.138:3000',
                 // uri: 'https://vocso.com',
+                
               }
             : undefined
         }
-        style={{
+        style={{ 
           flex: 1,
           minWidth: useWindowDimensions().width,
           maxHeight: useWindowDimensions().height,
@@ -114,13 +118,16 @@ function CamWebview({setIsCallViewOn, setCalleeDetails}) {
         onLoad={updateSource}
         onMessage={event => {
           console.log(
-            'Message received to turn camera On!!!',
+            'Message received to turn camera On from ConsultEase(InputVideoCallDetails.jsx)!!!',
             event.nativeEvent.data,
-            event,
+            "**event**",
+            JSON.parse(event.nativeEvent.data),
           );
           if (event.nativeEvent.data !== '') {
-            setCalleeDetails(JSON.parse(event.nativeEvent.data));
-            setIsCallViewOn(true);
+            // setCalleeDetails( JSON.parse(event.nativeEvent.data) );
+            // setIsCallViewOn(true);
+            dispatch({ type: 'SET_CALL_VIEW_ON', payload: true });
+            dispatch({ type: 'SET_CALLEE_DETAILS', payload: JSON.parse(event.nativeEvent.data) })
           }
         }}
         scalesPageToFit={true}
@@ -153,4 +160,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CamWebview;
+export default ConsultEaseWebview;

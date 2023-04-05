@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {setupIonicReact} from '@ionic/react';
 import {Redirect, Route, useHistory, withRouter} from 'react-router-dom';
 import {
@@ -11,6 +11,8 @@ import {
   IonContent,
 } from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
+
+// import {Immersive} from 'react-native-immersive';
 
 import {personCircle, personCircleOutline} from 'ionicons/icons';
 import homeOutline_c from './theme/assets/homeNew.svg';
@@ -56,7 +58,6 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import './theme/floating-tab-bar.css';
 import './theme/common.css';
-import {useEffect, useState, useRef} from 'react';
 import InfiniteScrollExample from './pages/InfiniteScrollExample';
 import PreviewSlides from './pages/PreviewSlides';
 
@@ -113,6 +114,10 @@ const App = () => {
     setupIonicReact({
       mode: 'md',
     });
+    // Immersive.on();
+    // return(
+    //   ()=>(Immersive.off())
+    // )
   }, [activeTab]);
 
   

@@ -131,31 +131,3 @@ const VideoCallReview = () => {
 };
 
 export default VideoCallReview;
-
-/*
-<IonIcon
-            color="primary"
-            icon={rating}
-            size="large"
-            onClick={() => setReview(2)}
-          />
-          a
-          <IonIcon
-            color="primary"
-            icon={star}
-            size="large"
-            onClick={() => setReview(3)}
-          />
-          <IonIcon
-            color="primary"
-            icon={star}
-            size="large"
-            onClick={() => setReview(4)}
-          />
-          <IonIcon
-            color="primary"
-            icon={rating}
-            size="large"
-            onClick={() => setReview(5)}
-          />
-*/

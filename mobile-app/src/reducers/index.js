@@ -6,6 +6,7 @@ import meeting from './meeting';
 import snack from './snack';
 import socket from './socket';
 import user from './user';
+import webview from './webview';
 
 const Reducer = combineReducers({
   chat,
@@ -15,6 +16,7 @@ const Reducer = combineReducers({
   snack,
   socket,
   user,
+  webview,
 });
 
 export default Reducer;
