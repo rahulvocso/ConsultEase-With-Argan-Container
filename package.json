@@ -1,0 +1,10 @@
+{
+  "name": "argan-mobile",
+  "version": "1.0.1",
+  "description": "Meetings Platform with Audio and Video via getUserMedia",
+  "author": "Honeyside <support@honeyside.it>",
+  "private": true,
+  "engines": {
+    "node": "18.x.x"
+  }
+}
