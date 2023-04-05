@@ -76,16 +76,18 @@ const MenuModal = ({
       'https://callingserver.onrender.com/api/v1/profile/' + profile._id;
     setShareProfileModalVisible(true);
   };
+  
   const handleProfileLink = e => {
     copyy(`https://callingserver.onrender.com/api/v1/profile/${profile._id}`);
     presentCopyyProfileToast({
       message: `Profile link copied to clipboard  https://callingserver.onrender.com/api/v1/profile/  ${profile._id}`,
-      duration: 2000,
+      duration: 1000,
       icon: copyOutline,
       position: 'top',
       cssClass: 'custom-toast',
+      layout: 'stacked',
       buttons: [
-        {
+        { 
           text: 'Dismiss',
           role: 'cancel',
         },
@@ -241,7 +243,7 @@ const MenuModal = ({
           <IonItem>
             <h3>@{profile.profile ? profile.profile.handle : ''}</h3>
           </IonItem>
-          <IonItem>
+          <IonItem onClick={(e)=>handleQrDownload(e)}>
             <IonIcon color="dark" icon={alertCircleOutline} />
             <IonLabel>Download QR Code</IonLabel>
           </IonItem>

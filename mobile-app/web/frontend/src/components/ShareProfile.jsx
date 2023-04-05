@@ -144,28 +144,18 @@ const ShareProfile = ({
 
   ];
 
-  function InstagramButton() {
-    const handlePress = () => {
-      const instagramAppUrl = 'instagram://direct';
-      // const instagramWebUrl = 'https://www.instagram.com/direct/inbox/';
+  function openInstagramChat() {
+    const isInstagramInstalled = navigator.userAgent.indexOf('Instagram') > -1;
+    
+    if (isInstagramInstalled) {
+      window.location.href = 'instagram://direct';
+    } else if (navigator.userAgent.indexOf('Instagram') > -1){
+      window.location.href = 'https://www.instagram.com/direct/inbox/';
+    } else {
+      window.location.href = 'https://www.instagram.com/direct/inbox/';
+    }
 
-      // Attempt to open the Instagram app
-      window.location.href = instagramAppUrl;
-
-      // Set a timeout to redirect to the web URL if the app is not installed
-      setTimeout(() => {
-        window.location.href = instagramWebUrl;
-      }, 500);
-    };
-
-    return (
-      <button onClick={handlePress}>
-        Instagram
-      </button>
-    );
   }
-
-
 
   let profileLink = 'https://callingserver.onrender.com/api/v1/' + profile._id;
 
@@ -206,7 +196,10 @@ const ShareProfile = ({
             </div>
           );
         })}
-        <InstagramButton/>
+        {/* <button onClick={openInstagramChat}>
+          Instagram
+          <IonIcon></IonIcon>
+      </button> */}
       </IonList>
     </IonModal>
   );

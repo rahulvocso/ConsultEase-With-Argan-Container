@@ -19,8 +19,10 @@ import {
   IonList,
   IonItem,
   useIonViewWillLeave,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/react';
-import {personOutline, walletOutline} from 'ionicons/icons';
+import {arrowDownCircleOutline, personOutline, walletOutline} from 'ionicons/icons';
 import {useStoreState} from 'pullstate';
 import {TalkStore} from '../store';
 import {getTalks} from '../store/Selectors';
@@ -101,6 +103,16 @@ const Home = React.memo( () => {
       auth_token ? getData() : history.push('/login');
     }, []);
 
+    const handlePageRefresh = (e) => {
+    // Your refresh logic goes here
+    setPage({pageNumber: 0});
+    auth_token ? page.pageNumber === 0 && getData() : history.push('/login');
+      setTimeout(() => {
+        e.detail.complete();
+      }, 100);
+      getData();
+    }
+
     return (
       <IonPage ref={pageRef}>
         {auth_token && <Header type="home" />}
@@ -114,31 +126,43 @@ const Home = React.memo( () => {
               pageRef.current.display = 'none';
             }}></IonSearchbar>
 
-          <IonGrid className="ion-padding-start ion-padding-end extra-padding ion-padding-bottom ion-margin-bottom">
-            <IonRow>
-              <IonCol size="12">
-                <IonInfiniteScroll
-                  onIonInfinite={loadData}
-                  threshold="300px"
-                  disabled={isInfiniteDisabled}>
-                  <IonInfiniteScrollContent
-                    loadingSpinner="bubbles"
-                    loadingText="Loading more data..."></IonInfiniteScrollContent>
-                </IonInfiniteScroll>
+          <IonRefresher
+            slot="fixed"
+            onIonRefresh={(e)=> handlePageRefresh(e)}
+            pullFactor={0.5}
+          >
+            <IonRefresherContent
+              pullingIcon={arrowDownCircleOutline}
+              pullingText="Pull to refresh"
+              refreshingSpinner="circles"
+              refreshingText="Refreshing...">
+            </IonRefresherContent>
+          </IonRefresher>
+            <IonGrid className="ion-padding-start ion-padding-end extra-padding ion-padding-bottom ion-margin-bottom">
+              <IonRow>
+                <IonCol size="12">
+                  <IonInfiniteScroll
+                    onIonInfinite={loadData}
+                    threshold="75%"
+                    disabled={isInfiniteDisabled}>
+                    <IonInfiniteScrollContent
+                      loadingSpinner="bubbles"
+                      loadingText="Loading more profiles..."></IonInfiniteScrollContent>
+                  </IonInfiniteScroll>
 
-                {profiles.map((profile, _id) => {
-                  return (
-                    <ProCard
-                      key={_id}
-                      profile={profile}
-                      //pageRef={pageRef}
-                      setInfiniteDisabled={setInfiniteDisabled}
-                    />
-                  );
-                })}
-              </IonCol>
-            </IonRow>
-          </IonGrid>
+                  {profiles.map((profile, _id) => {
+                    return (
+                      <ProCard
+                        key={_id}
+                        profile={profile}
+                        //pageRef={pageRef}
+                        setInfiniteDisabled={setInfiniteDisabled}
+                      />
+                    );
+                  })}
+                </IonCol>
+              </IonRow>
+            </IonGrid>
         </IonContent>
       </IonPage>
     );

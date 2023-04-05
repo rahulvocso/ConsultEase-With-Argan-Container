@@ -343,7 +343,7 @@ const Profile = React.memo(
                       {profile.profile.description}
                       <br />
                       <br />
-                      <a target="_blank" href={profile.profile.website}>
+                      <a target="_blank" rel="noreferrer" href={profile.profile.website}>
                         {profile.profile.website}
                       </a>
                     </IonLabel>
