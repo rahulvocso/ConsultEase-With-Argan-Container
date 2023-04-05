@@ -121,8 +121,53 @@ const ShareProfile = ({
       button: TelegramShareButton,
       icon: TelegramIcon,
     },
+    {
+      socialPlatform: 'Reddit',
+      button: RedditShareButton,
+      icon: RedditIcon,
+    },
+    {
+      socialPlatform: 'Pinterest',
+      button: PinterestShareButton,
+      icon: PinterestIcon,
+    },
+    {
+      socialPlatform: 'Tumblr',
+      button: TumblrShareButton,
+      icon: TumblrIcon,
+    },
+    {
+      socialPlatform: 'Workplace',
+      button: WorkplaceShareButton,
+      icon: WorkplaceIcon,
+    },
+
   ];
-  let profileLink = '/profile/' + profile._id;
+
+  function InstagramButton() {
+    const handlePress = () => {
+      const instagramAppUrl = 'instagram://direct';
+      // const instagramWebUrl = 'https://www.instagram.com/direct/inbox/';
+
+      // Attempt to open the Instagram app
+      window.location.href = instagramAppUrl;
+
+      // Set a timeout to redirect to the web URL if the app is not installed
+      setTimeout(() => {
+        window.location.href = instagramWebUrl;
+      }, 500);
+    };
+
+    return (
+      <button onClick={handlePress}>
+        Instagram
+      </button>
+    );
+  }
+
+
+
+  let profileLink = 'https://callingserver.onrender.com/api/v1/' + profile._id;
 
   return (
     <IonModal
@@ -161,6 +206,7 @@ const ShareProfile = ({
             </div>
           );
         })}
+        <InstagramButton/>
       </IonList>
     </IonModal>
   );

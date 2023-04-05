@@ -132,10 +132,11 @@ const PersonalInfo = () => {
           color: "danger",
         });
     });
+    history.push("/profile");
   };
 
   const handleClose = (res) => {
-    history.push("/home");
+    history.push("/profile");
   };
 
   return (

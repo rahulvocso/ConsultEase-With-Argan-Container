@@ -77,7 +77,7 @@ const MenuModal = ({
     setShareProfileModalVisible(true);
   };
   const handleProfileLink = e => {
-    copyy('https://callingserver.onrender.com/api/v1/profile/' + profile._id);
+    copyy(`https://callingserver.onrender.com/api/v1/profile/${profile._id}`);
     presentCopyyProfileToast({
       message: `Profile link copied to clipboard  https://callingserver.onrender.com/api/v1/profile/  ${profile._id}`,
       duration: 2000,
