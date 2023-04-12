@@ -1,6 +1,6 @@
 export default {
   appTitle: 'ConsultEaseArganRN',
   url: 'https://argan.honeyside.it',
-  // url: 'http://localhost:5080',
+  // url: 'https://arganbackend.onrender.com',
   demo: true,
 };

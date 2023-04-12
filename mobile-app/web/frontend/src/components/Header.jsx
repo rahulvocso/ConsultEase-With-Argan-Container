@@ -12,6 +12,7 @@ import {
   IonNote,
   IonRow,
   useIonModal,
+  IonSearchbar,
 } from '@ionic/react';
 import {useEffect, useState} from 'react';
 import {
@@ -20,12 +21,14 @@ import {
   closeOutline,
   checkmarkOutline,
   ellipsisVertical,
+  searchCircle,
+  search,
 } from 'ionicons/icons';
 import {useHistory, Link} from 'react-router-dom';
 import verified_c from '../theme/assets/verified.svg';
 import rupeeSign from '../theme/assets/rupeeSign.svg';
 
-import styles from './Header.css';
+import './Header.css';
 import useFetch from '../hooks/useFetch';
 
 export const Header = ({
@@ -49,7 +52,8 @@ export const Header = ({
       auth_token: auth_token,
     }).then(data => {
       setBalance(data.body.balance);
-      console.log(data.body._id);
+      console.log("auth_token",auth_token);
+      console.log("data.body._id",data.body._id,);
     });
 
   return (
@@ -149,18 +153,35 @@ export const Header = ({
           </IonToolbar>
         )}
         {type === 'home' && (
-          <IonToolbar>
-            <IonTitle>ConsultEase</IonTitle>
-
-            <IonButtons slot="end">
-              <IonButton
-                onClick={() => {
-                  history.push('/wallet');
-                }}>
-                <IonLabel>₹{balance}</IonLabel>
-                <IonIcon icon={walletOutline} />
-              </IonButton>
-            </IonButtons>
+          <IonToolbar className='homeHeader'>
+            <IonTitle slot='start'>ConsultEase</IonTitle>
+            {/* <IonSearchbar
+            color='#3DB271'
+            showClearButton="focus"
+            animated
+            placeholder="Search people..."
+            onClick={() => {
+              history.push('/search');
+              //pageRef.current.display = 'none';
+            }}></IonSearchbar> */}
+            <IonButton
+            slot='end'
+             onClick={() => {
+              history.push('/search');
+              //pageRef.current.display = 'none';
+            }}
+            > 
+            <IonIcon icon={search}></IonIcon>
+            </IonButton>
+          
+            <IonButton
+            slot='end'
+              onClick={() => {
+                history.push('/wallet');
+              }}>
+              <IonLabel>₹{balance}</IonLabel>
+              <IonIcon icon={walletOutline} />
+            </IonButton>
           </IonToolbar>
         )}
         {type === 'videoCall' && (

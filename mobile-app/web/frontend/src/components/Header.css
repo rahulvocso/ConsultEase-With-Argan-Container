@@ -7,6 +7,13 @@
   display: none;
 }
 
+/* .homeHeader{
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+  justify-content: space-between;
+} */
+
 .profileHeader div {
   display: flex;
   flex-direction: row;

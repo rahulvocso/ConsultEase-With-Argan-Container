@@ -56,11 +56,11 @@ const Home = React.memo( () => {
         }&sort=stats.rating_average&sort_type=1&`,
         {auth_token: auth_token},
       ).then(data => {
-        console.log('hello');
-        console.log(data.status);
+        console.log("data.status",data.status);
+        console.log("data.body.data",data.body.data);
         console.log(data);
         console.log('auth_token', auth_token);
-        if (data.status != 200 || auth_token == '') {
+        if (data.status !== 200 || auth_token === '') {
           history.push('/login');
         }
 
@@ -79,12 +79,7 @@ const Home = React.memo( () => {
 
       // (localStorage.getItem("consultEaseUserId") === (null || undefined) ||
       //   localStorage.getItem("consultEaseUserId").length == 0) &&
-      get('user/' + '', {auth_token: auth_token}).then(data => {
-        setConsultEaseUserId(data.body._id);
-        localStorage.setItem('consultEaseUserId', data.body._id);
-        console.log('User data... ');
-        console.log(data.body, data.body.profile, data.body._id);
-      });
+     
     };
 
     const loadData = ev => {
@@ -96,7 +91,12 @@ const Home = React.memo( () => {
     };
 
     useIonViewWillEnter(ev => {
-      //getData();
+      get('user/', {auth_token: auth_token}).then(data => {
+        setConsultEaseUserId(data.body._id);
+        localStorage.setItem('consultEaseUserId', data.body._id);
+        console.log('User data... ');
+        console.log(data.body, data.body.profile, data.body._id);
+      });
     });
 
     useEffect(() => {
@@ -117,33 +117,34 @@ const Home = React.memo( () => {
       <IonPage ref={pageRef}>
         {auth_token && <Header type="home" />}
         <IonContent fullscreen>
-          <IonSearchbar
-            showClearButton="focus"
-            animated
-            placeholder="Search people to talk to..."
-            onClick={() => {
-              history.push('/search');
-              pageRef.current.display = 'none';
+            <IonSearchbar
+              showClearButton="focus"
+              animated
+              placeholder="Search people to talk to..."
+              onClick={() => {
+                history.push('/search');
+                pageRef.current.display = 'none';
             }}></IonSearchbar>
 
-          <IonRefresher
-            slot="fixed"
-            onIonRefresh={(e)=> handlePageRefresh(e)}
-            pullFactor={0.5}
-          >
-            <IonRefresherContent
-              pullingIcon={arrowDownCircleOutline}
-              pullingText="Pull to refresh"
-              refreshingSpinner="circles"
-              refreshingText="Refreshing...">
-            </IonRefresherContent>
-          </IonRefresher>
+            <IonRefresher
+              slot="fixed"
+              onIonRefresh={(e)=> handlePageRefresh(e)}
+              pullFactor={0.9}
+            >
+              <IonRefresherContent
+                pullingIcon={arrowDownCircleOutline}
+                pullingText="Pull to refresh"
+                refreshingSpinner="circles"
+                // refreshingText="Refreshing..."
+              >
+              </IonRefresherContent>
+            </IonRefresher>
             <IonGrid className="ion-padding-start ion-padding-end extra-padding ion-padding-bottom ion-margin-bottom">
               <IonRow>
                 <IonCol size="12">
                   <IonInfiniteScroll
                     onIonInfinite={loadData}
-                    threshold="75%"
+                    threshold="70%"
                     disabled={isInfiniteDisabled}>
                     <IonInfiniteScrollContent
                       loadingSpinner="bubbles"

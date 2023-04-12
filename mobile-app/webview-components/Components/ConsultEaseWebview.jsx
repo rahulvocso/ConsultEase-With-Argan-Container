@@ -93,7 +93,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
           renderedOnce
             ? {
                 // uri: 'http://10.0.2.2:3000',
-                uri: 'http://192.168.0.138:3000',
+                uri: 'http://192.168.0.138:3001',
                 // uri: 'https://vocso.com',
                 
               }

@@ -64,7 +64,7 @@ const VideoCallerPromptScreen = () => {
   const key = useSelector((state) => state.meeting.key);
 //   const [ primaryVideoViewIsPeer, setPrimaryVideoViewIsPeer ] =useState(true)
   
-  useLayoutEffect(() => {
+  useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
     // return () => {

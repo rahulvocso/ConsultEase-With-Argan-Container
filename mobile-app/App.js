@@ -1,4 +1,4 @@
-import { Alert, AppState, Keyboard, Linking, Platform, StatusBar, View ,Text} from 'react-native';
+import { Alert, AppState, Keyboard, Linking, Platform, StatusBar, View, Text } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
@@ -22,8 +22,8 @@ import Theme from './src/theme';
 import Actions from './src/actions';
 import config from './config';
 
-import {Immersive} from 'react-native-immersive';
-import WebViewHolder from "./webview-components/Components/WebViewHolder";
+import { Immersive } from 'react-native-immersive';
+import WebViewHolder from './webview-components/Components/WebViewHolder';
 import ConsultEaseWebview from './webview-components/Components/ConsultEaseWebview';
 // import Sound from 'react-native-sound';
 //import CameraStream from './webview-components/Components/CameraStream';
@@ -102,14 +102,13 @@ CustomAppBar.propTypes = {
 };
 
 function ConditionalAppBar({ route, navigation }) {
-  return (route.name !== 'Meeting'
-      && route.name !== 'MeetingContent'
-      && route.name !== 'VideoCalleePrompt'
-      && route.name !== 'VideoCallerPrompt'
-      && route.name !== 'VideoCall'
+  return route.name !== 'Meeting' &&
+    route.name !== 'MeetingContent' &&
+    route.name !== 'VideoCalleePrompt' &&
+    route.name !== 'VideoCallerPrompt' &&
+    route.name !== 'VideoCall'
     ? CustomAppBar({ route, navigation })
-    : null
-    )
+    : null;
 }
 
 ConditionalAppBar.propTypes = {
@@ -271,11 +270,16 @@ function App() {
     //   routes: [{ name: 'VideoCallerPrompt' }],
     // });
     // navigation && navigation.navigate('VideoCallerPrompt');
-    console.log("In Native Container UseEffect calleeDetails", calleeDetails, "isCallViewOn",isCallViewOn);
-    return (() => {
+    console.log(
+      'In Native Container UseEffect calleeDetails',
+      calleeDetails,
+      'isCallViewOn',
+      isCallViewOn,
+    );
+    return () => {
       // Immersive.off()
-    })
-  },[calleeDetails, isCallViewOn])
+    };
+  }, [calleeDetails, isCallViewOn]);
 
   useEffect(() => {
     AsyncStorage.getItem('name')
@@ -321,14 +325,14 @@ function App() {
 
   return (
     <>
-    {isCallViewOn ? 
+      {/* {isCallViewOn ? ( */}
       <>
         <StatusBar barStyle="light-content" backgroundColor={Theme.Variables.secondary} />
         <Stack.Navigator
           screenOptions={{
             header: ConditionalAppBar,
           }}
-        > 
+        >
           <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
           <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
           <Stack.Screen name="VideoCall" component={VideoCallScreen} />
@@ -336,13 +340,12 @@ function App() {
           <Stack.Screen name="Join" component={Screens.JoinScreen} />
           <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
           <Stack.Screen name="Meeting" component={MeetingNavigator} />
-          
         </Stack.Navigator>
         <Common.Snack />
       </>
-      :
-      <ConsultEaseWebview/>
-    }
+      {/* ) : (
+        <ConsultEaseWebview />
+      )} */}
     </>
   );
 }

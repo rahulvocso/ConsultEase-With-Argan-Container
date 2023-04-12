@@ -17,6 +17,7 @@ import {
   IonIcon,
   IonCardSubtitle,
   IonAvatar,
+  IonText,
 } from '@ionic/react';
 import {
   arrowRedo,
@@ -249,6 +250,11 @@ const HomeSearchResults = () => {
                       </div>
                     );
                   })}
+                  {!recentSearches.length === 0 &&
+                    <div className="searchedProfile-TextDetail">
+                    <p>{recentSearches}</p>
+                  </div>
+                  }
               </div>
             </div>
 
@@ -299,7 +305,7 @@ const HomeSearchResults = () => {
                 <div>
                   {profiles &&
                     profiles
-                      .filter(profile => {
+                      .filter((profile) => {
                         if (
                           (profile.profile.handle &&
                             profile.profile.handle
@@ -317,7 +323,7 @@ const HomeSearchResults = () => {
                               .toLowerCase()
                               .includes(query.toLowerCase()))
                         )
-                          return profile;
+                        return profile;
                       })
                       .map((profile, _id) => (
                         <div
