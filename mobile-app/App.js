@@ -325,27 +325,27 @@ function App() {
 
   return (
     <>
-      {/* {isCallViewOn ? ( */}
-      <>
-        <StatusBar barStyle="light-content" backgroundColor={Theme.Variables.secondary} />
-        <Stack.Navigator
-          screenOptions={{
-            header: ConditionalAppBar,
-          }}
-        >
-          <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
-          <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
-          <Stack.Screen name="VideoCall" component={VideoCallScreen} />
-          <Stack.Screen name="Home" component={Screens.HomeScreen} />
-          <Stack.Screen name="Join" component={Screens.JoinScreen} />
-          <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
-          <Stack.Screen name="Meeting" component={MeetingNavigator} />
-        </Stack.Navigator>
-        <Common.Snack />
-      </>
-      {/* ) : (
+      {isCallViewOn ? (
+        <>
+          <StatusBar barStyle="light-content" backgroundColor={Theme.Variables.secondary} />
+          <Stack.Navigator
+            screenOptions={{
+              header: ConditionalAppBar,
+            }}
+          >
+            <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
+            <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
+            <Stack.Screen name="VideoCall" component={VideoCallScreen} />
+            <Stack.Screen name="Home" component={Screens.HomeScreen} />
+            <Stack.Screen name="Join" component={Screens.JoinScreen} />
+            <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
+            <Stack.Screen name="Meeting" component={MeetingNavigator} />
+          </Stack.Navigator>
+          <Common.Snack />
+        </>
+      ) : (
         <ConsultEaseWebview />
-      )} */}
+      )}
     </>
   );
 }
