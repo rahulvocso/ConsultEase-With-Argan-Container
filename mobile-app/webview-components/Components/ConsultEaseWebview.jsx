@@ -90,14 +90,16 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
         originWhitelist={['*']}
         //injectedJavaScript={runScript}
         source={
-          renderedOnce
-            ? {
-                // uri: 'http://10.0.2.2:3000',
-                uri: 'http://192.168.0.138:3001',
-                // uri: 'https://vocso.com',
+          // renderedOnce
+          //   ? 
+          {
+                // uri: 'http://10.0.2.2:3056',
+                // uri: 'http://192.168.0.138:3000',
+                uri: 'https://vocso.com',
+                uri: 'https://6437e2e60a49181ac33828c4--super-cajeta-000cea.netlify.app/'
                 
               }
-            : undefined
+            // : undefined
         }
         style={{ 
           flex: 1,

@@ -16,17 +16,19 @@ import Screens from './src/screens';
 import VideoCalleePromptScreen from './src/screens/CallScreen/VideoCalleePromptScreen';
 import VideoCallerPromptScreen from './src/screens/CallScreen/VideoCallerPromptScreen';
 import VideoCallScreen from './src/screens/CallScreen/VideoCallScreen';
+import CallRatingScreen from './src/screens/CallScreen/CallRatingScreen';
+
 import Common from './src/common';
 import Utils from './src/utils';
 import Theme from './src/theme';
 import Actions from './src/actions';
 import config from './config';
 
-import { Immersive } from 'react-native-immersive';
-import WebViewHolder from './webview-components/Components/WebViewHolder';
-import ConsultEaseWebview from './webview-components/Components/ConsultEaseWebview';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
+
 // import Sound from 'react-native-sound';
 //import CameraStream from './webview-components/Components/CameraStream';
+import ConsultEaseWebview from './webview-components/Components/ConsultEaseWebview';
 
 function CustomAppBar({ navigation, route }) {
   const theme = useTheme();
@@ -106,7 +108,8 @@ function ConditionalAppBar({ route, navigation }) {
     route.name !== 'MeetingContent' &&
     route.name !== 'VideoCalleePrompt' &&
     route.name !== 'VideoCallerPrompt' &&
-    route.name !== 'VideoCall'
+    route.name !== 'VideoCall' &&
+    route.name !== 'CallRating'
     ? CustomAppBar({ route, navigation })
     : null;
 }
@@ -264,12 +267,12 @@ function App() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    // Immersive.on()
-    // navigation && navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: 'VideoCallerPrompt' }],
-    // });
-    // navigation && navigation.navigate('VideoCallerPrompt');
+    // SystemNavigationBar.stickyImmersive();
+    // SystemNavigationBar.lowProfile();
+    SystemNavigationBar.navigationHide();
+    SystemNavigationBar.setNavigationColor('#3db271', 'light', 'navigation');
+    SystemNavigationBar.setBarMode('light', 'both');
+
     console.log(
       'In Native Container UseEffect calleeDetails',
       calleeDetails,
@@ -277,7 +280,7 @@ function App() {
       isCallViewOn,
     );
     return () => {
-      // Immersive.off()
+      SystemNavigationBar.navigationHide();
     };
   }, [calleeDetails, isCallViewOn]);
 
@@ -324,29 +327,30 @@ function App() {
   }, [socketId, device]);
 
   return (
-    <>
-      {isCallViewOn ? (
-        <>
-          <StatusBar barStyle="light-content" backgroundColor={Theme.Variables.secondary} />
-          <Stack.Navigator
-            screenOptions={{
-              header: ConditionalAppBar,
-            }}
-          >
-            <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
-            <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
-            <Stack.Screen name="VideoCall" component={VideoCallScreen} />
-            <Stack.Screen name="Home" component={Screens.HomeScreen} />
+    <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
+      {/* {isCallViewOn ? ( */}
+      <>
+        <StatusBar barStyle="light-content" backgroundColor={Theme.Variables.secondary} />
+        <Stack.Navigator
+          screenOptions={{
+            header: ConditionalAppBar,
+          }}
+        >
+          <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
+          <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
+          <Stack.Screen name="VideoCall" component={VideoCallScreen} />
+          <Stack.Screen name="CallRating" component={CallRatingScreen} />
+          {/* <Stack.Screen name="Home" component={Screens.HomeScreen} />
             <Stack.Screen name="Join" component={Screens.JoinScreen} />
             <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
-            <Stack.Screen name="Meeting" component={MeetingNavigator} />
-          </Stack.Navigator>
-          <Common.Snack />
-        </>
-      ) : (
+            <Stack.Screen name="Meeting" component={MeetingNavigator} /> */}
+        </Stack.Navigator>
+        <Common.Snack />
+      </>
+      {/* ) : (
         <ConsultEaseWebview />
-      )}
-    </>
+      )} */}
+    </SafeAreaView>
   );
 }
 

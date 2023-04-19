@@ -30,8 +30,10 @@ import Actions from '../../actions';
 import Theme from '../../theme';
 
 import AvatarSample from '../../assets/images/AvatarSample.png';
-import CallAccept from '../../assets/images/CallAccept.svg';
-import CallReject from '../../assets/images/CallReject.svg';
+// import CallAccept from '../../assets/images/CallAccept.svg';
+import CallAccept from '../../../android/app/src/main/assets/CallAccept.svg';
+import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
+// import CallReject from '../../assets/images/CallReject.svg';
 
 
 const VideoCalleePromptScreen = () => {
@@ -175,7 +177,7 @@ const VideoCalleePromptScreen = () => {
       alignItems: 'center', //to lower call buttons
       alignContent: 'center',
       position: 'absolute',
-      bottom: 0,
+      bottom: 8,
       // borderWidth: 2,
       // borderColor: 'red',
       width: deviceWidth,
@@ -229,24 +231,36 @@ const VideoCalleePromptScreen = () => {
 
             <View style={styles.callPromptBottomContainer}>
                 <TouchableOpacity onPress={returnToWebview} >
-                <SvgUri
+                  <CallReject
+                    width={60} 
+                    height={60}
+                    fill="red"
+                  />
+                {/* <SvgUri
                     width="60"
                     height="60"
                     fill="red"
-                    source={require('../../assets/images/CallReject.svg')}
-                />
+                    // source={require('../../assets/images/CallReject.svg')}
+                    source={require('../../../android/app/src/main/assets/CallReject.svg')}
+                /> */}
                 </TouchableOpacity>
                 <TouchableOpacity
                 onPress={() => {
                     //setCallPromptView(false);
                     navigation.navigate('VideoCall', { key });
                 }}>
-                <SvgUri
+                  <CallAccept
+                    width={60} 
+                    height={60}
+                    fill="green"
+                  />
+                {/* <SvgUri
                     width="60"
                     height="60"
                     fill="green"
-                    source={require('../../assets/images/CallAccept.svg')}                      
-                />
+                    // source={require('../../assets/images/CallAccept.svg')}   
+                    source={require('../../../android/app/src/main/assets/CallAccept.svg')}                   
+                /> */}
                 </TouchableOpacity>
             </View>
         </View>

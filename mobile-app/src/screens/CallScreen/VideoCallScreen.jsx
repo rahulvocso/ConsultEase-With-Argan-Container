@@ -31,7 +31,18 @@ import Timer from './Timer';
 
 
 // import notifee, {AndroidImportance} from '@notifee/react-native';
-import CallDisconnect from '../../assets/images/CallReject.svg';
+import GoBack from '../../../android/app/src/main/assets/GoBack.svg';
+import GoBack1 from '../../../android/app/src/main/assets/GoBack1.svg';
+import CameraSwitch from '../../../android/app/src/main/assets/CameraSwitch.svg';
+import Monitor1 from '../../../android/app/src/main/assets/Monitor1.svg';
+import MicOn from '../../../android/app/src/main/assets/MicOn.svg';
+import MicOn1 from '../../../android/app/src/main/assets/MicOn1.svg';
+import MicOff from '../../../android/app/src/main/assets/MicOff.svg';
+import MicOff1 from '../../../android/app/src/main/assets/MicOff1.svg';
+import CameraOn from '../../../android/app/src/main/assets/CameraOn.svg';
+import CameraOff from '../../../android/app/src/main/assets/CameraOff.svg';
+import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
+
 
 const VideoCallScreen = () => {
 
@@ -57,7 +68,7 @@ const VideoCallScreen = () => {
     return () => {
       dispatch(Actions.Media.releaseLocalVideo());
       dispatch(Actions.Media.releaseLocalAudio());
-      dispatch({ type: 'SET_CALLEE_DETAILS', payload: {} });
+      // dispatch({ type: 'SET_CALLEE_DETAILS', payload: {} });
   }
   }, []);
 
@@ -68,7 +79,8 @@ const VideoCallScreen = () => {
     //   index: 0,
     //   routes: [{ name: 'VideoCallerPrompt'}],
     // })
-    dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+    navigation.navigate('CallRating')
+    // dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
   };
 
   const handleCameraFacing = () => {
@@ -151,7 +163,7 @@ const VideoCallScreen = () => {
       width: deviceWidth,
       height: deviceHeight / 25,
       position: 'absolute',
-      top: 1,
+      top: 0,
       margin: 0,
       borderRadius: 25,
       //backgroundColor: !isDarkMode ? Colors.darker : Colors.lighter,
@@ -167,7 +179,7 @@ const VideoCallScreen = () => {
     },
     controlButtonsContainer: {
       position: 'absolute',
-      bottom: 0,
+      bottom: 8,
       flex: 1,
       flexDirection: 'row',
       flexWrap: 'wrap',
@@ -245,63 +257,124 @@ const VideoCallScreen = () => {
                 </View>
                 <View style={styles.callViewBottomContainer}>
                     <View style={styles.controlButtonsContainer}>
-                    <TouchableOpacity
-                        onPress={ ()=>{navigation.goBack()}}>
-                        <SvgUri
+                    <TouchableOpacity onPress={ ()=>{navigation.goBack()}}>
+                        <GoBack1
+                          width={30} 
+                          height={30}
+                          fill="white"
+                          // fill="#3DB271"
+                        /> 
+                        {/* <SvgUri
                         width="25"
                         height="25"
                         fill="white"
-                        source={require('../../assets/images/GoBack.svg')}
-                        />
+                        source={require('../../../android/app/src/main/assets/GoBack.svg')}
+                        // source={require('../../assets/images/GoBack.svg')}
+                        /> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleCameraFacing}>
-                        <SvgUri
+                        <CameraSwitch
+                          width={35} 
+                          height={35}
+                          fill="white"
+                          // fill="#3DB271"
+                        />
+                        {/* <SvgUri
                         width="35"
                         height="35"
                         fill="white"
-                        source={require('../../assets/images/CameraSwitch.svg')}
-                        />
+                        source={require('../../../android/app/src/main/assets/CameraSwitch.svg')}
+                        // source={require('../../assets/images/CameraSwitch.svg')}
+                        /> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handlePrimaryVideoStreamView}>
-                        <SvgUri
+                        <Monitor1
+                          width={36} 
+                          height={36}
+                          fill="white"
+                          // fill="#3DB271"
+                        />
+                        {/* <SvgUri
                         width="30"
                         height="30"
                         fill="white"
-                        source={require('../../assets/images/Monitor.svg')}
-                        />
+                        source={require('../../../android/app/src/main/assets/Monitor.svg')}  
+                        // source={require('../../assets/images/Monitor.svg')}
+                        /> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleMicToggle}>
-                        <SvgUri
+                      {
+                        isMicOn ? 
+                        <MicOn1
+                        width={37} 
+                        height={37}
+                        fill="white"
+                        // fill="#3DB271"
+                        />
+                        :
+                        <MicOff1
+                        width={35} 
+                        height={35}
+                        fill="white"
+                        // fill="#3DB271"
+                      />
+                      }
+                        {/* <SvgUri
                         width="35"
                         height="35"
                         fill="white"
                         source={
-                            isMicOn
-                            ? require('../../assets/images/MicOn.svg')
-                            : require('../../assets/images/MicOff.svg')
+                          isMicOn 
+                          ? require('../../../android/app/src/main/assets/MicOn.svg')
+                          : require('../../../android/app/src/main/assets/MicOff.svg')
                         }
-                        />
+                        // source={
+                        //     isMicOn
+                        //     ? require('../../assets/images/MicOn.svg')
+                        //     : require('../../assets/images/MicOff.svg')
+                        // }
+                        /> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleCameraToggle}>
-                        <SvgUri
+                      {
+                        isCameraOn ? 
+                        <CameraOn
+                        width={35} 
+                        height={35}
+                        fill="white"
+                        // fill="#3DB271"
+                        />
+                        :
+                        <CameraOff
+                        width={35} 
+                        height={35}
+                        fill="white"
+                        // fill="#3DB271"
+                        />
+                      }
+                        {/* <SvgUri
                         width="35"
                         height="35"
                         fill="white"
                         // fill="#3DB271"
                         source={
-                            isCameraOn
-                            ? require('../../assets/images/CameraOn.svg')
-                            : require('../../assets/images/CameraOff.svg')
+                          isCameraOn 
+                          ? require('../../../android/app/src/main/assets/CameraOn.svg')
+                          : require('../../../android/app/src/main/assets/CameraOff.svg')
                         }
-                        />
+                        // source={
+                        //     isCameraOn
+                        //     ? require('../../assets/images/CameraOn.svg')
+                        //     : require('../../assets/images/CameraOff.svg')
+                        // }
+                        /> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={returnToWebview}>
-                        <SvgUri
-                        width="40"
-                        height="40"
+                      <CallReject
+                        width={40} 
+                        height={40}
                         fill="red"
-                        source={require('../../assets/images/CallReject.svg')}
-                        />
+                      />
                     </TouchableOpacity>
                     </View>
                 </View>
