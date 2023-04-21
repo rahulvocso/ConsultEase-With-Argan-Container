@@ -79,8 +79,8 @@ const VideoCallScreen = () => {
     //   index: 0,
     //   routes: [{ name: 'VideoCallerPrompt'}],
     // })
-    navigation.navigate('CallRating')
-    // dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+    //navigation.navigate('CallRating')
+    dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
   };
 
   const handleCameraFacing = () => {

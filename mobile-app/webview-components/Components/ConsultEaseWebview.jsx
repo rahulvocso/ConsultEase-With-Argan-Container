@@ -29,6 +29,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import Immersive from 'react-native-immersive';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {WebView} from 'react-native-webview';
 
@@ -42,15 +43,6 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
   const [renderedOnce, setRenderedOnce] = useState(false);
   const webviewRef = useRef();
   const isDarkMode = useColorScheme() === 'dark';
-
-  // useEffect(() => {
-  //   if (isCameraViewOn) {
-  //     // Call the Hooks that should only be used when the camera view is on
-  //   } else {
-  //     // Call the Hooks that should only be used when the camera view is off
-  //     //setIsCameraViewOn();
-  //   }
-  // }, [isCameraViewOn]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -69,6 +61,53 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
   // setTimeout(function() { window.alert('hi') }, 2000);
   true; // note: this is required, or you'll sometimes get silent failures
   `;
+
+  // handles msg received from webview components
+
+  const handleWebViewMessage = (event) => {
+    const message = JSON.parse(event.nativeEvent.data);
+    const messageType = message.messageType;
+    const messageData = message.messageData;
+
+    console.log("message received" ,message ,messageType, messageData)
+    // Use the messageType to distinguish between messages from different components
+    switch (messageType) {
+      case 'callView':
+        {
+          console.log(
+            'Message received to turn camera On from ConsultEase(InputVideoCallDetails.jsx)!!!',
+            "**message type**", messageType,
+            "**message data**", messageData,
+          );
+          dispatch({ type: 'SET_CALL_VIEW_ON', payload: true });
+          dispatch({ type: 'SET_CALLEE_DETAILS', payload: messageData })
+        }
+        break;
+      case 'consulteaseUserProfileData':
+        {
+          console.log(
+            'Message received to set consulteaseUserProfileData from ConsultEase(InputVideoCallDetails.jsx)!!!',
+            "**message type**", messageType,
+            "**message data**", messageData,
+          );
+          if (messageData !== ({} || undefined) ) {
+            dispatch({ type: 'SET_CONSULTEASE_USER_PROFILE_DATA', payload: messageData })
+          }
+          // set consulteaseUserProfileData on locally storage
+          AsyncStorage.setItem('consulteaseUserProfileData', JSON.stringify(messageData))
+          .then(() => {
+            console.log('consulteaseUserProfileData saved successfully comp:ConsultEaseWebview');
+          })
+          .catch((error) => {
+            console.log('Error saving consulteaseUserProfileData: ', error);
+          })
+        }
+        break;
+      default:
+        // Handle messages from unknown components
+        break;
+    }
+  }
 
   // useEffect(() => {
   //   Immersive.on();
@@ -93,12 +132,12 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
           // renderedOnce
           //   ? 
           {
-                // uri: 'http://10.0.2.2:3056',
-                // uri: 'http://192.168.0.138:3000',
-                uri: 'https://vocso.com',
-                uri: 'https://6437e2e60a49181ac33828c4--super-cajeta-000cea.netlify.app/'
-                
-              }
+            // uri: 'http://10.0.2.2:3056',
+            uri: 'http://192.168.0.138:3056',
+            // uri: 'https://vocso.com',
+            // uri: 'https://6437e2e60a49181ac33828c4--super-cajeta-000cea.netlify.app/'
+            
+          }
             // : undefined
         }
         style={{ 
@@ -118,20 +157,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
         javaScriptEnabled
         javaScriptEnabledAndroid={true}
         onLoad={updateSource}
-        onMessage={event => {
-          console.log(
-            'Message received to turn camera On from ConsultEase(InputVideoCallDetails.jsx)!!!',
-            event.nativeEvent.data,
-            "**event**",
-            JSON.parse(event.nativeEvent.data),
-          );
-          if (event.nativeEvent.data !== '') {
-            // setCalleeDetails( JSON.parse(event.nativeEvent.data) );
-            // setIsCallViewOn(true);
-            dispatch({ type: 'SET_CALL_VIEW_ON', payload: true });
-            dispatch({ type: 'SET_CALLEE_DETAILS', payload: JSON.parse(event.nativeEvent.data) })
-          }
-        }}
+        onMessage={ (event) => handleWebViewMessage(event) }
         scalesPageToFit={true}
         scrollEnabled={true}
         showsHorizontalScrollIndicator={false}

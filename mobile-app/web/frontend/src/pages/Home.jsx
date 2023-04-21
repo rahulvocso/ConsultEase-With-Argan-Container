@@ -90,12 +90,22 @@ const Home = React.memo( () => {
       }
     };
 
+    // to get app user profle details
     useIonViewWillEnter(ev => {
       get('user/', {auth_token: auth_token}).then(data => {
         setConsultEaseUserId(data.body._id);
         localStorage.setItem('consultEaseUserId', data.body._id);
         console.log('User data... ');
         console.log(data.body, data.body.profile, data.body._id);
+        // to send message(user profile details) to webview 
+        window.ReactNativeWebView && window.ReactNativeWebView.postMessage(
+          `${JSON.stringify({
+            messageType: 'consulteaseUserProfileData',
+            messageData: data.body
+          })}`,
+        );
+        //
+        //
       });
     });
 
@@ -106,10 +116,11 @@ const Home = React.memo( () => {
     const handlePageRefresh = (e) => {
     // Your refresh logic goes here
     setPage({pageNumber: 0});
+    setProfiles([])
     auth_token ? page.pageNumber === 0 && getData() : history.push('/login');
       setTimeout(() => {
         e.detail.complete();
-      }, 100);
+      }, 500);
       getData();
     }
 

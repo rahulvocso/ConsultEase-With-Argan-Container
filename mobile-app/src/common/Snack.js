@@ -10,7 +10,7 @@ function Snack() {
   return (
     <Snackbar
       visible={snack.open}
-      duration={5000}
+      duration={1500}
       onDismiss={onDismissSnackBar}
       action={{
         onPress: onDismissSnackBar,

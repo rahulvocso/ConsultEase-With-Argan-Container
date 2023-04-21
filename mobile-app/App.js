@@ -252,26 +252,29 @@ const useInitialURL = () => {
 };
 
 function App() {
-  //
-  // const [isCallViewOn, setIsCallViewOn] = useState(false)
-  // const setCallView = setIsCallViewOn;
-  // const [calleeDetails, setCalleeDetails] = useState();
-  //
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const { url: initialUrl } = useInitialURL();
   const socketId = useSelector((state) => state.socket.id);
   const device = useSelector((state) => state.media.device);
   const isCallViewOn = useSelector((state) => state.webview.isCallViewOn);
-  // const CallViewOn = isCallViewOn;
   const calleeDetails = useSelector((state) => state.webview.calleeDetails);
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
+  // profile data received from webview
+  const consulteaseUserProfileData = useSelector(
+    (state) => state.webview.consulteaseUserProfileData,
+  );
 
   useEffect(() => {
     // SystemNavigationBar.stickyImmersive();
-    // SystemNavigationBar.lowProfile();
+    // SystemNavigationBar.immersive();
+    // SystemNavigationBar.leanBack();
     SystemNavigationBar.navigationHide();
-    SystemNavigationBar.setNavigationColor('#3db271', 'light', 'navigation');
-    SystemNavigationBar.setBarMode('light', 'both');
+    SystemNavigationBar.setNavigationBarDividerColor('#ffffff');
+    SystemNavigationBar.setNavigationColor('#ffffff', 'light', 'navigation'); // '#3db271'
+    StatusBar.setBackgroundColor('#ffffff');
+    StatusBar.setBarStyle('dark-content');
+
+    // SystemNavigationBar.setBarMode('light', 'both');
 
     console.log(
       'In Native Container UseEffect calleeDetails',
@@ -328,28 +331,28 @@ function App() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
-      {/* {isCallViewOn ? ( */}
-      <>
-        <StatusBar barStyle="light-content" backgroundColor={Theme.Variables.secondary} />
-        <Stack.Navigator
-          screenOptions={{
-            header: ConditionalAppBar,
-          }}
-        >
-          <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
-          <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
-          <Stack.Screen name="VideoCall" component={VideoCallScreen} />
-          <Stack.Screen name="CallRating" component={CallRatingScreen} />
-          {/* <Stack.Screen name="Home" component={Screens.HomeScreen} />
+      {isCallViewOn ? (
+        <>
+          <StatusBar barStyle="light-content" backgroundColor={'#3DB271'} />
+          <Stack.Navigator
+            screenOptions={{
+              header: ConditionalAppBar,
+            }}
+          >
+            <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
+            <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
+            <Stack.Screen name="VideoCall" component={VideoCallScreen} />
+            <Stack.Screen name="CallRating" component={CallRatingScreen} />
+            {/* <Stack.Screen name="Home" component={Screens.HomeScreen} />
             <Stack.Screen name="Join" component={Screens.JoinScreen} />
             <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
             <Stack.Screen name="Meeting" component={MeetingNavigator} /> */}
-        </Stack.Navigator>
-        <Common.Snack />
-      </>
-      {/* ) : (
+          </Stack.Navigator>
+          <Common.Snack />
+        </>
+      ) : (
         <ConsultEaseWebview />
-      )} */}
+      )}
     </SafeAreaView>
   );
 }

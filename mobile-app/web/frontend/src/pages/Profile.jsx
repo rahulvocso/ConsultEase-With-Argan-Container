@@ -14,6 +14,8 @@ import {
   IonSegmentButton,
   IonChip,
   useIonToast,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/react';
 import './Profile.css';
 import {Header} from '../components/Header';
@@ -21,7 +23,7 @@ import Reviews from '../components/Reviews';
 import Schedule from '../components/Schedule';
 import React, {useEffect, useRef, useState} from 'react';
 import useFetch from '../hooks/useFetch';
-import {timeOutline, starOutline, call, videocam} from 'ionicons/icons';
+import {timeOutline, starOutline, call, videocam, arrowDownCircleOutline} from 'ionicons/icons';
 import {
   useRouteMatch,
   useParams,
@@ -40,7 +42,7 @@ const Profile = React.memo(
     const {get, loading} = useFetch(
       'https://callingserver.onrender.com/api/v1/',
     ); //('http://localhost:5151/api/v1/');
-    const [profile, setProfile] = useState([]);
+    const [profile, setProfile] = useState({});
     const [segment, setSegment] = useState('Reviews');
 
     const params = useParams();
@@ -52,10 +54,30 @@ const Profile = React.memo(
     const [menuModalVisible, setMenuModalVisible] = useState(false);
     const [videoCallButtonToast] = useIonToast();
 
+    // fetch profile
+    const getData = () => {
+      let id = params.id ? params.id : '';
+      get('user/' + id, {auth_token: auth_token}).then(data => {
+        setProfile({...data.body});
+        localStorage.setItem('currentProfileInView', JSON.stringify(data.body));
+        checkAvailability(data);
+
+        try {
+          if (data.body.profile) setIsProfileLive(data.body.profile.status);
+          else setIsProfileLive(false);
+        } catch (e) {
+          setIsProfileLive(false);
+        }
+      });
+      profile.profile && console.log('vacationMode', profile.profile);
+    }
+
+    // menu modal on/off
     const handleMenuModal = () => {
       setMenuModalVisible(!menuModalVisible);
     };
 
+    // online status check
     function checkAvailability(data) {
       let dayToday = new Date().getDay();
       dayToday == 0 ? (dayToday = 6) : (dayToday = dayToday - 1);
@@ -115,44 +137,11 @@ const Profile = React.memo(
           data.body.profile.schedule[dayToday] &&
           data.body.profile.schedule[dayToday].isAvailable &&
           setIsOnline(timeCheckOnline));
-      // console.log("Profile data...", isOnline);
-      // console.log(data.body);
-      //
-    }
-
-    // window.addEventListener('message', e => {
-    //   //handle e-event data
-    //   console.log('Message received from React-Native', e);
-    // });
-
-    function handleReactNativeCameraAccess() {
-      let data = 'cameraOn';
-      //window.parent.postMessage(JSON.stringify(data));
-      //window.ReactNativeWebView.postMessage(data);
-      window.ReactNativeWebView.postMessage('click');
-      // setTimeout(function () {
-      //   return window.alert('hi');
-      // }, 2000);
-      //window.postMessage(JSON.stringify(data.cameraAccess), '*');
     }
 
     useEffect(() => {
       // rather than undefined, send blank to get current user profile.
-      let id = params.id ? params.id : '';
-
-      get('user/' + id, {auth_token: auth_token}).then(data => {
-        setProfile({...data.body});
-        localStorage.setItem('currentProfileInView', JSON.stringify(data.body));
-        checkAvailability(data);
-
-        try {
-          if (data.body.profile) setIsProfileLive(data.body.profile.status);
-          else setIsProfileLive(false);
-        } catch (e) {
-          setIsProfileLive(false);
-        }
-      });
-      profile.profile && console.log('vacationMode', profile.profile);
+      getData()
     }, [params, isOnline]);
 
     const handleSegmentChange = e => {
@@ -178,6 +167,17 @@ const Profile = React.memo(
           });
     }
 
+    const handlePageRefresh = (e) => {
+      // Your refresh logic goes here
+      setProfile({});
+      setIsProfileLive(false)
+      // auth_token ? page.pageNumber === 0 && getData() : history.push('/login');
+      setTimeout(() => {
+        e.detail.complete();
+      }, 500);
+      getData();
+      }
+
     return (
       <IonPage ref={pageRef} className="profilePage">
         {profile.profile && (
@@ -195,6 +195,20 @@ const Profile = React.memo(
           profile={profile}
           setModalVisible={setMenuModalVisible}
         />
+
+        <IonRefresher
+          slot="fixed"
+          onIonRefresh={(e)=> handlePageRefresh(e)}
+          pullFactor={0.9}
+        >
+          <IonRefresherContent
+            pullingIcon={arrowDownCircleOutline}
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            // refreshingText="Refreshing..."
+          >
+          </IonRefresherContent>
+        </IonRefresher>
 
         <IonContent fullscreen className="ion-padding ion-margin">
           <IonGrid className="ion-padding-start ion-padding-end extra-padding ion-padding-bottom ion-margin-bottom">

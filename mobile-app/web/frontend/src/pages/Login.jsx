@@ -85,7 +85,7 @@ const Login = ({ hideTabBar }) => {
               <IonRouterLink href="#">terms & conditions</IonRouterLink>
             </IonLabel>
 
-            <IonButton
+            {/* <IonButton
               expand="block"
               onClick={() => {
                 history.push("/home");
@@ -94,7 +94,7 @@ const Login = ({ hideTabBar }) => {
             >
               <IonIcon slot="start" icon={home}></IonIcon>
               /home(temporary)
-            </IonButton>
+            </IonButton> */}
           </IonCol>
         </IonRow>
       </IonContent>
