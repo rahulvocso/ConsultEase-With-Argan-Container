@@ -34,6 +34,7 @@ import ConsultEaseWebview from './webview-components/Components/ConsultEaseWebvi
 import postSocket from './src/foreground-background-services/postSocket';
 import useFetch from './src/hooks/useFetch';
 import getSocket from './src/foreground-background-services/getSocket';
+import initCallDetailsGetRoom from './src/screens/CallScreen/initCallDetailsGetRoom';
 // import CheckInternetService from './src/foreground-background-services/InternetStatus';
 
 function CustomAppBar({ navigation, route }) {
@@ -266,7 +267,7 @@ function App() {
   const device = useSelector((state) => state.media.device);
   const isCallViewOn = useSelector((state) => state.webview.isCallViewOn);
   const calleeDetails = useSelector((state) => state.webview.calleeDetails);
-  // profile data received from webview
+  //Consulteas user profile data received from webview
   const consulteaseUserProfileData = useSelector((state) =>
     state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
   );
@@ -279,13 +280,24 @@ function App() {
 
   const { get, post } = useFetch('https://callingserver.onrender.com/api/v1/');
 
-  // post socket_id to server
+  // post socket_id to server as and when socketId changes
   useEffect(() => {
-    console.log('useEffect', consulteaseUserProfileData);
-
-    if (consulteaseUserProfileData.auth_token && consulteaseUserProfileData._id && socketId) {
-      postSocket(consulteaseUserProfileData, socketId, post);
+    console.log('useEffect consulteasedata', consulteaseUserProfileData.fname, calleeDetails.name);
+    if (
+      Object.keys(consulteaseUserProfileData).length !== 0 &&
+      consulteaseUserProfileData.auth_token &&
+      consulteaseUserProfileData._id
+    ) {
+      socketId ? postSocket(consulteaseUserProfileData, socketId, post) : null;
+      calleeDetails.user_id &&
+        initCallDetailsGetRoom(
+          (from_user = consulteaseUserProfileData._id),
+          (to_user = calleeDetails.user_id),
+          (auth_token = consulteaseUserProfileData.auth_token),
+          (callCategory = calleeDetails.callCategory),
+        );
     }
+
     // getSocket(consulteaseUserProfileData, socketId, get);
   }, [socketId]);
 
@@ -312,6 +324,12 @@ function App() {
     );
     return () => {};
   }, [calleeDetails, isCallViewOn, socketId]);
+
+  // if isCallViewOn is false/off set data derived from webview to empty/null/initial redux state;
+  useState(() => {
+    isCallViewOn ? null : dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
+  }, [isCallViewOn]);
+  //
 
   useEffect(() => {
     AsyncStorage.getItem('name')
@@ -360,29 +378,29 @@ function App() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
       {/* Theme.Variables.background */}
-      {isCallViewOn ? (
-        <>
-          <StatusBar barStyle="light-content" backgroundColor={'#ffffff'} />
-          <Stack.Navigator
-            screenOptions={{
-              header: ConditionalAppBar,
-            }}
-          >
-            {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
-            <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
+      {/* {isCallViewOn ? ( */}
+      <>
+        <StatusBar barStyle="dark-content" />
+        <Stack.Navigator
+          screenOptions={{
+            header: ConditionalAppBar,
+          }}
+        >
+          {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
+          {/* <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
             <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
             <Stack.Screen name="VideoCall" component={VideoCallScreen} />
-            <Stack.Screen name="CallRating" component={CallRatingScreen} />
-            {/* <Stack.Screen name="Home" component={Screens.HomeScreen} />
-            <Stack.Screen name="Join" component={Screens.JoinScreen} />
-            <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
-            <Stack.Screen name="Meeting" component={MeetingNavigator} /> */}
-          </Stack.Navigator>
-          <Common.Snack />
-        </>
-      ) : (
+            <Stack.Screen name="CallRating" component={CallRatingScreen} /> */}
+          <Stack.Screen name="Home" component={Screens.HomeScreen} />
+          <Stack.Screen name="Join" component={Screens.JoinScreen} />
+          <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
+          <Stack.Screen name="Meeting" component={MeetingNavigator} />
+        </Stack.Navigator>
+        <Common.Snack />
+      </>
+      {/* ) : (
         <ConsultEaseWebview />
-      )}
+      )} */}
     </SafeAreaView>
   );
 }

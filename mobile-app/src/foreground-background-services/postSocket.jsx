@@ -26,6 +26,9 @@ export default function PostSocket (consulteaseUserProfileData, socketId, post) 
          } else {
             console.log("******Unsuccessfull    postSocket.js socket_id POST req        *******")
          }
+      }).catch((error) => {
+        console.error('Error occurred during API call: initCallDetailsGetRoom.js', error);
+        // Handle error here
       })
       :
       null

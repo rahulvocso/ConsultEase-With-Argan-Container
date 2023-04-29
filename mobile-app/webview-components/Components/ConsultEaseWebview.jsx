@@ -72,12 +72,12 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
     console.log("message received" ,message ,messageType,"messagedata typeof", messageData)
     // Use the messageType to distinguish between messages from different components
     switch (messageType) {
-      case 'callView':
+      case 'calleeDetails':
         {
           console.log(
             'Message received to turn camera On from ConsultEase(InputVideoCallDetails.jsx)!!!',
             "**message type**", messageType,
-            "**message data**", messageData,
+            "**message data**", messageData.name,
           );
           dispatch({ type: 'SET_CALL_VIEW_ON', payload: true });
           dispatch({ type: 'SET_CALLEE_DETAILS', payload: messageData })
@@ -88,19 +88,19 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
           console.log(
             'Message received to set consulteaseUserProfileData from ConsultEase(InputVideoCallDetails.jsx)!!!',
             "**message type**", messageType,
-            "**message data**", messageData,
+            "**message data**", messageData.fname,
           );
           if (messageData !== ({} || undefined) ) {
             dispatch({ type: 'SET_CONSULTEASE_USER_PROFILE_DATA', payload: messageData })
           }
           // set consulteaseUserProfileData on locally storage
-          AsyncStorage.setItem('consulteaseUserProfileData', JSON.stringify(messageData))
-          .then(() => {
-            console.log('consulteaseUserProfileData saved successfully comp:ConsultEaseWebview');
-          })
-          .catch((error) => {
-            console.log('Error saving consulteaseUserProfileData: ', error);
-          })
+          // AsyncStorage.setItem('consulteaseUserProfileData', JSON.stringify(messageData))
+          // .then(() => {
+          //   console.log('consulteaseUserProfileData saved successfully comp:ConsultEaseWebview');
+          // })
+          // .catch((error) => {
+          //   console.log('Error saving consulteaseUserProfileData: ', error);
+          // })
         }
         break;
       default:
@@ -115,6 +115,10 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
   //     Immersive.off();
   //   };
   // });
+
+  function postMessageToWeb(){
+    //asdf
+  }
 
   return (
     <View

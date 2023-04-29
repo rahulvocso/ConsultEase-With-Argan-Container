@@ -54,6 +54,9 @@ export const Header = ({
       setBalance(data.body.balance);
       console.log("auth_token",auth_token);
       console.log("data.body._id",data.body._id,);
+    }).catch(error => {
+      console.error("Error occurred during API call:", error);
+      // Handle error here
     });
 
   return (

@@ -38,7 +38,7 @@ const InputVideoCallDetails = () => {
       console.log('ConsultEase videocall room join emit event generated from InputVideoCallDetails Component(webview endpoint)');
       window.ReactNativeWebView.postMessage(
         `${JSON.stringify({
-          messageType: 'callView',
+          messageType: 'calleeDetails',
           messageData: {
             ...calleeDetails,
             callCategory: callCategoryName.current,

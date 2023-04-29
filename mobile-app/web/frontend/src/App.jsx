@@ -107,6 +107,22 @@ const App = () => {
 
   const history = useHistory();
 
+  //page to open when a user calls user2 ,after call disconnect/fail/success return to same page
+  // In the JavaScript code of the React website
+
+  window.addEventListener("message", (event) => {
+    const message = event.data;
+
+    if (message === "navigateToPage") {
+      // Perform the necessary actions to navigate to page 2
+      // For example, using React Router:
+      // import { useHistory } from "react-router-dom";
+      // const history = useHistory();
+      // history.push("/page2");
+    }
+  });
+
+
   useEffect(() => {
     if (localStorage.getItem('auth_token') === '') {
       history.push('/previewslides');

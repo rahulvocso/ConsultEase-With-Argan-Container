@@ -131,7 +131,7 @@ const reducer = (state = initialState, action) => {
       interfaces[index] = {
         ...interfaces[index],
         name: action.name,
-        email: action.email,
+        email: action.email, // in consultease implementation remove name and email
       };
       return {
         ...state,

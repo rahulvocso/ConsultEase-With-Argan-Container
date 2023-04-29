@@ -50,6 +50,7 @@ import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
 import CallDisconnect from '../../assets/images/CallReject.svg';
 import getSocket from '../../foreground-background-services/getSocket';
 import useFetch from '../../hooks/useFetch';
+import initCallDetailsGetRoom from './initCallDetailsGetRoom';
 const { get, post } = useFetch('https://callingserver.onrender.com/api/v1/');
 
 
@@ -67,30 +68,72 @@ const VideoCallerPromptScreen = () => {
   );
   
   const [cameraIsFacingUser, setCameraIsFacingUser] = useState('user');
-
   const video = useSelector((state) => state.media.local.video)
   const mic = useSelector((state) => state.media.local.audio)
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isMicOn, setIsMicOn] = useState(true);
+  // call instance data after initiating call
+  const [callInstanceState, setCallInstanceState] = useState()
 
   const active = useSelector((state) => !!state.media.local.video);
   const key = useSelector((state) => state.meeting.key);
 
   const deviceWidth = Dimensions.get('window').width; //useWindowDimensions().width;
   const deviceHeight = Dimensions.get('window').height; //useWindowDimensions().height;
-//   const [ primaryVideoViewIsPeer, setPrimaryVideoViewIsPeer ] =useState(true)
-  
-  useEffect(() => {
+  //
+
+
+  // get audio video before component shows UI
+  useLayoutEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
-    calleeDetails.user_id && getSocket(consulteaseUserProfileData, socketId, get);
-
-    // return () => {
-    //     dispatch(Actions.Media.releaseLocalVideo());
-    //     dispatch(Actions.Media.releaseLocalAudio());
-    // }
-    console.log("calleeDetails inside VideoCallerPrompt" , 'calleeDetails.user_id',calleeDetails.user_id,calleeDetails)
   }, []);
+
+  // start call room 
+  useEffect(() => {
+    console.log(
+      "calleeDetails inside VideoCallerPrompt",
+      "calleeDetails.user_id",
+      calleeDetails && calleeDetails.user_id
+    )
+    if (socketId) {
+      // dispatch(Actions.IO.joinRoom(key));
+      // send initial call details, get room id , i.e '_id' from returned started call instance data
+      if (
+        Object.keys(consulteaseUserProfileData).length !== 0 &&
+        consulteaseUserProfileData.auth_token &&
+        consulteaseUserProfileData._id &&
+        calleeDetails &&
+        calleeDetails.callCategory &&
+        socketId
+      ) {
+        socketId && getSocket(userId = calleeDetails.user_id, socketId, get); //get callee socket data
+        setCallInstanceState(
+          initCallDetailsGetRoom( 
+          from_user = consulteaseUserProfileData._id,
+          to_user = calleeDetails.user_id,
+          auth_token = consulteaseUserProfileData.auth_token,
+          callCategory = calleeDetails.callCategory,
+          )
+        )
+      }
+      
+    }
+  }, []);
+
+  useEffect(()=>{
+    // join call room
+    callInstanceState !== undefined ? 
+      (
+        dispatch({type: 'SET_CALL_INSTANCE_DATA', payload: callInstanceState}),
+        dispatch({type: 'SET_CALL_ID', payload: callInstanceState._id}),
+        dispatch({type: 'meeting-key', value: callInstanceState._id}), // sets callId/roomId/meeting-key
+        dispatch({ type: 'join', name: 'Foo Bar', email: 'consultease@gmail.com' })
+      )
+      :
+      null
+    //
+  },[callInstanceState])
 
   // useEffect(()=>{
   //   const sound = new Sound('audio.mp3', Sound.MAIN_BUNDLE, (error) => {
@@ -186,30 +229,6 @@ const VideoCallerPromptScreen = () => {
         // marginLeft: deviceWidth / 20,
         // marginRight: deviceWidth / 20,
     },
-    // noStreamCallPromptAvatar: {
-    //     width: deviceWidth,
-    //     // height: deviceHeight / 8,
-    //     position: 'absolute',
-    //     top: 90,
-    //     flex: 1,
-    //     flexDirection: 'column',
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     color: "white",
-    //     // borderColor: 'red',
-    //     // borderWidth: 2,
-    //     backgroundColor: '#ffffff',
-    //     borderRadius: 20,
-    //     backgroundColor: 'grey',
-    //     // marginLeft: deviceWidth / 20,
-    //     // marginRight: deviceWidth / 20,
-    // },
-    // noStreamCallPromptCallingName,
-    // noStreamCallPromptCalling,
-    // noStreamcallPromptCallingCallCatogory,
-    // noStreamcallPromptCallCategory: {
-    //   color: 'white',
-    // },
     callPromptCallingName: {
         top: 10,
         fontSize: 25,
