@@ -4,14 +4,14 @@
 
 // import useFetch from '../hooks/useFetch'
 
-function getSocket(consulteaseUserProfileData, socketId, get) {
+function getSocket(userId, socketId, get) {
     // const socketId = useSelector(state => state.socket.id);
     // const consulteaseUserProfileData = useSelector(
     //     (state) => state.webview.consulteaseUserProfileData,
     //   );
     // const [get ] = useFetch('https://callingserver.onrender.com/api/v1/')
 
-    socketId ? get(`user/getSocket?&user_id=${consulteaseUserProfileData._id}`, {
+    socketId ? get(`user/getSocket?&user_id=${userId}`, {
         // get socketId of user with user_id if available(online)
         auth_token: consulteaseUserProfileData.auth_token,
       }).then(data => {
@@ -21,6 +21,9 @@ function getSocket(consulteaseUserProfileData, socketId, get) {
          } else {
             console.log("******Unsuccessfull     getSocket.js socket_id Get req *******", data)
          }
+      }).catch((error) => {
+        console.error('Error occurred during API call: initCallDetailsGetRoom.js', error);
+        // Handle error here
       })
       :
       null
