@@ -1,4 +1,5 @@
 import { Alert, AppState, Keyboard, Linking, Platform, StatusBar, View, Text } from 'react-native';
+import { NativeModules } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
@@ -17,6 +18,8 @@ import VideoCalleePromptScreen from './src/screens/CallScreen/VideoCalleePromptS
 import VideoCallerPromptScreen from './src/screens/CallScreen/VideoCallerPromptScreen';
 import VideoCallScreen from './src/screens/CallScreen/VideoCallScreen';
 import CallRatingScreen from './src/screens/CallScreen/CallRatingScreen';
+import NativeServiceTest from './src/foreground-background-services/NativeServiceTest';
+import InternetServiceTest from './src/foreground-background-services/InternetServiceTest';
 
 import Common from './src/common';
 import Utils from './src/utils';
@@ -27,8 +30,11 @@ import config from './config';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 // import Sound from 'react-native-sound';
-//import CameraStream from './webview-components/Components/CameraStream';
 import ConsultEaseWebview from './webview-components/Components/ConsultEaseWebview';
+import postSocket from './src/foreground-background-services/postSocket';
+import useFetch from './src/hooks/useFetch';
+import getSocket from './src/foreground-background-services/getSocket';
+// import CheckInternetService from './src/foreground-background-services/InternetStatus';
 
 function CustomAppBar({ navigation, route }) {
   const theme = useTheme();
@@ -251,6 +257,7 @@ const useInitialURL = () => {
   return { url, processing };
 };
 
+// APP COMPONENT
 function App() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -260,9 +267,27 @@ function App() {
   const isCallViewOn = useSelector((state) => state.webview.isCallViewOn);
   const calleeDetails = useSelector((state) => state.webview.calleeDetails);
   // profile data received from webview
-  const consulteaseUserProfileData = useSelector(
-    (state) => state.webview.consulteaseUserProfileData,
+  const consulteaseUserProfileData = useSelector((state) =>
+    state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
   );
+
+  // const consulteaseUserProfileData = {
+  //   _id: '639854af79cea626807688ba',
+  //   auth_token:
+  //     'eyJhbGciOiJIUzI1NiJ9.NjM5ODU0YWY3OWNlYTYyNjgwNzY4OGJh.Z9xf4J2JpqUEb_2-5ObYFLrCbRRe8IeJZ3NDwXltKkE',
+  // };
+
+  const { get, post } = useFetch('https://callingserver.onrender.com/api/v1/');
+
+  // post socket_id to server
+  useEffect(() => {
+    console.log('useEffect', consulteaseUserProfileData);
+
+    if (consulteaseUserProfileData.auth_token && consulteaseUserProfileData._id && socketId) {
+      postSocket(consulteaseUserProfileData, socketId, post);
+    }
+    // getSocket(consulteaseUserProfileData, socketId, get);
+  }, [socketId]);
 
   useEffect(() => {
     // SystemNavigationBar.stickyImmersive();
@@ -273,19 +298,20 @@ function App() {
     SystemNavigationBar.setNavigationColor('#ffffff', 'light', 'navigation'); // '#3db271'
     StatusBar.setBackgroundColor('#ffffff');
     StatusBar.setBarStyle('dark-content');
-
     // SystemNavigationBar.setBarMode('light', 'both');
+    //***foreground service start***
+    // HeadlessJsTaskService.register(CheckInternetService, 'CheckInternetTask');
 
     console.log(
       'In Native Container UseEffect calleeDetails',
+      'socket id',
+      socketId,
       calleeDetails,
       'isCallViewOn',
       isCallViewOn,
     );
-    return () => {
-      SystemNavigationBar.navigationHide();
-    };
-  }, [calleeDetails, isCallViewOn]);
+    return () => {};
+  }, [calleeDetails, isCallViewOn, socketId]);
 
   useEffect(() => {
     AsyncStorage.getItem('name')
@@ -321,6 +347,8 @@ function App() {
     if (!socketId) {
       dispatch(Actions.IO.setupSocket());
     }
+    // update socketId in
+    // socketId ? dispatch(Actions.Media.setupMedia()) : null;
   }, [socketId]);
 
   useEffect(() => {
@@ -331,14 +359,16 @@ function App() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
+      {/* Theme.Variables.background */}
       {isCallViewOn ? (
         <>
-          <StatusBar barStyle="light-content" backgroundColor={'#3DB271'} />
+          <StatusBar barStyle="light-content" backgroundColor={'#ffffff'} />
           <Stack.Navigator
             screenOptions={{
               header: ConditionalAppBar,
             }}
           >
+            {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
             <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
             <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
             <Stack.Screen name="VideoCall" component={VideoCallScreen} />

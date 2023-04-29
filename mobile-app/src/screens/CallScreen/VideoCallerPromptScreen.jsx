@@ -24,7 +24,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import SvgUri from 'react-native-svg-uri';
-import Svg from '../../../Svg';
+// import Svg from '../../../Svg';
 // import CallReject from './Svgs/CallReject';
 // import Sound from 'react-native-sound';
 
@@ -48,13 +48,24 @@ import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
 
 // import notifee, {AndroidImportance} from '@notifee/react-native';
 import CallDisconnect from '../../assets/images/CallReject.svg';
+import getSocket from '../../foreground-background-services/getSocket';
+import useFetch from '../../hooks/useFetch';
+const { get, post } = useFetch('https://callingserver.onrender.com/api/v1/');
 
 
 const VideoCallerPromptScreen = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const calleeDetails = useSelector(state => state.webview.calleeDetails);
-  const dispatch = useDispatch();
-  // const {calleeDetails, isCallViewOn, setCallView} = route.params;
+  const socketId = useSelector((state) => state.socket.id);
+
+  // profile data received from webview
+  const consulteaseUserProfileData = useSelector((state) =>
+    state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
+  );
+  
   const [cameraIsFacingUser, setCameraIsFacingUser] = useState('user');
 
   const video = useSelector((state) => state.media.local.video)
@@ -62,28 +73,23 @@ const VideoCallerPromptScreen = () => {
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isMicOn, setIsMicOn] = useState(true);
 
+  const active = useSelector((state) => !!state.media.local.video);
+  const key = useSelector((state) => state.meeting.key);
+
   const deviceWidth = Dimensions.get('window').width; //useWindowDimensions().width;
   const deviceHeight = Dimensions.get('window').height; //useWindowDimensions().height;
-
-  // const isDarkMode = useColorScheme() === 'dark';
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  // };
-
-  ;
-  const active = useSelector((state) => !!state.media.local.video);
-  const navigation = useNavigation();
-  const key = useSelector((state) => state.meeting.key);
 //   const [ primaryVideoViewIsPeer, setPrimaryVideoViewIsPeer ] =useState(true)
   
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
+    calleeDetails.user_id && getSocket(consulteaseUserProfileData, socketId, get);
+
     // return () => {
     //     dispatch(Actions.Media.releaseLocalVideo());
     //     dispatch(Actions.Media.releaseLocalAudio());
     // }
-    console.log("calleeDetails inside VideoCallerPrompt" , calleeDetails)
+    console.log("calleeDetails inside VideoCallerPrompt" , 'calleeDetails.user_id',calleeDetails.user_id,calleeDetails)
   }, []);
 
   // useEffect(()=>{

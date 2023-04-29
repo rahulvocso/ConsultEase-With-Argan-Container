@@ -25,6 +25,7 @@ const InputVideoCallDetails = () => {
       : 'name unavailable',
     photo: profile.photo,
     callCategory: callCategoryName.current,
+    user_id: profile._id
   };
 
   let roomname = '';

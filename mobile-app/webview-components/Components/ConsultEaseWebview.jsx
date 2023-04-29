@@ -69,7 +69,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
     const messageType = message.messageType;
     const messageData = message.messageData;
 
-    console.log("message received" ,message ,messageType, messageData)
+    console.log("message received" ,message ,messageType,"messagedata typeof", messageData)
     // Use the messageType to distinguish between messages from different components
     switch (messageType) {
       case 'callView':
@@ -135,7 +135,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
             // uri: 'http://10.0.2.2:3056',
             uri: 'http://192.168.0.138:3056',
             // uri: 'https://vocso.com',
-            // uri: 'https://6437e2e60a49181ac33828c4--super-cajeta-000cea.netlify.app/'
+            // uri: 'https://64461e51092a25761f28c8ac--consultease.netlify.app'
             
           }
             // : undefined

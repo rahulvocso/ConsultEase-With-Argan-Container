@@ -165,6 +165,10 @@ dependencies {
 
     implementation project(':react-native-webview')
 
+//    implementation 'com.transistorsoft:react-native-background-fetch:+'
+//    implementation 'com.transistorsoft:tsbackgroundfetch:+'
+    // implementation project(':react-native-foreground-service')
+
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 

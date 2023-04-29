@@ -1224,6 +1224,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.3.0.tgz#9e558170c106bbafaa1ef502bd8e6d4651012bf9"
   integrity sha512-+zDZ20NUnSWghj7Ku5aFphMzuM9JulqCW+aPXT6IfIXFbb8tzYTTOSeRFOtuekJ99ibW2fUCSsjuKNlwDIbHFg==
 
+"@react-native-community/netinfo@^9.3.9":
+  version "9.3.9"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.3.9.tgz#c17a2fb6f014953c31f72be83eb4426110e3c9ea"
+  integrity sha512-L9f8OjX5Fwh5CdP4ygDPa6iQCJJ4tAtXiFuQp6EG4/sdSXDqOXaehAhJrZAN8P8Lztnf8YN8p836GmZuBCrY+A==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -1655,6 +1660,11 @@
   dependencies:
     "@typescript-eslint/types" "5.57.0"
     eslint-visitor-keys "^3.3.0"
+
+"@voximplant/react-native-foreground-service@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@voximplant/react-native-foreground-service/-/react-native-foreground-service-3.0.2.tgz#14fca496808db5255799ce01553626cdb9aea03e"
+  integrity sha512-ZIyccOAXPqznA1PAVAYlKZ+GI7kXYCuYgH+gmAkhPouyJbkgrSXaCJJzQ+uBkPr4FBa/PuC/yjzK8vf6tJREQA==
 
 abort-controller@^3.0.0:
   version "3.0.0"
@@ -5833,6 +5843,11 @@ react-native-codegen@^0.71.3:
     flow-parser "^0.185.0"
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
+
+react-native-foreground-service@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-foreground-service/-/react-native-foreground-service-1.0.0.tgz#9a4dc3c497967abe08203afea60b1aec1dd3f2e2"
+  integrity sha512-lZTF0gFKVh4pnI8C0vXKxTBeZxlbfYCy4wPl5O7mkbBLr8F1vZJvmZYMhh4+P5oM285z/CaWB00ckMTZPG7G9w==
 
 react-native-gesture-handler@^2.8.0:
   version "2.9.0"

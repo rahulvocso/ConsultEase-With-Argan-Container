@@ -6,5 +6,9 @@
   "private": true,
   "engines": {
     "node": "18.x.x"
+  },
+  "dependencies": {
+    "global": "^4.4.0",
+    "react-native-cli": "^2.0.1"
   }
 }

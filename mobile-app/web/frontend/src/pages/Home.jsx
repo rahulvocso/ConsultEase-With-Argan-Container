@@ -145,7 +145,7 @@ const Home = React.memo( () => {
               <IonRefresherContent
                 pullingIcon={arrowDownCircleOutline}
                 pullingText="Pull to refresh"
-                refreshingSpinner="circles"
+                refreshingSpinner="lines-small"
                 // refreshingText="Refreshing..."
               >
               </IonRefresherContent>
@@ -158,8 +158,9 @@ const Home = React.memo( () => {
                     threshold="70%"
                     disabled={isInfiniteDisabled}>
                     <IonInfiniteScrollContent
-                      loadingSpinner="bubbles"
-                      loadingText="Loading more profiles..."></IonInfiniteScrollContent>
+                      loadingSpinner="lines-small"
+                      loadingText="Loading more profiles...">
+                    </IonInfiniteScrollContent>
                   </IonInfiniteScroll>
 
                   {profiles.map((profile, _id) => {

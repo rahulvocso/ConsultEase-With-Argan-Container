@@ -19,3 +19,22 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
+
+
+allprojects {
+    repositories {
+        mavenLocal()
+        google()
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+}
+
+ dependencies {
+//     implementation 'com.transistorsoft:tsbackgroundfetch:+'
+     //    implementation project(':react-native-foreground-service')
+//     implementation project(':@voximplant_react-native-foreground-service')
+ }
