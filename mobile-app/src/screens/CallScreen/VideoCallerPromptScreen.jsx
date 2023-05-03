@@ -23,7 +23,6 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import SvgUri from 'react-native-svg-uri';
 // import Svg from '../../../Svg';
 // import CallReject from './Svgs/CallReject';
 // import Sound from 'react-native-sound';
@@ -48,18 +47,19 @@ import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
 
 // import notifee, {AndroidImportance} from '@notifee/react-native';
 import CallDisconnect from '../../assets/images/CallReject.svg';
-import getSocket from '../../foreground-background-services/getSocket';
+// import getSocket from '../../foreground-background-services/getSocket';
 import useFetch from '../../hooks/useFetch';
 import initCallDetailsGetRoom from './initCallDetailsGetRoom';
-const { get, post } = useFetch('https://callingserver.onrender.com/api/v1/');
 
 
 const VideoCallerPromptScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  const { get, post } = useFetch('https://callingserver.onrender.com/api/v1/');
+
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
-  const calleeDetails = useSelector(state => state.webview.calleeDetails);
+  const calleeDetails = useSelector((state) => state.webview.calleeDetails);
   const socketId = useSelector((state) => state.socket.id);
 
   // profile data received from webview
@@ -73,7 +73,7 @@ const VideoCallerPromptScreen = () => {
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isMicOn, setIsMicOn] = useState(true);
   // call instance data after initiating call
-  const [callInstanceState, setCallInstanceState] = useState()
+  const [callInstanceState, setCallInstanceState] = useState({type: "video"})
 
   const active = useSelector((state) => !!state.media.local.video);
   const key = useSelector((state) => state.meeting.key);
@@ -84,11 +84,16 @@ const VideoCallerPromptScreen = () => {
 
 
   // get audio video before component shows UI
-  useLayoutEffect(() => {
+  useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
   }, []);
 
+  useEffect(() => {
+    if (socketId && callInstanceState._id) {
+      dispatch(Actions.IO.joinRoom(callInstanceState._id)); // call_id or room_key = callInstanceState._id
+    }
+  }, [socketId,callInstanceState]);
   // start call room 
   useEffect(() => {
     console.log(
@@ -104,55 +109,80 @@ const VideoCallerPromptScreen = () => {
         consulteaseUserProfileData.auth_token &&
         consulteaseUserProfileData._id &&
         calleeDetails &&
-        calleeDetails.callCategory &&
-        socketId
+        calleeDetails.callCategory
       ) {
-        socketId && getSocket(userId = calleeDetails.user_id, socketId, get); //get callee socket data
-        setCallInstanceState(
-          initCallDetailsGetRoom( 
-          from_user = consulteaseUserProfileData._id,
-          to_user = calleeDetails.user_id,
-          auth_token = consulteaseUserProfileData.auth_token,
-          callCategory = calleeDetails.callCategory,
-          )
-        )
-      }
-      
+        getCalleeSocket() //get callee socket data    
+        initCall(); // get initial call instance data
+      } 
     }
   }, []);
 
+// https://arganbackend.onrender.com/meeting/put-your-room-or-call-id-here to make callee join
+
   useEffect(()=>{
     // join call room
-    callInstanceState !== undefined ? 
+    Object.keys(callInstanceState).length > 1 ? 
       (
         dispatch({type: 'SET_CALL_INSTANCE_DATA', payload: callInstanceState}),
-        dispatch({type: 'SET_CALL_ID', payload: callInstanceState._id}),
-        dispatch({type: 'meeting-key', value: callInstanceState._id}), // sets callId/roomId/meeting-key
+        callInstanceState._id && dispatch({type: 'SET_CALL_ID', payload: callInstanceState._id}),
+        callInstanceState._id && dispatch({type: 'meeting-key', value: callInstanceState._id}), // sets callId/roomId/meeting-key
         dispatch({ type: 'join', name: 'Foo Bar', email: 'consultease@gmail.com' })
+        // room creation and join
+        // dispatch({ type: 'join', name, email });
       )
       :
       null
+    console.log("callInstanceState useEFf" ,callInstanceState)
     //
   },[callInstanceState])
 
-  // useEffect(()=>{
-  //   const sound = new Sound('audio.mp3', Sound.MAIN_BUNDLE, (error) => {
-  //     if (error) {
-  //       console.log('Failed to load sound', error);
-  //       return;
-  //     }
-  //     sound.setNumberOfLoops(-1); // Set number of loops to -1 for infinite looping
-  //     sound.play(() => {
-  //       sound.release();
-  //     });
-  //   });
 
-  //   return () => { //cleanup function to stop playing audio file
-  //     sound.stop(() => {
-  //       sound.release();
-  //     });
-  //   };
-  // },[])
+  const getCalleeSocket =  async () => { // get callee user socket_id related data
+    get(`user/getSocket?&user_id=${calleeDetails.user_id}`, {
+      auth_token: consulteaseUserProfileData.auth_token,
+    }).then(data => {
+      console.log("getSocket.js, data", data);
+      if (data.status == 200){
+          dispatch({ type: 'SET_CALLEE_SOCKET_ID', payload: data.body.socket_id })  // set callee socet id in redux state 
+          console.log("****** Successful  VideoCallerPromptScreen.js  getSocket() socket_id Get req 200 ******* data.body",data.body._id)
+       } else {
+          console.log("****** Unsuccessfull  VideoCallerPromptScreen.js  getSocket() socket_id Get req ******* data", data.body)
+       }
+    }).catch((error) => {
+      console.error('Error occurred during API call: getSocket.js', error);
+    })
+  }
+
+  const initCall = async () => { // initialize call instance
+    await post(
+      'call/init',
+      {
+        from_user: consulteaseUserProfileData._id, //caller user_id
+        to_user: calleeDetails.user_id, // callee user id,
+        category: consulteaseUserProfileData.auth_token,
+      },
+      { auth_token: consulteaseUserProfileData.auth_token },
+    )
+      .then((data) => {
+        console.log('postSocket.js, data', data);
+        if (data.status == 200) {
+          setCallInstanceState({...data.body, ...callInstanceState })
+          console.log(
+            '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
+          );
+        } else {
+          console.log(
+            '******Unsuccessfull  VideoCallerPromptScreen.js  initcall()  call init  POST req       *******',
+          );
+        }
+      })
+      .catch((error) => {
+        console.error('Error occurred during API call: VideoCallerPromptScreen.js  fetchData()', error);
+      });
+
+  }
+
+ 
 
   const handleCameraFacing = () => {
     setCameraIsFacingUser((cameraIsFacingUser)=>(!cameraIsFacingUser))
@@ -232,17 +262,19 @@ const VideoCallerPromptScreen = () => {
     callPromptCallingName: {
         top: 10,
         fontSize: 25,
-        // color: "red",
+        color: "#cccccc",
     },
     callPromptCalling: {
         top: 10,
         fontSize: 15,
+        color: "#cccccc",
     },
     callPromptCallCategory: {
         top: 10,
         marginTop: 10,
         fontSize: 25,
         marginBottom: 10,
+        color: "#cccccc",
     },
     callViewBottomContainer: {
       position: 'absolute',

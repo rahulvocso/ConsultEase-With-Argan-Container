@@ -4,7 +4,7 @@
 
 // import useFetch from '../hooks/useFetch'
 
-function getSocket(userId, socketId, get) {
+function getSocket(userId, socketId, auth_token, get) {
     // const socketId = useSelector(state => state.socket.id);
     // const consulteaseUserProfileData = useSelector(
     //     (state) => state.webview.consulteaseUserProfileData,
@@ -13,16 +13,16 @@ function getSocket(userId, socketId, get) {
 
     socketId ? get(`user/getSocket?&user_id=${userId}`, {
         // get socketId of user with user_id if available(online)
-        auth_token: consulteaseUserProfileData.auth_token,
+        auth_token: auth_token,
       }).then(data => {
-        console.log("postSocket.js, data", data);
+        console.log("getSocket.js, data", data);
         if (data.status == 200){
             console.log("******Successful        getSocket.js socket_id Get req 200 ******* data.body //n",data.body)
          } else {
             console.log("******Unsuccessfull     getSocket.js socket_id Get req *******", data)
          }
       }).catch((error) => {
-        console.error('Error occurred during API call: initCallDetailsGetRoom.js', error);
+        console.error('Error occurred during API call: getSocket.js', error);
         // Handle error here
       })
       :

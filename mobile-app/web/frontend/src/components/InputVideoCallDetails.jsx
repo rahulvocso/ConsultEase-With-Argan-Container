@@ -28,15 +28,15 @@ const InputVideoCallDetails = () => {
     user_id: profile._id
   };
 
-  let roomname = '';
+  // let roomname = '';
 
   function handleVideoCallProcess() {
-    roomname = room.current.value;
-    if (roomname === '' || callCategoryName.current === '') {
+    // roomname = room.current.value;
+    if (callCategoryName.current === '') {  // roomname === '' || 
       alert('Enter room name/call category');
     } else {
-      console.log('ConsultEase videocall room join emit event generated from InputVideoCallDetails Component(webview endpoint)');
-      window.ReactNativeWebView.postMessage(
+      console.log('ConsultEase videocall room join emit event generated from InputVideoCallDetails Component(webview endpoint)',calleeDetails);
+      profile  && window.ReactNativeWebView.postMessage(
         `${JSON.stringify({
           messageType: 'calleeDetails',
           messageData: {
@@ -52,7 +52,7 @@ const InputVideoCallDetails = () => {
     <div id="lobby">
       <Header type="videoCall" handleRight={''} title="Video Call" />
       <div className="videoCallRoomDetails">
-        <IonItem className="roomInput">
+        {/* <IonItem className="roomInput">
           <IonCardSubtitle className="text">Video Call Room :</IonCardSubtitle>
           <IonInput
             ref={room}
@@ -60,11 +60,7 @@ const InputVideoCallDetails = () => {
             type="text"
             //value={roomInputValue}
             placeholder=" enter room name"></IonInput>
-        </IonItem>
-        {/* <CallCategorySelection
-          callCategoryName={callCategoryName}
-          //setCallCategoryName={setCallCategoryName}
-        /> */}
+        </IonItem> */}
         <div className="callCategory">
           <IonCardSubtitle color={callCategoryName && 'primary'}>
             Please select call category:
@@ -90,9 +86,7 @@ const InputVideoCallDetails = () => {
           //ref={button}
           id="button"
           onClick={() => {
-            if (room.current.value !== '') {
               handleVideoCallProcess();
-            }
             console.log('Selected call category:', callCategoryName.current);
             //console.log("Oops! you forgot to select call category");
           }}>

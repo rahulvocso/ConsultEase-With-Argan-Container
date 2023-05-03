@@ -39,6 +39,7 @@ import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
 const VideoCalleePromptScreen = () => {
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const calleeDetails = useSelector(state => state.webview.calleeDetails);
+  // const key = useSelector(state => state.webview.key)
   const dispatch = useDispatch();
 
   const deviceWidth = Dimensions.get('window').width; //useWindowDimensions().width;
@@ -53,6 +54,9 @@ const VideoCalleePromptScreen = () => {
   const active = useSelector((state) => !!state.media.local.video);
   const navigation = useNavigation();
   const key = useSelector((state) => state.meeting.key);
+  const callId = useSelector(state => state.webview.callInstanceState.callId)
+
+  const [incomingCallAnswer, setIncomingCallAnswer]  = useState();
 
   useLayoutEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
@@ -66,10 +70,21 @@ const VideoCalleePromptScreen = () => {
     // }
   }, [])
 
+  useEffect(() => {
+    if (socketId && callId && incomingCallAnswer) {
+      dispatch(Actions.IO.joinRoom(callId)); // call_id or room_key = callInstanceState._id
+      navigation.navigate('VideoCall', { key });
+    }
+  }, [socketId]);
+
   const returnToWebview = () => {
-    dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
-    dispatch(Actions.Media.releaseLocalVideo());
-    dispatch(Actions.Media.releaseLocalAudio());
+    // handle call accept
+    // dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+    // dispatch(Actions.Media.releaseLocalVideo());
+    // dispatch(Actions.Media.releaseLocalAudio());
+    dispatch({type: 'meeting-key', value: callInstanceState._id}),
+    dispatch({ type: 'join', name: 'Foo Bar', email: 'consultease@gmail.com' })
+
   };
 
 //   if (!video || !video.stream) {
@@ -143,16 +158,18 @@ const VideoCalleePromptScreen = () => {
     callPromptCallingName: {
       top: 10,
       fontSize: 25,
-      // color: "red",
+      color: '#cccccc',
     },
     callPromptCalling: {
       top: 10,
       fontSize: 15,
+      color: '#cccccc'
     },
     callPromptCallCategory: {
       top: 10,
       marginTop: 10,
       fontSize: 25,
+      color: '#cccccc',
     },
     callPromptButton: {
       //backgroundColor: 'blue',
@@ -246,8 +263,7 @@ const VideoCalleePromptScreen = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                 onPress={() => {
-                    //setCallPromptView(false);
-                    navigation.navigate('VideoCall', { key });
+                    setIncomingCallAnswer(true)
                 }}>
                   <CallAccept
                     width={60} 

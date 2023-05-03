@@ -30,19 +30,29 @@ import {
 
 import Immersive from 'react-native-immersive';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import NetInfo from '@react-native-community/netinfo';
 import {WebView} from 'react-native-webview';
+import ConsultaseLogo from '../../android/app/src/main/assets/app-logo.svg';
 
-// import StartCamera from './StartCamera';
-// import CameraStream from './CameraStream';
 
 function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const dispatch = useDispatch();
-
+  const [isNetConnected, setIsNetConnected] = useState(false)
   const [renderedOnce, setRenderedOnce] = useState(false);
   const webviewRef = useRef();
   const isDarkMode = useColorScheme() === 'dark';
+
+  // useEffect(() => {
+  //   const unsubscribe = NetInfo.addEventListener((state) => {
+  //     setIsNetConnected(state.isConnected);
+  //   });
+
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
+
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -69,7 +79,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
     const messageType = message.messageType;
     const messageData = message.messageData;
 
-    console.log("message received" ,message ,messageType,"messagedata typeof", messageData)
+    console.log("message received" ,message ,messageType)
     // Use the messageType to distinguish between messages from different components
     switch (messageType) {
       case 'calleeDetails':
@@ -90,7 +100,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
             "**message type**", messageType,
             "**message data**", messageData.fname,
           );
-          if (messageData !== ({} || undefined) ) {
+          if (messageData !== undefined) {
             dispatch({ type: 'SET_CONSULTEASE_USER_PROFILE_DATA', payload: messageData })
           }
           // set consulteaseUserProfileData on locally storage
@@ -109,63 +119,99 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
     }
   }
 
-  // useEffect(() => {
-  //   Immersive.on();
-  //   return () => {
-  //     Immersive.off();
-  //   };
-  // });
 
-  function postMessageToWeb(){
-    //asdf
+  function reloadWebviewOnConnectionChange() {
+    NetInfo.fetch().then((state) => {
+      if (state.isConnected) {
+        webviewRef.current.reload();
+        setIsNetConnected(true)
+        console.log('netconnected',true)
+      } 
+      else if(!state.isConnected){
+        setIsNetConnected(false)
+        // unsubscribe();
+      }
+    });
+
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      if (state.isConnected) {
+        webviewRef.current.reload();
+        setIsNetConnected(true)
+        unsubscribe();
+      } 
+      else if(!state.isConnected){
+        setIsNetConnected(false)
+        // unsubscribe();
+      }
+    });
   }
 
   return (
     <View
       style={{
         flex: 1,
-        // width: useWindowDimensions().width,
+        // width: useWindowDimensions().width,backgroundColor: '#3DB271',
         // height: useWindowDimensions().height,
-        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        backgroundColor: isDarkMode ? (isNetConnected ? Colors.black : '#3DB271') : Colors.white,
       }}>
-      <WebView
-        ref={webviewRef}
-        originWhitelist={['*']}
-        //injectedJavaScript={runScript}
-        source={
-          // renderedOnce
-          //   ? 
-          {
-            // uri: 'http://10.0.2.2:3056',
-            uri: 'http://192.168.0.138:3056',
-            // uri: 'https://vocso.com',
-            // uri: 'https://64461e51092a25761f28c8ac--consultease.netlify.app'
-            
+      {/* {isNetConnected ? */}
+        <WebView
+          ref={webviewRef}
+          originWhitelist={['*']}
+          //injectedJavaScript={runScript}
+          source={
+            // renderedOnce
+            //   ? 
+            {
+              // uri: 'http://10.0.2.2:3056',
+              uri: 'http://192.168.0.138:3056',
+              // uri: 'https://vocso.com',
+              // uri: 'https://64461e51092a25761f28c8ac--consultease.netlify.app'
+              
+            }
+              // : undefined
           }
-            // : undefined
-        }
-        style={{ 
-          flex: 1,
-          minWidth: useWindowDimensions().width,
-          maxHeight: useWindowDimensions().height,
-          borderRadius: 1,
-          borderBottomColor: '#396967',
-        }}
-        allowsBackForwardNavigationGestures
-        allowsInlineMediaPlayback
-        allowFileAccess={true}
-        allowUniversalAccessFromFileURLs={true}
-        allowFileAccessFromFileURLs={true}
-        allowsFullscreenVideo
-        domStorageEnabled={true}
-        javaScriptEnabled
-        javaScriptEnabledAndroid={true}
-        onLoad={updateSource}
-        onMessage={ (event) => handleWebViewMessage(event) }
-        scalesPageToFit={true}
-        scrollEnabled={true}
-        showsHorizontalScrollIndicator={false}
-      />
+          style={{ 
+            flex: 1,
+            minWidth: useWindowDimensions().width,
+            maxHeight: useWindowDimensions().height,
+            borderRadius: 1,
+            borderBottomColor: '#396967',
+          }}
+          allowsBackForwardNavigationGestures
+          allowsInlineMediaPlayback
+          allowFileAccess={true}
+          allowUniversalAccessFromFileURLs={true}
+          allowFileAccessFromFileURLs={true}
+          allowsFullscreenVideo
+          domStorageEnabled={true}
+          javaScriptEnabled
+          javaScriptEnabledAndroid={true}
+          onError={(syntheticEvent) => {
+            const { nativeEvent } = syntheticEvent;
+            console.warn('WebView error: ', nativeEvent);
+            reloadWebviewOnConnectionChange();
+          }}
+          onLoad={updateSource}
+          onMessage={ (event) => handleWebViewMessage(event) }
+          scalesPageToFit={true}
+          scrollEnabled={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      {/* :
+        // no internet connection screen
+        <View style={styles.noConnectionContainer}>
+          <ConsultaseLogo
+            width={150} 
+          />
+          <Text style={styles.noConnectionText1}>
+            Oops!!! looks like you're not connected &#128279; to internet &#127760;
+          </Text>
+          <Text style={styles.noConnectionText2}>
+            Please check your internet connection 
+          </Text>
+        </View>
+      } */}
     </View>
   );
 }
@@ -173,6 +219,24 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
 const styles = StyleSheet.create({
   webview: {
     flex: 1,
+  },
+  noConnectionContainer: {
+    flex: 1,
+    justifyContent : 'center',
+    alignItems: 'center',
+    // marginTop: 150,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 200
+    
+  },
+  noConnectionText1: {
+    fontSize: 35,
+    marginTop: 50
+  },
+  noConnectionText2: {
+    fontSize: 20,
+    // marginBottom: 50,
   },
   sectionContainer: {
     marginTop: 32,

@@ -1,4 +1,14 @@
-import { Alert, AppState, Keyboard, Linking, Platform, StatusBar, View, Text } from 'react-native';
+import {
+  Alert,
+  AppState,
+  Keyboard,
+  Linking,
+  Platform,
+  StatusBar,
+  View,
+  Text,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { NativeModules } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -116,7 +126,8 @@ function ConditionalAppBar({ route, navigation }) {
     route.name !== 'VideoCalleePrompt' &&
     route.name !== 'VideoCallerPrompt' &&
     route.name !== 'VideoCall' &&
-    route.name !== 'CallRating'
+    route.name !== 'CallRating' &&
+    route.name !== 'WebView'
     ? CustomAppBar({ route, navigation })
     : null;
 }
@@ -289,31 +300,19 @@ function App() {
       consulteaseUserProfileData._id
     ) {
       socketId ? postSocket(consulteaseUserProfileData, socketId, post) : null;
-      calleeDetails.user_id &&
-        initCallDetailsGetRoom(
-          (from_user = consulteaseUserProfileData._id),
-          (to_user = calleeDetails.user_id),
-          (auth_token = consulteaseUserProfileData.auth_token),
-          (callCategory = calleeDetails.callCategory),
-        );
+      // calleeDetails.user_id &&
+      //   initCallDetailsGetRoom(
+      //     (from_user = consulteaseUserProfileData._id),
+      //     (to_user = calleeDetails.user_id),
+      //     (auth_token = consulteaseUserProfileData.auth_token),
+      //     (callCategory = calleeDetails.callCategory),
+      //   );
     }
 
     // getSocket(consulteaseUserProfileData, socketId, get);
   }, [socketId]);
 
   useEffect(() => {
-    // SystemNavigationBar.stickyImmersive();
-    // SystemNavigationBar.immersive();
-    // SystemNavigationBar.leanBack();
-    SystemNavigationBar.navigationHide();
-    SystemNavigationBar.setNavigationBarDividerColor('#ffffff');
-    SystemNavigationBar.setNavigationColor('#ffffff', 'light', 'navigation'); // '#3db271'
-    StatusBar.setBackgroundColor('#ffffff');
-    StatusBar.setBarStyle('dark-content');
-    // SystemNavigationBar.setBarMode('light', 'both');
-    //***foreground service start***
-    // HeadlessJsTaskService.register(CheckInternetService, 'CheckInternetTask');
-
     console.log(
       'In Native Container UseEffect calleeDetails',
       'socket id',
@@ -325,7 +324,21 @@ function App() {
     return () => {};
   }, [calleeDetails, isCallViewOn, socketId]);
 
-  // if isCallViewOn is false/off set data derived from webview to empty/null/initial redux state;
+  useEffect(() => {
+    // SystemNavigationBar.stickyImmersive();
+    // SystemNavigationBar.immersive();
+    // SystemNavigationBar.leanBack();
+    //SystemNavigationBar.navigationHide();
+    // SystemNavigationBar.setNavigationBarDividerColor('#ffffff');
+    SystemNavigationBar.setNavigationColor('#ffffff', 'light', 'navigation'); // '#3db271'
+    StatusBar.setBackgroundColor('#ffffff');
+    StatusBar.setBarStyle('dark-content');
+    // SystemNavigationBar.setBarMode('light', 'both');
+    //***foreground service start***
+    // HeadlessJsTaskService.register(CheckInternetService, 'CheckInternetTask');
+  }, []);
+
+  // if isCallViewOn is false/off set data derived from webview to empty/null/to-initial-redux-state;
   useState(() => {
     isCallViewOn ? null : dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
   }, [isCallViewOn]);
@@ -365,8 +378,6 @@ function App() {
     if (!socketId) {
       dispatch(Actions.IO.setupSocket());
     }
-    // update socketId in
-    // socketId ? dispatch(Actions.Media.setupMedia()) : null;
   }, [socketId]);
 
   useEffect(() => {
@@ -378,29 +389,41 @@ function App() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
       {/* Theme.Variables.background */}
-      {/* {isCallViewOn ? ( */}
+
       <>
         <StatusBar barStyle="dark-content" />
         <Stack.Navigator
           screenOptions={{
             header: ConditionalAppBar,
+            // gestureResponseDistance: {
+            //   horizontal: 10,
+            //   vertical: {
+            //     primaryAxis: 10, // Minimum distance from top/bottom edge of the screen
+            //     secondaryAxis: 0, // Maximum distance from left/right edge of the screen
+            //   },
+            // },
+            // gestureEnabled: true,
+            // gestureDirection: 'vertical',
           }}
         >
-          {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
-          {/* <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
-            <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
-            <Stack.Screen name="VideoCall" component={VideoCallScreen} />
-            <Stack.Screen name="CallRating" component={CallRatingScreen} /> */}
-          <Stack.Screen name="Home" component={Screens.HomeScreen} />
-          <Stack.Screen name="Join" component={Screens.JoinScreen} />
-          <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
-          <Stack.Screen name="Meeting" component={MeetingNavigator} />
+          {isCallViewOn ? (
+            <>
+              {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
+              <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
+              <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
+              <Stack.Screen name="VideoCall" component={VideoCallScreen} />
+              <Stack.Screen name="CallRating" component={CallRatingScreen} />
+              <Stack.Screen name="Home" component={Screens.HomeScreen} />
+              <Stack.Screen name="Join" component={Screens.JoinScreen} />
+              <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
+              <Stack.Screen name="Meeting" component={MeetingNavigator} />
+            </>
+          ) : (
+            <Stack.Screen name="WebView" component={ConsultEaseWebview} />
+          )}
         </Stack.Navigator>
-        <Common.Snack />
+        {/* <Common.Snack /> */}
       </>
-      {/* ) : (
-        <ConsultEaseWebview />
-      )} */}
     </SafeAreaView>
   );
 }

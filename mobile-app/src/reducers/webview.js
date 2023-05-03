@@ -1,10 +1,13 @@
 // Define initial state
 const initialState = {
   isCallViewOn: false,
-  calleeDetails: {},
   consulteaseUserProfileData: {},
-  callInstanceData: {},
-  callId: undefined,
+  calleeDetails: {},
+  calleeSocketId: undefined,
+  callInstanceData: {
+    callId: null,
+  },
+  isInternetConnected: undefined,
 };
 
 // Define reducer function
@@ -20,6 +23,12 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         calleeDetails: action.payload,
+      };
+
+    case 'SET_CALLEE_SOCKET_ID':
+      return {
+        ...state,
+        calleeSocketId: action.payload,
       };
 
     case 'SET_CONSULTEASE_USER_PROFILE_DATA':
@@ -40,7 +49,16 @@ function reducer(state = initialState, action) {
     case 'SET_CALL_ID':
       return {
         ...state,
-        callId: action.payload,
+        callInstanceData: {
+          ...state.callInstanceData,
+          callId: action.payload,
+        },
+      };
+
+    case 'SET_INTERNET_CONNECTION':
+      return {
+        ...state,
+        isInternetConnected: action.payload,
       };
 
     default:

@@ -1,6 +1,6 @@
 import useFetch from '../../hooks/useFetch';
 
-export default function setCallRoom(from_user, to_user, auth_token, callCategory) {
+export default function initCallDetailsGetRoom(from_user, to_user, auth_token, callCategory) {
   const callInstanceDetails = {};
   const [post] = useFetch('https://callingserver.onrender.com/api/v1/');
 
@@ -17,13 +17,13 @@ export default function setCallRoom(from_user, to_user, auth_token, callCategory
       console.log('postSocket.js, data', data);
       if (data.status == 200) {
         //single call detail which will use _id as callid/roomid in that specific call (read bottom last comments for more)
-        initCallDetails = data.body;
+        callInstanceDetails = data.body;
         console.log(
-          '******Successful     initCallDetailsGetRoom.js call init POST req 200      *******',
+          '******Successful  initCallDetailsGetRoom.js call init POST req 200      *******',
         );
       } else {
         console.log(
-          '******Unsuccessfull     initCallDetailsGetRoom.js  call init  POST req       *******',
+          '******Unsuccessfull  initCallDetailsGetRoom.js  call init  POST req       *******',
         );
       }
     })
@@ -32,7 +32,7 @@ export default function setCallRoom(from_user, to_user, auth_token, callCategory
       // Handle error here
     });
 
-  return initCallDetails;
+  return callInstanceDetails;
 }
 
 // above post response example use _id as callId / roomId
