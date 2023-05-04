@@ -130,11 +130,22 @@ const App = () => {
     setupIonicReact({
       mode: 'md',
     });
-    // Immersive.on();
-    // return(
-    //   ()=>(Immersive.off())
-    // )
   }, [activeTab]);
+
+  // useEffect(() => { //04-05-23 for testing back navigation using device back button
+  //   const handleBackButton = (event) => {
+  //     event.preventDefault();
+  //     history.goBack();
+  //   };
+
+  //   window.history.pushState(null, "", window.location.href);
+
+  //   window.onpopstate = handleBackButton;
+
+  //   return () => {
+  //     window.onpopstate = null;
+  //   };
+  // }, [history]);
 
   
   return (

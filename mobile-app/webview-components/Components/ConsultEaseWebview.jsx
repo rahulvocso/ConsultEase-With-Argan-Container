@@ -41,6 +41,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
   const [isNetConnected, setIsNetConnected] = useState(false)
   const [renderedOnce, setRenderedOnce] = useState(false);
   const webviewRef = useRef();
+  const unsubscribeRef = useRef(null);
   const isDarkMode = useColorScheme() === 'dark';
 
   // useEffect(() => {
@@ -58,9 +59,9 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const updateSource = () => {
-    setRenderedOnce(true);
-  };
+  // const updateSource = () => {
+  //   setRenderedOnce(true);
+  // };
 
   function alert(arg0) {
     throw new Error('Function not implemented.');
@@ -120,6 +121,32 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
   }
 
 
+  // function reloadWebviewOnConnectionChange() {
+  //   NetInfo.fetch().then((state) => {
+  //     if (state.isConnected) {
+  //       webviewRef.current.reload();
+  //       setIsNetConnected(true)
+  //       console.log('netconnected',true)
+  //     } 
+  //     else if(!state.isConnected){
+  //       setIsNetConnected(false)
+  //       // unsubscribe();
+  //     }
+  //   });
+
+  //   const unsubscribe = NetInfo.addEventListener((state) => {
+  //     if (state.isConnected) {
+  //       webviewRef.current.reload();
+  //       setIsNetConnected(true)
+  //       unsubscribe();
+  //     } 
+  //     else if(!state.isConnected){
+  //       setIsNetConnected(false)
+  //       // unsubscribe();
+  //     }
+  //   });
+  // }
+  
   function reloadWebviewOnConnectionChange() {
     NetInfo.fetch().then((state) => {
       if (state.isConnected) {
@@ -129,22 +156,34 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
       } 
       else if(!state.isConnected){
         setIsNetConnected(false)
-        // unsubscribe();
+        // unsubscribeRef.current();
       }
     });
-
-    const unsubscribe = NetInfo.addEventListener((state) => {
+  
+    unsubscribeRef.current = NetInfo.addEventListener((state) => {
       if (state.isConnected) {
         webviewRef.current.reload();
         setIsNetConnected(true)
-        unsubscribe();
+        unsubscribeRef.current();
       } 
       else if(!state.isConnected){
         setIsNetConnected(false)
-        // unsubscribe();
+        // unsubscribeRef.current();
       }
     });
   }
+  
+  useEffect(() => {
+    reloadWebviewOnConnectionChange();
+  
+    return () => {
+      if (unsubscribeRef.current) {
+        unsubscribeRef.current();
+      }
+    };
+  }, []);
+
+
 
   return (
     <View
@@ -166,7 +205,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
               // uri: 'http://10.0.2.2:3056',
               uri: 'http://192.168.0.138:3056',
               // uri: 'https://vocso.com',
-              // uri: 'https://64461e51092a25761f28c8ac--consultease.netlify.app'
+              // uri: 'https://6453486d4c12434c3bbc8bcc--consultease.netlify.app'
               
             }
               // : undefined
@@ -192,14 +231,14 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
             console.warn('WebView error: ', nativeEvent);
             reloadWebviewOnConnectionChange();
           }}
-          onLoad={updateSource}
+          // onLoad={updateSource}
           onMessage={ (event) => handleWebViewMessage(event) }
           scalesPageToFit={true}
           scrollEnabled={true}
           showsHorizontalScrollIndicator={false}
         />
       {/* :
-        // no internet connection screen
+        // no internet connection screen view
         <View style={styles.noConnectionContainer}>
           <ConsultaseLogo
             width={150} 

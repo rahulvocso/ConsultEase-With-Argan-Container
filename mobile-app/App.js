@@ -293,7 +293,11 @@ function App() {
 
   // post socket_id to server as and when socketId changes
   useEffect(() => {
-    console.log('useEffect consulteasedata', consulteaseUserProfileData.fname, calleeDetails.name);
+    console.log(
+      'useEffect consulteasedata APP.js react-native',
+      consulteaseUserProfileData.fname,
+      calleeDetails.name,
+    );
     if (
       Object.keys(consulteaseUserProfileData).length !== 0 &&
       consulteaseUserProfileData.auth_token &&

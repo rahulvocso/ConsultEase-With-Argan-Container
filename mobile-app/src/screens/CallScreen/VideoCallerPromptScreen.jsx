@@ -60,7 +60,10 @@ const VideoCallerPromptScreen = () => {
 
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const calleeDetails = useSelector((state) => state.webview.calleeDetails);
+  const calleeSocketId = useSelector((state)=> state.webview.calleeSocketId);
   const socketId = useSelector((state) => state.socket.id);
+  const callId = useSelector((state) => state.webview.callId);
+
 
   // profile data received from webview
   const consulteaseUserProfileData = useSelector((state) =>
@@ -90,19 +93,13 @@ const VideoCallerPromptScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (socketId && callInstanceState._id) {
-      dispatch(Actions.IO.joinRoom(callInstanceState._id)); // call_id or room_key = callInstanceState._id
-    }
-  }, [socketId,callInstanceState]);
-  // start call room 
-  useEffect(() => {
     console.log(
       "calleeDetails inside VideoCallerPrompt",
       "calleeDetails.user_id",
       calleeDetails && calleeDetails.user_id
     )
     if (socketId) {
-      // dispatch(Actions.IO.joinRoom(key));
+      dispatch(Actions.IO.joinRoom(callId));
       // send initial call details, get room id , i.e '_id' from returned started call instance data
       if (
         Object.keys(consulteaseUserProfileData).length !== 0 &&
@@ -112,10 +109,20 @@ const VideoCallerPromptScreen = () => {
         calleeDetails.callCategory
       ) {
         getCalleeSocket() //get callee socket data    
-        initCall(); // get initial call instance data
       } 
     }
-  }, []);
+  }, [consulteaseUserProfileData, calleeDetails]);
+
+  useEffect(() => {
+    calleeSocketId ? initCall() : null; // get initial call instance data
+  },[calleeSocketId])
+
+
+  useEffect(() => {
+    if (socketId && callInstanceState._id) {
+      //dispatch(Actions.IO.joinRoom(callInstanceState._id)); // call_id or room_key = callInstanceState._id
+    }
+  }, [socketId,callInstanceState]);
 
 // https://arganbackend.onrender.com/meeting/put-your-room-or-call-id-here to make callee join
 
@@ -466,7 +473,8 @@ const VideoCallerPromptScreen = () => {
                         /> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{
-                        navigation.navigate('VideoCall', { key })
+                        // navigation.navigate('VideoCall', { key })
+                        navigation.navigate('Meeting', { key })
                         // dispatch({ type: 'SET_CALLEE_DETAILS', payload: JSON.parse(event.nativeEvent.data) })
                       }
                     }>

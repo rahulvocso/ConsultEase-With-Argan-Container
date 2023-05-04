@@ -4,9 +4,8 @@ const initialState = {
   consulteaseUserProfileData: {},
   calleeDetails: {},
   calleeSocketId: undefined,
-  callInstanceData: {
-    callId: null,
-  },
+  callInstanceData: {},
+  callId: undefined,
   isInternetConnected: undefined,
 };
 
@@ -49,10 +48,7 @@ function reducer(state = initialState, action) {
     case 'SET_CALL_ID':
       return {
         ...state,
-        callInstanceData: {
-          ...state.callInstanceData,
-          callId: action.payload,
-        },
+        callId: action.payload,
       };
 
     case 'SET_INTERNET_CONNECTION':
