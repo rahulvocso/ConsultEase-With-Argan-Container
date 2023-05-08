@@ -66,6 +66,13 @@ const setupSocket = () => (dispatch) => {
       }
     });
 
+    // added by rahul to sent private message to any socket_id
+    Utils.socket.on('connection', (socket) => {
+      socket.on('private_message', ({ to, messageData }) => {
+        socket.to(to).emit('private_message', { from: socket.id, messageData });
+      });
+    });
+
     Utils.socket.on('producer-close', async (data) => {
       dispatch({
         type: 'producer-close',
