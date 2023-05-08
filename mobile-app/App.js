@@ -28,6 +28,8 @@ import VideoCalleePromptScreen from './src/screens/CallScreen/VideoCalleePromptS
 import VideoCallerPromptScreen from './src/screens/CallScreen/VideoCallerPromptScreen';
 import VideoCallScreen from './src/screens/CallScreen/VideoCallScreen';
 import CallRatingScreen from './src/screens/CallScreen/CallRatingScreen';
+
+// to test foreground service (to be removed)
 import NativeServiceTest from './src/foreground-background-services/NativeServiceTest';
 import InternetServiceTest from './src/foreground-background-services/InternetServiceTest';
 
@@ -46,6 +48,9 @@ import useFetch from './src/hooks/useFetch';
 import getSocket from './src/foreground-background-services/getSocket';
 import initCallDetailsGetRoom from './src/screens/CallScreen/initCallDetailsGetRoom';
 // import CheckInternetService from './src/foreground-background-services/InternetStatus';
+
+// import io from 'socket.io-client';
+// const socket = io('https://arganbackend.onrender.com');
 
 function CustomAppBar({ navigation, route }) {
   const theme = useTheme();
@@ -151,7 +156,7 @@ function DrawerTabs() {
       Keyboard.dismiss();
       setBottom(0);
     }
-  }, isDrawerOpen);
+  }, [isDrawerOpen]);
 
   useEffect(() => {
     function onKeyboardChange(e) {
@@ -347,6 +352,31 @@ function App() {
     isCallViewOn ? null : dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
   }, [isCallViewOn]);
   //
+
+  // listen for any message sent by any other socket_id user
+  useEffect(() => {
+    socketId !== null || undefined
+      ? Utils.socket.on('message', (messageData) => {
+          if (messageData.type === 'call') {
+            // Do something when an incoming call is received
+            // For example, show a modal or notification
+            dispatch({
+              type: 'SET_CALLER_DETAILS',
+              payload: messageData.callerDetails,
+            });
+            navigation.navigate('Meeting');
+            console.log(
+              'Call ************ Incoming call received ********',
+              messageData,
+              JSON.stringify(messageData),
+            );
+          }
+        })
+      : null;
+    return () => {
+      Utils.socket.off('message');
+    };
+  }, [socketId]);
 
   useEffect(() => {
     AsyncStorage.getItem('name')

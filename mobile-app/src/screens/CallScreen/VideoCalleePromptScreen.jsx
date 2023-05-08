@@ -35,12 +35,17 @@ import CallAccept from '../../../android/app/src/main/assets/CallAccept.svg';
 import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
 // import CallReject from '../../assets/images/CallReject.svg';
 
+import io from 'socket.io-client';
+const socket = io('https://arganbackend.onrender.com');
+
 
 const VideoCalleePromptScreen = () => {
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const calleeDetails = useSelector(state => state.webview.calleeDetails);
+  const callerDetails = useSelector(state => state.webview.callerDetails);
   // const key = useSelector(state => state.webview.key)
   const dispatch = useDispatch();
+  const socketId = useSelector((state) => state.socket.id);
 
   const deviceWidth = Dimensions.get('window').width; //useWindowDimensions().width;
   const deviceHeight = Dimensions.get('window').height; //useWindowDimensions().height;
@@ -58,11 +63,18 @@ const VideoCalleePromptScreen = () => {
 
   const [incomingCallAnswer, setIncomingCallAnswer]  = useState();
 
+  // useEffect(()=>{
+  //   socket.on('message', (message) => {
+  //     console.log('Received message:', message);
+  //   });
+
+  // },[socketId])
+
   useLayoutEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
-    console.log('calleeDetails inside VideoCalleePrompt',calleeDetails)
-    console.log('calleeDetails.photo inside VideoCalleePrompt', typeof calleeDetails.photo)
+    console.log('callerDetails inside VideoCalleePrompt',callerDetails)
+    console.log('callerDetails.photo inside VideoCalleePrompt', typeof callerDetails.photo)
 
     // return () => {
     //     dispatch(Actions.Media.releaseLocalVideo());
@@ -227,8 +239,8 @@ const VideoCalleePromptScreen = () => {
             <View style={styles.callPromptAvatar}>
                 <Image
                 style={{width: 80, height: 80, borderRadius: 50, objectFit: "contain"}}
-                source={ calleeDetails.length!= 0 && calleeDetails.photo ? 
-                  {uri: calleeDetails.photo} :
+                source={ callerDetails.length!= 0 && callerDetails.photo ? 
+                  {uri: callerDetails.photo} :
                   AvatarSample
                 }
                 // defaultSource={FallbackImage}
@@ -236,13 +248,13 @@ const VideoCalleePromptScreen = () => {
                 />
 
                 <Text style={styles.callPromptCallingName}>
-                  {Object.keys(calleeDetails).length !== 0 && calleeDetails.name ? calleeDetails.name :"Name Unavailable"}
+                  {Object.keys(callerDetails).length !== 0 && callerDetails.name ? callerDetails.name :"Name Unavailable"}
                 </Text>
 
                 <Text style={styles.callPromptCalling}>Calling</Text>
 
                 <Text style={styles.callPromptCallCategory}>
-                  {Object.keys(calleeDetails).length !== 0 && calleeDetails.callCategory ? calleeDetails.callCategory : "Call Category Unavailable"}
+                  {Object.keys(callerDetails).length !== 0 && callerDetails.callCategory ? callerDetails.callCategory : "Call Category Unavailable"}
                 </Text>
             </View>
 

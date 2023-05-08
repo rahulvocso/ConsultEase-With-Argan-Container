@@ -164,7 +164,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
       if (state.isConnected) {
         webviewRef.current.reload();
         setIsNetConnected(true)
-        unsubscribeRef.current();
+        // unsubscribeRef.current();
       } 
       else if(!state.isConnected){
         setIsNetConnected(false)
@@ -176,11 +176,11 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
   useEffect(() => {
     reloadWebviewOnConnectionChange();
   
-    return () => {
-      if (unsubscribeRef.current) {
-        unsubscribeRef.current();
-      }
-    };
+    // return () => {
+    //   if (unsubscribeRef.current) {
+    //     unsubscribeRef.current();
+    //   }
+    // };
   }, []);
 
 

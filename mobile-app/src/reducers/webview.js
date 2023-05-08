@@ -3,6 +3,7 @@ const initialState = {
   isCallViewOn: false,
   consulteaseUserProfileData: {},
   calleeDetails: {},
+  callerDetails: {},
   calleeSocketId: undefined,
   callInstanceData: {},
   callId: undefined,
@@ -24,6 +25,11 @@ function reducer(state = initialState, action) {
         calleeDetails: action.payload,
       };
 
+    case 'SET_CALLER_DETAILS':
+      return {
+        ...state,
+        callerDetails: action.payload,
+      };
     case 'SET_CALLEE_SOCKET_ID':
       return {
         ...state,
