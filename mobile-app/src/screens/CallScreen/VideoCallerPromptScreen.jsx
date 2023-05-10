@@ -459,6 +459,7 @@ const VideoCallerPromptScreen = () => {
                       dispatch(Actions.Media.releaseLocalVideo());
                       dispatch(Actions.Media.releaseLocalAudio());
                       dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+                      dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
                       }}>  
                         <GoBack1
                         width={30} 
