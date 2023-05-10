@@ -370,7 +370,7 @@ function App() {
               messageData.content,
               JSON.stringify(messageData.content),
             );
-            navigation.navigate('VideoCalleePrompt');
+            navigation.navigate('WebView');
           }
         })
       : null;

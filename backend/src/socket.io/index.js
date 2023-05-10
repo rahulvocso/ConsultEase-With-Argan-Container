@@ -2,7 +2,6 @@ import { Server } from 'socket.io';
 import Utils from '../utils';
 import Mediasoup from '../mediasoup';
 import joinRoom from './joinRoom';
-import joinRoomCallee from './joinRoomCallee'; //added by rahul
 import getRouterRtpCapabilities from './getRouterRtpCapabilities';
 import createProducerTransport from './createProducerTransport';
 import createConsumerTransport from './createConsumerTransport';
