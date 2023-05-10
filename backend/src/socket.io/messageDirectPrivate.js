@@ -9,7 +9,7 @@ const messageDirectPrivate = async (messageData) => {
   //   // name: xss(data.name),
   //   // email: xss(data.email),
   // });
-  console.log(`Message sent to device with socket ID ${messageData.to}: ${messageData}`);
+  console.log(`Message ${messageData} sent to device with socket ID`);// ${messageData.to}: ${messageData}`);
 };
 
 export default messageDirectPrivate;
