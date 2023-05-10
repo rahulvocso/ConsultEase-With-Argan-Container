@@ -358,8 +358,8 @@ function App() {
             dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: messageData });
             console.log(
               'Call ************ Incoming messageDirectPrivate received App.js useEffect line~359********',
-              messageData.content,
-              JSON.stringify(messageData.content),
+              messageData,
+              JSON.stringify(messageData),
             );
             navigation.navigate('VideoCalleePrompt');
           }
@@ -367,8 +367,8 @@ function App() {
           else if (messageData.type === 'callResponse') {
             console.log(
               'Call-Response ************ Incoming messageDirectPrivate received App.js useEffect line~366********',
-              messageData.content,
-              JSON.stringify(messageData.content),
+              messageData,
+              JSON.stringify(messageData),
             );
             navigation.navigate('WebView');
           }
