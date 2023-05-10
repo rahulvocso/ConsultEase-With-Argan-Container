@@ -10,7 +10,8 @@ const initialState = {
   },
   calleeSocketId: undefined,
   callInstanceData: {},
-  callId: undefined,
+  incomingCallDetails: undefined,
+  outgoingCallDetails: undefined,
   isInternetConnected: undefined,
 };
 
@@ -55,10 +56,16 @@ function reducer(state = initialState, action) {
         callInstanceData: action.payload,
       };
 
-    case 'SET_CALL_ID':
+    case 'SET_OUTGOING_CALL_DETAILS':
       return {
         ...state,
-        callId: action.payload,
+        outgoingCallDetails: action.payload,
+      };
+
+    case 'SET_INCOMING_CALL_DETAILS':
+      return {
+        ...state,
+        incomingCallDetails: action.payload,
       };
 
     case 'SET_INTERNET_CONNECTION':

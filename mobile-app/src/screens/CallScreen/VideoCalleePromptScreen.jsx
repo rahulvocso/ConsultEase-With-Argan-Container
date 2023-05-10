@@ -101,7 +101,26 @@ const VideoCalleePromptScreen = () => {
 
   function handleCallAccept(){
     // callerDetails name callCategory photo
-    navigation.navigate('')
+    navigation.navigate('Videocall')
+    if (socketId && callInstanceData._id) {
+      dispatch(Actions.IO.joinRoom(callInstanceData._id)); // call_id or room_key = callInstanceState._id
+      // send message to callee to open VideocalleePrompt screen/view on his/her phone
+      (socketId && Utils.socket) ? (
+        Utils.socket.emit("messageDirectPrivate",{
+        content : {
+          type: 'callResponse',
+          from: socketId,
+          to: callerDetails,
+          callerDetails: {
+            name: `${consulteaseUserProfileData.fname} ${consulteaseUserProfileData.lname}`,
+            callCategory: calleeDetails.callCategory,
+            photo: consulteaseUserProfileData.photo,
+          },
+        }
+      })) : null;
+  
+      console.log('log below -> send call-pickup event by private-socket-message')
+    }
   }
 
   function handleCallReject(){

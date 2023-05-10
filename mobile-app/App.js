@@ -348,20 +348,30 @@ function App() {
   useEffect(() => {
     socketId !== null || undefined
       ? Utils.socket.on('messageDirectPrivate', (messageData) => {
-          // if (messageData.type === 'call') {
-          // Do something when an incoming call is received
-          // For example, show a modal or notification
-          // dispatch({
-          //   type: 'SET_CALLER_DETAILS',
-          //   payload: messageData.callerDetails,
-          // });
-          // navigation.navigate('Meeting');
-          console.log(
-            'Call ************ Incoming messageDirectPrivate received App.js useEffect line~360********',
-            messageData,
-            JSON.stringify(messageData),
-          );
-          // }
+          if (messageData.type === 'call') {
+            // Do something when an incoming call is received
+            // For example, show a modal or notification
+            dispatch({
+              type: 'SET_CALLER_DETAILS',
+              payload: messageData.callerDetails,
+            });
+            dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: messageData });
+            console.log(
+              'Call ************ Incoming messageDirectPrivate received App.js useEffect line~359********',
+              messageData.content,
+              JSON.stringify(messageData.content),
+            );
+            navigation.navigate('VideoCalleePrompt');
+          }
+          //
+          else if (messageData.type === 'callResponse') {
+            console.log(
+              'Call-Response ************ Incoming messageDirectPrivate received App.js useEffect line~366********',
+              messageData.content,
+              JSON.stringify(messageData.content),
+            );
+            navigation.navigate('VideoCalleePrompt');
+          }
         })
       : null;
     return () => {

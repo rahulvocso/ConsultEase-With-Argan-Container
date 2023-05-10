@@ -35,7 +35,6 @@ const init = ({ httpServer }) => {
     socket.emit('welcome', socket.id);
 
     socket.on('joinRoom', (data, callback) => joinRoom({ socket, data, callback }));
-    socket.on('joinRoomCallee', (data, callback) => joinRoomCallee({ socket, data, callback })); //added by rahul
     socket.on('getRouterRtpCapabilities', (data, callback) => getRouterRtpCapabilities({ socket, data, callback }));
     socket.on('createProducerTransport', (data, callback) => createProducerTransport({ socket, data, callback }));
     socket.on('createConsumerTransport', (data, callback) => createConsumerTransport({ socket, data, callback }));

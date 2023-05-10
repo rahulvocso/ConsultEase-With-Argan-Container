@@ -65,11 +65,13 @@ const VideoCallerPromptScreen = () => {
 
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const calleeDetails = useSelector((state) => state.webview.calleeDetails);
+  const callerDetails = useSelector((state)=> state.webview.callerDetails);
   const calleeSocketId = useSelector((state)=> state.webview.calleeSocketId);
   const socketId = useSelector((state) => state.socket.id);
-  const callId = useSelector((state) => state.webview.callId);
-  const joined = useSelector((state) => state.media.joined)
   const callInstanceData = useSelector((state) => state.webview.callInstanceData)
+  const incomingCallId = useSelector((state) => state.webview.incomingCallId);
+  const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
+  const joined = useSelector((state) => state.media.joined)
 
 
   // profile data received from webview
@@ -129,31 +131,25 @@ const VideoCallerPromptScreen = () => {
   useEffect(() => {
     if (socketId && callInstanceData._id) {
       dispatch(Actions.IO.joinRoom(callInstanceData._id)); // call_id or room_key = callInstanceState._id
+      // send message to callee to open VideocalleePrompt screen/view on his/her phone
       (socketId && Utils.socket) ? (
-        // room ? 
-        //   Utils.socket.emit(
-        //     'joinRoomCallee',
-        //     { 
-        //       data: { socketId: calleeSocketId, key: room },
-        //       callback: ()=>{}
-        //     }
-        //   )
-        // : null,
-        Utils.socket.emit("messageDirectPrivate",{
-        content : {
+        Utils.socket.emit("messageDirectPrivate",
+        {
           type: 'call',
+          from: socketId,
           to: calleeSocketId,
+          callId: callInstanceData._id,
           callerDetails: {
             name: `${consulteaseUserProfileData.fname} ${consulteaseUserProfileData.lname}`,
             callCategory: calleeDetails.callCategory,
             photo: consulteaseUserProfileData.photo,
           },
         }
-      })) : null;
+      )) : null;
   
       console.log('log below -> send call-pickup event by private-socket-message')
     }
-  }, [socketId,callInstanceData]);
+  }, [callInstanceData]);
 
 // https://arganbackend.onrender.com/meeting/put-your-room-or-call-id-here to make callee join this works for argan web only** no use here
 
@@ -167,9 +163,77 @@ const VideoCallerPromptScreen = () => {
       )
       :
       null
-    console.log("callInstanceState useEFf" ,callInstanceData)
+    console.log("callInstanceData received useEFf" ,callInstanceData)
     //
   },[callInstanceData])
+
+  
+  const getCalleeSocket = async () => {
+    // get callee user socket_id related data
+    get(`user/getSocket?&user_id=${calleeDetails.user_id}`, {
+      auth_token: consulteaseUserProfileData.auth_token,
+    })
+      .then((data) => {
+        console.log('getSocket.js, data', data);
+        if (data.status == 200) {
+          //
+          data.body.status === 'Online' &&
+            (data.body.socket_id !== null || undefined || '') &&
+            dispatch({ type: 'SET_CALLEE_SOCKET_ID', payload: data.body.socket_id }); // set callee socet id in redux state
+          //
+          console.log(
+            '****** Successful  VideoCallerPromptScreen.js  getSocket() socket_id Get req 200 ******* data.body',
+            data.body._id,
+          );
+        } else {
+          console.log(
+            '****** Unsuccessfull  VideoCallerPromptScreen.js  getSocket() socket_id Get req ******* data',
+            data.body,
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(
+          'Error occurred during API call: VideoCallerPromptScreen.js 186 getSocket.js',
+          error,
+        );
+      });
+  };
+
+  const initCall = async () => {
+    // initialize call instance
+    await post(
+      'call/init',
+      {
+        from_user: consulteaseUserProfileData._id, //caller user_id
+        to_user: calleeDetails.user_id, // callee user id,
+        category: consulteaseUserProfileData.auth_token,
+      },
+      { auth_token: consulteaseUserProfileData.auth_token },
+    )
+      .then((data) => {
+        console.log('postSocket.js, data', data);
+        if (data.status == 200) {
+          // setCallInstanceState({ ...data.body, ...callInstanceState });
+          dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: data.body }),
+          dispatch({ type: 'SET_OUTGOING_CALL_ID', payload: data.body._id})
+            console.log(
+              '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
+            );
+        } else {
+          console.log(
+            '******Unsuccessfull  VideoCallerPromptScreen.js  initcall()  call init  POST req       *******',
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(
+          'Error occurred during API call: VideoCallerPromptScreen.js  fetchData()',
+          error,
+        );
+      });
+  };
+
 
   // useEffect(()=>{
   //   callId && dispatch({ type: 'join', name: 'Foo Bar', email: 'consultease@gmail.com' })
@@ -208,77 +272,7 @@ const VideoCallerPromptScreen = () => {
     // return (
     //   Utils.socket.off('message')
     // )
-  },[callId])
-
-
-  
-  //earlier declared getCalleeSocket() here - remove this comment
-  const getCalleeSocket = async () => {
-    // get callee user socket_id related data
-    get(`user/getSocket?&user_id=${calleeDetails.user_id}`, {
-      auth_token: consulteaseUserProfileData.auth_token,
-    })
-      .then((data) => {
-        console.log('getSocket.js, data', data);
-        if (data.status == 200) {
-          //
-          data.body.status === 'Online' &&
-            (data.body.socket_id !== null || undefined || '') &&
-            dispatch({ type: 'SET_CALLEE_SOCKET_ID', payload: data.body.socket_id }); // set callee socet id in redux state
-          //
-          console.log(
-            '****** Successful  VideoCallerPromptScreen.js  getSocket() socket_id Get req 200 ******* data.body',
-            data.body._id,
-          );
-        } else {
-          console.log(
-            '****** Unsuccessfull  VideoCallerPromptScreen.js  getSocket() socket_id Get req ******* data',
-            data.body,
-          );
-        }
-      })
-      .catch((error) => {
-        console.error(
-          'Error occurred during API call: VideoCallerPromptScreen.js 186 getSocket.js',
-          error,
-        );
-      });
-  };
-
-  //earlier declared initCall() here - remove this comment
-  const initCall = async () => {
-    // initialize call instance
-    await post(
-      'call/init',
-      {
-        from_user: consulteaseUserProfileData._id, //caller user_id
-        to_user: calleeDetails.user_id, // callee user id,
-        category: consulteaseUserProfileData.auth_token,
-      },
-      { auth_token: consulteaseUserProfileData.auth_token },
-    )
-      .then((data) => {
-        console.log('postSocket.js, data', data);
-        if (data.status == 200) {
-          // setCallInstanceState({ ...data.body, ...callInstanceState });
-          dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: data.body }),
-            console.log(
-              '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
-            );
-        } else {
-          console.log(
-            '******Unsuccessfull  VideoCallerPromptScreen.js  initcall()  call init  POST req       *******',
-          );
-        }
-      })
-      .catch((error) => {
-        console.error(
-          'Error occurred during API call: VideoCallerPromptScreen.js  fetchData()',
-          error,
-        );
-      });
-  };
-
+  },[])
  
 
   const handleCameraFacing = () => {
