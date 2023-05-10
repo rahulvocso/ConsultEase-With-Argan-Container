@@ -1,7 +1,7 @@
 import xss from 'xss';
 import Utils from '../utils';
 
-const messageDirectPrivate = async ({ messageData }) => {
+const messageDirectPrivate = async (messageData) => {
   Utils.logger.info(JSON.stringify(messageData));
   Utils.io.to(messageData.to).emit('messageDirectPrivate', {
     // uuid: data.uuid,
