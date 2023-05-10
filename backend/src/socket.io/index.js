@@ -2,6 +2,7 @@ import { Server } from 'socket.io';
 import Utils from '../utils';
 import Mediasoup from '../mediasoup';
 import joinRoom from './joinRoom';
+import joinRoomCallee from './joinRoomCallee'; //added by rahul
 import getRouterRtpCapabilities from './getRouterRtpCapabilities';
 import createProducerTransport from './createProducerTransport';
 import createConsumerTransport from './createConsumerTransport';
@@ -14,6 +15,7 @@ import join from './join';
 import leave from './leave';
 import closeProducer from './closeProducer';
 import message from './message';
+import messageDirectPrivate from './messageDirectPrivate'
 
 let io;
 const map = {};
@@ -33,6 +35,7 @@ const init = ({ httpServer }) => {
     socket.emit('welcome', socket.id);
 
     socket.on('joinRoom', (data, callback) => joinRoom({ socket, data, callback }));
+    socket.on('joinRoomCallee', (data, callback) => joinRoomCallee({ socket, data, callback })); //added by rahul
     socket.on('getRouterRtpCapabilities', (data, callback) => getRouterRtpCapabilities({ socket, data, callback }));
     socket.on('createProducerTransport', (data, callback) => createProducerTransport({ socket, data, callback }));
     socket.on('createConsumerTransport', (data, callback) => createConsumerTransport({ socket, data, callback }));
@@ -45,6 +48,7 @@ const init = ({ httpServer }) => {
     socket.on('leave', (data, callback) => leave({ socket, data, callback }));
     socket.on('closeProducer', (data, callback) => closeProducer({ socket, data, callback }));
     socket.on('message', (data, callback) => message({ socket, data, callback }));
+    socket.on('messageDirectPrivate', (data, callback) => messageDirectPrivate({ socket, data, callback }));
     socket.on('uuid', (uuid) => {
       map[uuid] = socket.id;
     });

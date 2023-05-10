@@ -99,9 +99,18 @@ const VideoCalleePromptScreen = () => {
 
   };
 
-//   if (!video || !video.stream) {
-//     return null;
-//   }
+  function handleCallAccept(){
+    // callerDetails name callCategory photo
+    navigation.navigate('')
+  }
+
+  function handleCallReject(){
+    dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+    dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
+    dispatch(Actions.Media.releaseLocalVideo());
+    dispatch(Actions.Media.releaseLocalAudio());
+
+  }
 
   const styles = StyleSheet.create({
     scrollContainer: {
@@ -259,7 +268,9 @@ const VideoCalleePromptScreen = () => {
             </View>
 
             <View style={styles.callPromptBottomContainer}>
-                <TouchableOpacity onPress={returnToWebview} >
+                <TouchableOpacity onPress={()=>{
+                  handleCallReject();
+                }} >
                   <CallReject
                     width={60} 
                     height={60}
@@ -275,6 +286,7 @@ const VideoCalleePromptScreen = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                 onPress={() => {
+                    handleCallAccept();
                     setIncomingCallAnswer(true)
                 }}>
                   <CallAccept

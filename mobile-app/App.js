@@ -309,16 +309,7 @@ function App() {
       consulteaseUserProfileData._id
     ) {
       socketId ? postSocket(consulteaseUserProfileData, socketId, post) : null;
-      // calleeDetails.user_id &&
-      //   initCallDetailsGetRoom(
-      //     (from_user = consulteaseUserProfileData._id),
-      //     (to_user = calleeDetails.user_id),
-      //     (auth_token = consulteaseUserProfileData.auth_token),
-      //     (callCategory = calleeDetails.callCategory),
-      //   );
     }
-
-    // getSocket(consulteaseUserProfileData, socketId, get);
   }, [socketId]);
 
   useEffect(() => {
@@ -356,25 +347,25 @@ function App() {
   // listen for any message sent by any other socket_id user
   useEffect(() => {
     socketId !== null || undefined
-      ? Utils.socket.on('message', (messageData) => {
-          if (messageData.type === 'call') {
-            // Do something when an incoming call is received
-            // For example, show a modal or notification
-            dispatch({
-              type: 'SET_CALLER_DETAILS',
-              payload: messageData.callerDetails,
-            });
-            navigation.navigate('Meeting');
-            console.log(
-              'Call ************ Incoming call received ********',
-              messageData,
-              JSON.stringify(messageData),
-            );
-          }
+      ? Utils.socket.on('messageDirectPrivate', (messageData) => {
+          // if (messageData.type === 'call') {
+          // Do something when an incoming call is received
+          // For example, show a modal or notification
+          // dispatch({
+          //   type: 'SET_CALLER_DETAILS',
+          //   payload: messageData.callerDetails,
+          // });
+          // navigation.navigate('Meeting');
+          console.log(
+            'Call ************ Incoming messageDirectPrivate received App.js useEffect line~360********',
+            messageData,
+            JSON.stringify(messageData),
+          );
+          // }
         })
       : null;
     return () => {
-      Utils.socket.off('message');
+      Utils.socket.off('messageDirectPrivate');
     };
   }, [socketId]);
 

@@ -3,7 +3,11 @@ const initialState = {
   isCallViewOn: false,
   consulteaseUserProfileData: {},
   calleeDetails: {},
-  callerDetails: {},
+  callerDetails: {
+    name: undefined,
+    callCategory: undefined,
+    photo: undefined,
+  },
   calleeSocketId: undefined,
   callInstanceData: {},
   callId: undefined,

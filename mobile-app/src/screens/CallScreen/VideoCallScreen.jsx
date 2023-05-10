@@ -65,6 +65,7 @@ const VideoCallScreen = () => {
   const interfaces = useSelector((state) => state.media.interfaces);
   const joined = useSelector((state) => state.media.joined);
   const ended = useSelector((state) => state.meeting.ended);
+  const room = useSelector((state)=>state.meeting.room)
   
   const [ primaryVideoViewIsPeer, setPrimaryVideoViewIsPeer ] = useState(true)
 
@@ -92,11 +93,11 @@ const VideoCallScreen = () => {
     }
   }, [joined]);
 
-  useEffect(() => {
-    if (socketId && callInstanceState._id) {
-      dispatch(Actions.IO.joinRoom(callInstanceState._id)); // call_id or room_key = callInstanceState._id
-    }
-  }, [socketId]);
+  // useEffect(() => {
+  //   if (socketId && callInstanceState._id) {
+  //     room ? null : dispatch(Actions.IO.joinRoom(callInstanceState._id)); // call_id or room_key = callInstanceState._id
+  //   }
+  // }, [socketId]);
 
 
   const returnToWebview = () => {
