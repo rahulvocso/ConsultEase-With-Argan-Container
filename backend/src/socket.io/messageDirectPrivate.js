@@ -3,7 +3,10 @@ import Utils from '../utils';
 
 const messageDirectPrivate = async ({ data, callback }) => {
   Utils.logger.info(JSON.stringify(data));
-  Utils.io.to(data.to).emit('messageDirectPrivate', {content: data});
+  Utils.io.to(data.to).emit(
+    'messageDirectPrivate',
+    JSON.stringify({content: xss(data)})
+  );
   console.log(`Message data sent to device with socket ID ${data.to}: ${data}`);
 };
 
