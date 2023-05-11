@@ -296,34 +296,6 @@ function App() {
 
   const { get, post } = useFetch('https://callingserver.onrender.com/api/v1/');
 
-  // post socket_id to server as and when socketId changes
-  useEffect(() => {
-    console.log(
-      'useEffect consulteasedata APP.js react-native',
-      consulteaseUserProfileData.fname,
-      calleeDetails.name,
-    );
-    if (
-      Object.keys(consulteaseUserProfileData).length !== 0 &&
-      consulteaseUserProfileData.auth_token &&
-      consulteaseUserProfileData._id
-    ) {
-      socketId ? postSocket(consulteaseUserProfileData, socketId, post) : null;
-    }
-  }, [socketId]);
-
-  useEffect(() => {
-    console.log(
-      'In Native Container UseEffect calleeDetails',
-      'socket id',
-      socketId,
-      calleeDetails,
-      'isCallViewOn',
-      isCallViewOn,
-    );
-    return () => {};
-  }, [calleeDetails, isCallViewOn, socketId]);
-
   useEffect(() => {
     // SystemNavigationBar.stickyImmersive();
     // SystemNavigationBar.immersive();
@@ -338,16 +310,29 @@ function App() {
     // HeadlessJsTaskService.register(CheckInternetService, 'CheckInternetTask');
   }, []);
 
-  // if isCallViewOn is false/off set data.content derived from webview to empty/null/to-initial-redux-state;
   useState(() => {
     isCallViewOn ? null : dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
+    console.log('** isCallViewOn changed in container App.js UseEffect **', isCallViewOn);
   }, [isCallViewOn]);
+
+  // logs when user just enters call mode
+  useEffect(() => {
+    consulteaseUserProfileData
+      ? console.log(
+          'In Container App.js UseEffect',
+          'calleeDetails',
+          calleeDetails,
+          'consulteaseUserProfileData',
+          consulteaseUserProfileData,
+        )
+      : null;
+  }, [consulteaseUserProfileData, calleeDetails]);
   //
 
-  // listen for any message sent by any other socket_id user
+  // listen for any direct private message sent by any other socket_id user
   useEffect(() => {
     socketId !== null || undefined
-      ? Utils.socket.on('messageDirectPrivate', (data) => {
+      ? Utils.socket.on('messageDirectPrivate', ({ data }) => {
           console.log(
             '************ Incoming messageDirectPrivate received App.js useEffect line~359********',
             data.content,
@@ -420,6 +405,12 @@ function App() {
     if (!socketId) {
       dispatch(Actions.IO.setupSocket());
     }
+  }, [socketId]);
+
+  // post socket_id to server as and when socketId changes
+  useEffect(() => {
+    socketId ? postSocket(consulteaseUserProfileData, socketId, post) : null;
+    console.log('SOCKET ID changed', socketId, 'in Container App.js UseEffect');
   }, [socketId]);
 
   useEffect(() => {
