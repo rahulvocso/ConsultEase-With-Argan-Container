@@ -104,7 +104,7 @@ function CustomAppBar({ navigation, route }) {
           onPress={openInAppBrowser}
         />
       )}
-      <Appbar.Content
+      <Appbar
         color={Theme.Variables.textPrimary}
         title={config.appTitle}
         titleStyle={{ fontFamily: 'KaushanScript-Regular' }}
@@ -347,28 +347,28 @@ function App() {
   // listen for any message sent by any other socket_id user
   useEffect(() => {
     socketId !== null || undefined
-      ? Utils.socket.on('messageDirectPrivate', (messageData) => {
-          if (messageData.type === 'call') {
+      ? Utils.socket.on('messageDirectPrivate', (data) => {
+          if (data.type === 'call') {
             // Do something when an incoming call is received
             // For example, show a modal or notification
             dispatch({
               type: 'SET_CALLER_DETAILS',
-              payload: messageData.callerDetails,
+              payload: data.callerDetails,
             });
-            dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: messageData });
+            dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: data });
             console.log(
               'Call ************ Incoming messageDirectPrivate received App.js useEffect line~359********',
-              messageData,
-              JSON.stringify(messageData),
+              data,
+              JSON.stringify(data),
             );
             navigation.navigate('VideoCalleePrompt');
           }
           //
-          else if (messageData.type === 'callResponse') {
+          else if (data.type === 'callResponse') {
             console.log(
               'Call-Response ************ Incoming messageDirectPrivate received App.js useEffect line~366********',
-              messageData,
-              JSON.stringify(messageData),
+              data,
+              JSON.stringify(data),
             );
             navigation.navigate('WebView');
           }
