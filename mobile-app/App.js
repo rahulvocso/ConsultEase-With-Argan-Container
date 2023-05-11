@@ -283,7 +283,7 @@ function App() {
   const device = useSelector((state) => state.media.device);
   const isCallViewOn = useSelector((state) => state.webview.isCallViewOn);
   const calleeDetails = useSelector((state) => state.webview.calleeDetails);
-  //Consulteas user profile data received from webview
+  //Consulteas user profile data.content received from webview
   const consulteaseUserProfileData = useSelector((state) =>
     state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
   );
@@ -338,7 +338,7 @@ function App() {
     // HeadlessJsTaskService.register(CheckInternetService, 'CheckInternetTask');
   }, []);
 
-  // if isCallViewOn is false/off set data derived from webview to empty/null/to-initial-redux-state;
+  // if isCallViewOn is false/off set data.content derived from webview to empty/null/to-initial-redux-state;
   useState(() => {
     isCallViewOn ? null : dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
   }, [isCallViewOn]);
@@ -348,27 +348,34 @@ function App() {
   useEffect(() => {
     socketId !== null || undefined
       ? Utils.socket.on('messageDirectPrivate', (data) => {
-          if (data.type === 'call') {
+          console.log(
+            '************ Incoming messageDirectPrivate received App.js useEffect line~359********',
+            data.content,
+            data,
+            JSON.stringify(data),
+            JSON.stringify(data.content),
+          );
+          if (data.content.type === 'call') {
             // Do something when an incoming call is received
             // For example, show a modal or notification
             dispatch({
               type: 'SET_CALLER_DETAILS',
-              payload: data.callerDetails,
+              payload: data.content.callerDetails,
             });
-            dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: data });
+            dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: data.content });
             console.log(
               'Call ************ Incoming messageDirectPrivate received App.js useEffect line~359********',
-              data,
-              JSON.stringify(data),
+              data.content,
+              JSON.stringify(data.content),
             );
             navigation.navigate('VideoCalleePrompt');
           }
           //
-          else if (data.type === 'callResponse') {
+          else if (data.content.type === 'callResponse') {
             console.log(
               'Call-Response ************ Incoming messageDirectPrivate received App.js useEffect line~366********',
-              data,
-              JSON.stringify(data),
+              data.content,
+              JSON.stringify(data.content),
             );
             navigation.navigate('WebView');
           }
