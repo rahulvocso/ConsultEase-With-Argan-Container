@@ -132,7 +132,7 @@ const VideoCallerPromptScreen = () => {
     if (socketId && callInstanceData._id) {
       dispatch(Actions.IO.joinRoom(callInstanceData._id)); // call_id or room_key = callInstanceState._id
       // send message to callee to open VideocalleePrompt screen/view on his/her phone
-      (socketId && Utils.socket) ? (
+      (Utils.socket && consulteaseUserProfileData && calleeDetails) ? (
         Utils.socket.emit("messageDirectPrivate",
             {
               type: 'call',
