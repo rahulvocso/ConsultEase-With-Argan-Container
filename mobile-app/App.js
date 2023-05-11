@@ -409,9 +409,11 @@ function App() {
 
   // post socket_id to server as and when socketId changes
   useEffect(() => {
-    socketId ? postSocket(consulteaseUserProfileData, socketId, post) : null;
-    console.log('SOCKET ID changed', socketId, 'in Container App.js UseEffect');
-  }, [socketId]);
+    consulteaseUserProfileData.auth_token && socketId
+      ? (postSocket(consulteaseUserProfileData, socketId, post),
+        console.log('**SOCKET ID changed**', socketId, 'in Container App.js UseEffect'))
+      : null;
+  }, [socketId, consulteaseUserProfileData.auth_token]);
 
   useEffect(() => {
     if (socketId && !device) {
