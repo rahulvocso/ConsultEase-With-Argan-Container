@@ -134,7 +134,6 @@ const VideoCallerPromptScreen = () => {
       // send message to callee to open VideocalleePrompt screen/view on his/her phone
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",
-          JSON.stringify(
             {
               type: 'call',
               from: socketId,
@@ -146,7 +145,6 @@ const VideoCallerPromptScreen = () => {
               photo: consulteaseUserProfileData.photo,
               },
             }
-          )
       )) : null;
   
       console.log('log below -> send call-pickup event by private-socket-message')
