@@ -69,7 +69,7 @@ const VideoCallerPromptScreen = () => {
   const calleeSocketId = useSelector((state)=> state.webview.calleeSocketId);
   const socketId = useSelector((state) => state.socket.id);
   const callInstanceData = useSelector((state) => state.webview.callInstanceData)
-  const incomingCallId = useSelector((state) => state.webview.incomingCallId);
+  // const incomingCallId = useSelector((state) => state.webview.incomingCallId);
   const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
   const joined = useSelector((state) => state.media.joined)
 

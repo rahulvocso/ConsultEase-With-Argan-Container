@@ -43,6 +43,8 @@ const VideoCalleePromptScreen = () => {
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const calleeDetails = useSelector(state => state.webview.calleeDetails);
   const callerDetails = useSelector(state => state.webview.callerDetails);
+  const incomingCallId = useSelector((state) => state.webview.incomingCallId);
+  // const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
   // const key = useSelector(state => state.webview.key)
   const dispatch = useDispatch();
   const socketId = useSelector((state) => state.socket.id);
@@ -83,8 +85,8 @@ const VideoCalleePromptScreen = () => {
   }, [])
 
   useEffect(() => {
-    if (socketId && callId && incomingCallAnswer) {
-      dispatch(Actions.IO.joinRoom(callId)); // call_id or room_key = callInstanceState._id
+    if (socketId && incomingCallId && incomingCallAnswer) {
+      dispatch(Actions.IO.joinRoom(incomingCallId)); // call_id or room_key = callInstanceState._id
       navigation.navigate('VideoCall', { key });
     }
   }, [socketId]);
