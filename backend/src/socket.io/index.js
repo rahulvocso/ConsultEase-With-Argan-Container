@@ -14,7 +14,7 @@ import join from './join';
 import leave from './leave';
 import closeProducer from './closeProducer';
 import message from './message';
-import messageDirectPrivate from './messageDirectPrivate'
+import messageDirectPrivate from './messageDirectPrivate';
 
 let io;
 const map = {};
