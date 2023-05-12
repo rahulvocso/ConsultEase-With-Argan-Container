@@ -36,10 +36,12 @@ import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
 // import CallReject from '../../assets/images/CallReject.svg';
 
 const VideoCalleePromptScreen = () => {
+  const navigation = useNavigation();
+
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const calleeDetails = useSelector(state => state.webview.calleeDetails);
   const callerDetails = useSelector(state => state.webview.callerDetails);
-  const incomingCallId = useSelector((state) => state.webview.incomingCallId);
+  const incomingCallDetails = useSelector((state) => state.webview.incomingCallDetails);
   // const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
   // const key = useSelector(state => state.webview.key)
   const dispatch = useDispatch();
@@ -55,7 +57,6 @@ const VideoCalleePromptScreen = () => {
 
   const video = useSelector((state) => state.media.local.video);
   const active = useSelector((state) => !!state.media.local.video);
-  const navigation = useNavigation();
   const key = useSelector((state) => state.meeting.key);
   const callId = useSelector(state => state.webview.callInstanceState.callId)
 
@@ -81,9 +82,9 @@ const VideoCalleePromptScreen = () => {
   }, [])
 
   useEffect(() => {
-    if (socketId && incomingCallId && incomingCallAnswer) {
+    if (socketId && incomingCallDetails && incomingCallAnswer) {
       dispatch(Actions.IO.joinRoom(incomingCallId)); // call_id or room_key = callInstanceState._id
-      navigation.navigate('VideoCall', { key });
+      // navigation.navigate('VideoCall', { key });
     }
   }, [socketId]);
 
@@ -113,7 +114,7 @@ const VideoCalleePromptScreen = () => {
   
       console.log('log below -> send call-pickup event by private-socket-message')
     }
-    navigation.navigate('Videocall');
+    navigation.navigate('Videocall',{ key });
   }
 
   function handleCallReject(){
@@ -130,11 +131,11 @@ const VideoCalleePromptScreen = () => {
   
       console.log('log below -> send call-pickup event by private-socket-message')
     }
-    navigation.navigate('Videocall');
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
     dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
+    navigation.navigate('WebView', { key });
   }
 
   const styles = StyleSheet.create({

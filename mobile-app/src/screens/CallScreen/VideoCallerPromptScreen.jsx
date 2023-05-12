@@ -212,11 +212,12 @@ const VideoCallerPromptScreen = () => {
         console.log('postSocket.js, data', data);
         if (data.status == 200) {
           // setCallInstanceState({ ...data.body, ...callInstanceState });
-          dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: data.body }),
-          dispatch({ type: 'SET_OUTGOING_CALL_ID', payload: data.body._id})
-            console.log(
-              '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
-            );
+          dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: data.body });
+          dispatch({ type: 'SET_OUTGOING_CALL_ID', payload: data.body._id});
+          dispatch({ type: 'meeting-key', value: data.body._id })
+          console.log(
+            '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
+          );
         } else {
           console.log(
             '******Unsuccessfull  VideoCallerPromptScreen.js  initcall()  call init  POST req       *******',
@@ -557,7 +558,7 @@ const VideoCallerPromptScreen = () => {
                     <TouchableOpacity onPress={()=>{
                         // navigation.navigate('VideoCall', { key })
                         // dispatch(Actions.Media.joinMeeting());
-                        navigation.navigate('WebView');
+                        navigation.navigate('WebView',{ key });
                         // dispatch({ type: 'SET_CALLEE_DETAILS', payload: JSON.parse(event.nativeEvent.data) })
                       }
                     }>
