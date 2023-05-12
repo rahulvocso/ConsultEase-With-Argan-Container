@@ -94,7 +94,7 @@ const VideoCalleePromptScreen = () => {
     // dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
     // dispatch(Actions.Media.releaseLocalVideo());
     // dispatch(Actions.Media.releaseLocalAudio());
-    dispatch({type: 'meeting-key', value: callInstanceState._id});
+    // dispatch({type: 'meeting-key', value: incomingCallDetails.callId});
     dispatch({ type: 'join', name: 'Foo Bar', email: 'consultease@gmail.com' })
 
   };
