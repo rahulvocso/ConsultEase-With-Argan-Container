@@ -112,10 +112,10 @@ const VideoCalleePromptScreen = () => {
           response: 'accepted',
         }
       })) : null;
-  
+      navigation.navigate('Videocall',{ key });
       console.log('log below -> send call-pickup event by private-socket-message')
     }
-    navigation.navigate('Videocall',{ key });
+    
   }
 
   function handleCallReject(){
@@ -132,7 +132,7 @@ const VideoCalleePromptScreen = () => {
   
       console.log('log below -> send call-pickup event by private-socket-message')
     }
-    dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+    // dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
     dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
