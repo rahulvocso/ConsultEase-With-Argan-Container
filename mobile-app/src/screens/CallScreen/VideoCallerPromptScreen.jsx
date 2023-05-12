@@ -558,8 +558,8 @@ const VideoCallerPromptScreen = () => {
                     <TouchableOpacity onPress={()=>{
                         // navigation.navigate('VideoCall', { key })
                         // dispatch(Actions.Media.joinMeeting());
-                        navigation.navigate('WebView',{ key });
-                        // dispatch({ type: 'SET_CALLEE_DETAILS', payload: JSON.parse(event.nativeEvent.data) })
+                        // navigation.navigate('WebView',{ key });
+                        dispatch({ type: 'SET_CALL_VIEW_ON', payload: false })
                       }
                     }>
                         {/* <SvgUri

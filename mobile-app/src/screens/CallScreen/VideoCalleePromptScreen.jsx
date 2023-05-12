@@ -135,7 +135,7 @@ const VideoCalleePromptScreen = () => {
     dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
-    navigation.navigate('WebView', { key });
+    // navigation.navigate('WebView', { key });
   }
 
   const styles = StyleSheet.create({

@@ -354,6 +354,7 @@ function App() {
               JSON.stringify(message),
             );
             navigation.navigate('VideoCalleePrompt', { key });
+            navigation.navigate('Join', { key });
           }
           // outgoing call back/response message from peer
           else if (message.type === 'callResponse') {
@@ -364,7 +365,7 @@ function App() {
             );
             message.response === 'accepted'
               ? navigation.navigate('VideoCall', { key })
-              : navigation.navigate('WebView', { key });
+              : dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
           }
         })
       : null;
@@ -426,24 +427,23 @@ function App() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
       {/* Theme.Variables.background */}
-
-      <>
-        <StatusBar barStyle="dark-content" />
-        <Stack.Navigator
-          screenOptions={{
-            header: ConditionalAppBar,
-            // gestureResponseDistance: {
-            //   horizontal: 10,
-            //   vertical: {
-            //     primaryAxis: 10, // Minimum distance from top/bottom edge of the screen
-            //     secondaryAxis: 0, // Maximum distance from left/right edge of the screen
-            //   },
-            // },
-            // gestureEnabled: true,
-            // gestureDirection: 'vertical',
-          }}
-        >
-          {isCallViewOn ? (
+      {isCallViewOn ? (
+        <>
+          <StatusBar barStyle="dark-content" />
+          <Stack.Navigator
+            screenOptions={{
+              header: ConditionalAppBar,
+              // gestureResponseDistance: {
+              //   horizontal: 10,
+              //   vertical: {
+              //     primaryAxis: 10, // Minimum distance from top/bottom edge of the screen
+              //     secondaryAxis: 0, // Maximum distance from left/right edge of the screen
+              //   },
+              // },
+              // gestureEnabled: true,
+              // gestureDirection: 'vertical',
+            }}
+          >
             <>
               {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
               <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
@@ -455,12 +455,12 @@ function App() {
               <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
               <Stack.Screen name="Meeting" component={MeetingNavigator} />
             </>
-          ) : (
-            <Stack.Screen name="WebView" component={ConsultEaseWebview} />
-          )}
-        </Stack.Navigator>
-        {/* <Common.Snack /> */}
-      </>
+          </Stack.Navigator>
+          {/* <Common.Snack /> */}
+        </>
+      ) : (
+        <ConsultEaseWebview />
+      )}
     </SafeAreaView>
   );
 }
