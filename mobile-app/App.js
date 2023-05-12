@@ -274,7 +274,7 @@ const useInitialURL = () => {
 // APP COMPONENT
 function App({ indexJsNavigationRef }) {
   const dispatch = useDispatch();
-  const navigation = useNavigation(indexJsNavigationRef.currrent);
+  const navigation = useNavigation(indexJsNavigationRef);
   const { url: initialUrl } = useInitialURL();
   const socketId = useSelector((state) => state.socket.id);
   const device = useSelector((state) => state.media.device);
@@ -353,7 +353,8 @@ function App({ indexJsNavigationRef }) {
               message,
               JSON.stringify(message),
             );
-            navigation.navigate('VideoCalleePrompt', { key });
+            // navigation.navigate('VideoCalleePrompt', { key });
+            indexJsNavigationRef.current.navigate('VideoCalleePrompt');
             // indexJsNavigationRef.current.navigate('VideoCall');
             // navigation.navigate('Join', { key });
           }
@@ -367,7 +368,8 @@ function App({ indexJsNavigationRef }) {
             message.response === 'accepted'
               ? navigation.navigate('VideoCall', { key })
               : // indexJsNavigationRef.current.navigate('VideoCall')
-                (navigation.navigate('WebView', { key }),
+                (indexJsNavigationRef.current.navigate('WebView'),
+                // navigation.navigate('WebView', { key }),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
                 dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }));
           }
