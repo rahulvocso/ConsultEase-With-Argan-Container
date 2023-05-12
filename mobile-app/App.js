@@ -367,7 +367,9 @@ function App({ indexJsNavigationRef }) {
             message.response === 'accepted'
               ? navigation.navigate('VideoCall', { key })
               : // indexJsNavigationRef.current.navigate('VideoCall')
-                dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+                (navigation.navigate('WebView', { key }),
+                dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
+                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }));
           }
         })
       : null;
