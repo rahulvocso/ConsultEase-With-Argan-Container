@@ -429,23 +429,24 @@ function App({ indexJsNavigationRef }) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
       {/* Theme.Variables.background */}
-      {isCallViewOn ? (
-        <>
-          <StatusBar barStyle="dark-content" />
-          <Stack.Navigator
-            screenOptions={{
-              header: ConditionalAppBar,
-              // gestureResponseDistance: {
-              //   horizontal: 10,
-              //   vertical: {
-              //     primaryAxis: 10, // Minimum distance from top/bottom edge of the screen
-              //     secondaryAxis: 0, // Maximum distance from left/right edge of the screen
-              //   },
-              // },
-              // gestureEnabled: true,
-              // gestureDirection: 'vertical',
-            }}
-          >
+
+      <>
+        <StatusBar barStyle="dark-content" />
+        <Stack.Navigator
+          screenOptions={{
+            header: ConditionalAppBar,
+            // gestureResponseDistance: {
+            //   horizontal: 10,
+            //   vertical: {
+            //     primaryAxis: 10, // Minimum distance from top/bottom edge of the screen
+            //     secondaryAxis: 0, // Maximum distance from left/right edge of the screen
+            //   },
+            // },
+            // gestureEnabled: true,
+            // gestureDirection: 'vertical',
+          }}
+        >
+          {isCallViewOn ? (
             <>
               {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
               <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
@@ -457,12 +458,13 @@ function App({ indexJsNavigationRef }) {
               <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
               <Stack.Screen name="Meeting" component={MeetingNavigator} />
             </>
-          </Stack.Navigator>
-          {/* <Common.Snack /> */}
-        </>
-      ) : (
-        <ConsultEaseWebview />
-      )}
+          ) : (
+            <Stack.Screen name="WebView" component={ConsultEaseWebview} />
+            // </> ConsultEaseWebview />
+          )}
+        </Stack.Navigator>
+        {/* <Common.Snack /> */}
+      </>
     </SafeAreaView>
   );
 }
