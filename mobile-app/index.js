@@ -10,16 +10,20 @@ import store from './src/store';
 import { name as appName } from './app.json';
 import Theme from './src/theme';
 
+import { useRef } from 'react';
+
 notifee.registerForegroundService(() => {
   return new Promise(() => {});
 });
 
 function Main() {
+  const navigationRef = useRef();
+
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <PaperProvider theme={Theme.Base}>
         <Provider store={store}>
-          <App />
+          <App indexJsNavigationRef={navigationRef} />
         </Provider>
       </PaperProvider>
     </NavigationContainer>

@@ -272,7 +272,7 @@ const useInitialURL = () => {
 };
 
 // APP COMPONENT
-function App() {
+function App(indexJsNavigationRef) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { url: initialUrl } = useInitialURL();
@@ -353,7 +353,8 @@ function App() {
               message,
               JSON.stringify(message),
             );
-            navigation.navigate('VideoCalleePrompt', { key });
+            //  navigation.navigate('VideoCalleePrompt', { key });
+            indexJsNavigationRef.current.navigate('VideoCall');
             navigation.navigate('Join', { key });
           }
           // outgoing call back/response message from peer
@@ -364,7 +365,8 @@ function App() {
               JSON.stringify(message),
             );
             message.response === 'accepted'
-              ? navigation.navigate('VideoCall', { key })
+              ? // ? navigation.navigate('VideoCall', { key })
+                indexJsNavigationRef.current.navigate('VideoCall')
               : dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
           }
         })
