@@ -54,9 +54,6 @@ import initCallDetailsGetRoom from './initCallDetailsGetRoom';
 // import getCalleeSocket from './getCalleeSocket.js';
 // import initCall from './initCall';
 
-// import io from 'socket.io-client';
-// const socket = io('https://arganbackend.onrender.com');
-
 const VideoCallerPromptScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();

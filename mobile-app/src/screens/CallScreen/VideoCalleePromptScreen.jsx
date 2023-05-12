@@ -35,10 +35,6 @@ import CallAccept from '../../../android/app/src/main/assets/CallAccept.svg';
 import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
 // import CallReject from '../../assets/images/CallReject.svg';
 
-import io from 'socket.io-client';
-const socket = io('https://arganbackend.onrender.com');
-
-
 const VideoCalleePromptScreen = () => {
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const calleeDetails = useSelector(state => state.webview.calleeDetails);

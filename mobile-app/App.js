@@ -49,9 +49,6 @@ import getSocket from './src/foreground-background-services/getSocket';
 import initCallDetailsGetRoom from './src/screens/CallScreen/initCallDetailsGetRoom';
 // import CheckInternetService from './src/foreground-background-services/InternetStatus';
 
-// import io from 'socket.io-client';
-// const socket = io('https://arganbackend.onrender.com');
-
 function CustomAppBar({ navigation, route }) {
   const theme = useTheme();
   const openInAppBrowser = async () => {
@@ -444,10 +441,10 @@ function App() {
           {isCallViewOn ? (
             <>
               {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
-              <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
+              {/* <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
               <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
               <Stack.Screen name="VideoCall" component={VideoCallScreen} />
-              <Stack.Screen name="CallRating" component={CallRatingScreen} />
+              <Stack.Screen name="CallRating" component={CallRatingScreen} /> */}
               <Stack.Screen name="Home" component={Screens.HomeScreen} />
               <Stack.Screen name="Join" component={Screens.JoinScreen} />
               <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
