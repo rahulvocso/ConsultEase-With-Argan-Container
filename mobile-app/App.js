@@ -329,38 +329,37 @@ function App() {
   // listen for any direct private message sent by any other socket_id user
   useEffect(() => {
     socketId !== null || undefined
-      ? Utils.socket.on('messageDirectPrivate', ({ data }) => {
+      ? Utils.socket.on('messageDirectPrivate', (messageData) => {
+          const data = xss(JSON.parse(messageData).content);
           console.log(
             '************ Incoming messageDirectPrivate received App.js useEffect line~359********',
-            data.content,
+            data.type,
             data,
-            JSON.stringify(data),
-            JSON.stringify(data.content),
           );
-          if (data.content.type === 'call') {
-            // Do something when an incoming call is received
-            // For example, show a modal or notification
-            dispatch({
-              type: 'SET_CALLER_DETAILS',
-              payload: data.content.callerDetails,
-            });
-            dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: data.content });
-            console.log(
-              'Call ************ Incoming messageDirectPrivate received App.js useEffect line~359********',
-              data.content,
-              JSON.stringify(data.content),
-            );
-            navigation.navigate('VideoCalleePrompt');
-          }
-          //
-          else if (data.content.type === 'callResponse') {
-            console.log(
-              'Call-Response ************ Incoming messageDirectPrivate received App.js useEffect line~366********',
-              data.content,
-              JSON.stringify(data.content),
-            );
-            navigation.navigate('WebView');
-          }
+          // if (data.content.type === 'call') {
+          //   // Do something when an incoming call is received
+          //   // For example, show a modal or notification
+          //   dispatch({
+          //     type: 'SET_CALLER_DETAILS',
+          //     payload: data.content.callerDetails,
+          //   });
+          //   dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: data.content });
+          //   console.log(
+          //     'Call ************ Incoming messageDirectPrivate received App.js useEffect line~359********',
+          //     data.content,
+          //     JSON.stringify(data.content),
+          //   );
+          //   navigation.navigate('VideoCalleePrompt');
+          // }
+          // //
+          // else if (data.content.type === 'callResponse') {
+          //   console.log(
+          //     'Call-Response ************ Incoming messageDirectPrivate received App.js useEffect line~366********',
+          //     data.content,
+          //     JSON.stringify(data.content),
+          //   );
+          //   navigation.navigate('WebView');
+          // }
         })
       : null;
     return () => {
