@@ -58,7 +58,7 @@ const VideoCalleePromptScreen = () => {
   const video = useSelector((state) => state.media.local.video);
   const active = useSelector((state) => !!state.media.local.video);
   const key = useSelector((state) => state.meeting.key);
-  const callId = useSelector(state => state.webview.callInstanceState.callId)
+  const callId = useSelector(state => state.webview.callerDetails.callId)
 
   const [incomingCallAnswer, setIncomingCallAnswer]  = useState();
 
@@ -81,12 +81,12 @@ const VideoCalleePromptScreen = () => {
     // }
   }, [])
 
-  useEffect(() => {
-    if (socketId && incomingCallDetails && incomingCallAnswer) {
-      dispatch(Actions.IO.joinRoom(incomingCallId)); // call_id or room_key = callInstanceState._id
-      // navigation.navigate('VideoCall', { key });
-    }
-  }, [socketId]);
+  // useEffect(() => {
+  //   if (socketId && incomingCallDetails && incomingCallAnswer) {
+  //     dispatch(Actions.IO.joinRoom(incomingCallId)); // call_id or room_key = callInstanceState._id
+  //     // navigation.navigate('VideoCall', { key });
+  //   }
+  // }, [socketId]);
 
   const returnToWebview = () => {
     // handle call accept
@@ -100,14 +100,14 @@ const VideoCalleePromptScreen = () => {
 
   function handleCallAccept(){
     // callerDetails name callCategory photo
-    if (socketId && callerDetails.callId) {
+    if (socketId && incomingCallDetails.callId) {
       dispatch(Actions.IO.joinRoom(callInstanceData._id)); 
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
         content : {
           type: 'callResponse',
           from: socketId,
-          to: callerDetails.from,
+          to: incomingCallDetails.from,
           response: 'accepted',
         }
       })) : null;
@@ -118,13 +118,13 @@ const VideoCalleePromptScreen = () => {
   }
 
   function handleCallReject(){
-    if (socketId && callerDetails.callId) {
+    if (socketId && incomingCallDetails.callId) {
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
         content : {
           type: 'callResponse',
           from: socketId,
-          to: callerDetails.from,
+          to: incomingCallDetails.from,
           response: 'rejected',
         }
       })) : null;
