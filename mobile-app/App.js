@@ -447,25 +447,26 @@ function App({ indexJsNavigationRef }) {
           }}
           navigation={navigation}
         >
-          {isCallViewOn ? (
-            <>
-              {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
-              isCallViewOn ?
+          {/* {isCallViewOn ? ( */}
+          <>
+            {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
+            {isCallViewOn ? (
               <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
-              :
+            ) : (
               <Stack.Screen name="WebView" component={ConsultEaseWebview} />
-              <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
-              <Stack.Screen name="VideoCall" component={VideoCallScreen} />
-              <Stack.Screen name="CallRating" component={CallRatingScreen} />
-              <Stack.Screen name="Home" component={Screens.HomeScreen} />
-              <Stack.Screen name="Join" component={Screens.JoinScreen} />
-              <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
-              <Stack.Screen name="Meeting" component={MeetingNavigator} />
-            </>
-          ) : (
+            )}
+            <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
+            <Stack.Screen name="VideoCall" component={VideoCallScreen} />
+            <Stack.Screen name="CallRating" component={CallRatingScreen} />
+            <Stack.Screen name="Home" component={Screens.HomeScreen} />
+            <Stack.Screen name="Join" component={Screens.JoinScreen} />
+            <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
+            <Stack.Screen name="Meeting" component={MeetingNavigator} />
+          </>
+          {/* ) : (
             <Stack.Screen name="WebView" component={ConsultEaseWebview} />
             // </> ConsultEaseWebview />
-          )}
+          )} */}
         </Stack.Navigator>
         {/* <Common.Snack /> */}
       </>
