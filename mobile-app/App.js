@@ -274,7 +274,7 @@ const useInitialURL = () => {
 // APP COMPONENT
 function App({ indexJsNavigationRef }) {
   const dispatch = useDispatch();
-  const navigation = useNavigation(indexJsNavigationRef);
+  const navigation = useNavigation(indexJsNavigationRef.currrent);
   const { url: initialUrl } = useInitialURL();
   const socketId = useSelector((state) => state.socket.id);
   const device = useSelector((state) => state.media.device);
@@ -353,8 +353,8 @@ function App({ indexJsNavigationRef }) {
               message,
               JSON.stringify(message),
             );
-            //  navigation.navigate('VideoCalleePrompt', { key });
-            indexJsNavigationRef.current.navigate('VideoCall');
+            navigation.navigate('VideoCalleePrompt', { key });
+            // indexJsNavigationRef.current.navigate('VideoCall');
             navigation.navigate('Join', { key });
           }
           // outgoing call back/response message from peer
@@ -365,9 +365,9 @@ function App({ indexJsNavigationRef }) {
               JSON.stringify(message),
             );
             message.response === 'accepted'
-              ? // ? navigation.navigate('VideoCall', { key })
-                indexJsNavigationRef.current.navigate('VideoCall')
-              : dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+              ? navigation.navigate('VideoCall', { key })
+              : // indexJsNavigationRef.current.navigate('VideoCall')
+                dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
           }
         })
       : null;
@@ -432,7 +432,7 @@ function App({ indexJsNavigationRef }) {
 
       <>
         <StatusBar barStyle="dark-content" />
-        {/* <Stack.Navigator
+        <Stack.Navigator
           screenOptions={{
             header: ConditionalAppBar,
             // gestureResponseDistance: {
@@ -446,24 +446,27 @@ function App({ indexJsNavigationRef }) {
             // gestureDirection: 'vertical',
           }}
           navigation={navigation}
-        > */}
-        {isCallViewOn ? (
-          <>
-            {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
-            <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
-            <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
-            <Stack.Screen name="VideoCall" component={VideoCallScreen} />
-            <Stack.Screen name="CallRating" component={CallRatingScreen} />
-            <Stack.Screen name="Home" component={Screens.HomeScreen} />
-            <Stack.Screen name="Join" component={Screens.JoinScreen} />
-            <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
-            <Stack.Screen name="Meeting" component={MeetingNavigator} />
-          </>
-        ) : (
-          <Stack.Screen name="WebView" component={ConsultEaseWebview} />
-          // </> ConsultEaseWebview />
-        )}
-        {/* </Stack.Navigator> */}
+        >
+          {isCallViewOn ? (
+            <>
+              {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
+              isCallViewOn ?
+              <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
+              :
+              <Stack.Screen name="WebView" component={ConsultEaseWebview} />
+              <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
+              <Stack.Screen name="VideoCall" component={VideoCallScreen} />
+              <Stack.Screen name="CallRating" component={CallRatingScreen} />
+              <Stack.Screen name="Home" component={Screens.HomeScreen} />
+              <Stack.Screen name="Join" component={Screens.JoinScreen} />
+              <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
+              <Stack.Screen name="Meeting" component={MeetingNavigator} />
+            </>
+          ) : (
+            <Stack.Screen name="WebView" component={ConsultEaseWebview} />
+            // </> ConsultEaseWebview />
+          )}
+        </Stack.Navigator>
         {/* <Common.Snack /> */}
       </>
     </SafeAreaView>
