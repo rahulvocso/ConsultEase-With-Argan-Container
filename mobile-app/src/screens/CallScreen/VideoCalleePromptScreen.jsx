@@ -28,6 +28,7 @@ import notifee, {AndroidImportance} from '@notifee/react-native';
 
 import Actions from '../../actions';
 import Theme from '../../theme';
+import Utils from '../../utils';
 
 import AvatarSample from '../../assets/images/AvatarSample.png';
 // import CallAccept from '../../assets/images/CallAccept.svg';
@@ -93,7 +94,7 @@ const VideoCalleePromptScreen = () => {
     // dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
     // dispatch(Actions.Media.releaseLocalVideo());
     // dispatch(Actions.Media.releaseLocalAudio());
-    dispatch({type: 'meeting-key', value: callInstanceState._id}),
+    dispatch({type: 'meeting-key', value: callInstanceState._id});
     dispatch({ type: 'join', name: 'Foo Bar', email: 'consultease@gmail.com' })
 
   };
@@ -101,7 +102,7 @@ const VideoCalleePromptScreen = () => {
   function handleCallAccept(){
     // callerDetails name callCategory photo
     if (socketId && incomingCallDetails.callId) {
-      dispatch(Actions.IO.joinRoom(callInstanceData._id)); 
+      dispatch(Actions.IO.joinRoom(incomingCallDetails.callId)); 
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
         content : {

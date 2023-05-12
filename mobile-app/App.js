@@ -347,7 +347,7 @@ function App({ indexJsNavigationRef }) {
               payload: message.callerDetails,
             });
             dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: message });
-            dispatch({ type: 'meeting-key', value: message.callId });
+            // dispatch({ type: 'meeting-key', value: message.callId });
             console.log(
               'Call ************ Incoming messageDirectPrivate received App.js useEffect line~359********',
               message,
@@ -355,7 +355,7 @@ function App({ indexJsNavigationRef }) {
             );
             navigation.navigate('VideoCalleePrompt', { key });
             // indexJsNavigationRef.current.navigate('VideoCall');
-            navigation.navigate('Join', { key });
+            // navigation.navigate('Join', { key });
           }
           // outgoing call back/response message from peer
           else if (message.type === 'callResponse') {
