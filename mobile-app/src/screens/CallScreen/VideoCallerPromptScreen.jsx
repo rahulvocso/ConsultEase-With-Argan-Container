@@ -132,7 +132,7 @@ const VideoCallerPromptScreen = () => {
       (Utils.socket && consulteaseUserProfileData && calleeDetails) ? (
         Utils.socket.emit("messageDirectPrivate",
             {
-              type: 'call',
+              type: 'videoCall',
               from: socketId,
               to: calleeSocketId,
               callId: callInstanceData._id,
@@ -557,7 +557,7 @@ const VideoCallerPromptScreen = () => {
                     <TouchableOpacity onPress={()=>{
                         // navigation.navigate('VideoCall', { key })
                         // dispatch(Actions.Media.joinMeeting());
-                        navigation.navigate('Meeting');
+                        navigation.navigate('WebView');
                         // dispatch({ type: 'SET_CALLEE_DETAILS', payload: JSON.parse(event.nativeEvent.data) })
                       }
                     }>

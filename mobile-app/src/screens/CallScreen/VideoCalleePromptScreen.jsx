@@ -99,34 +99,42 @@ const VideoCalleePromptScreen = () => {
 
   function handleCallAccept(){
     // callerDetails name callCategory photo
-    navigation.navigate('Videocall')
-    if (socketId && callInstanceData._id) {
-      dispatch(Actions.IO.joinRoom(callInstanceData._id)); // call_id or room_key = callInstanceState._id
-      // send message to callee to open VideocalleePrompt screen/view on his/her phone
+    if (socketId && callerDetails.callId) {
+      dispatch(Actions.IO.joinRoom(callInstanceData._id)); 
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
         content : {
           type: 'callResponse',
           from: socketId,
-          to: callerDetails,
-          callerDetails: {
-            name: `${consulteaseUserProfileData.fname} ${consulteaseUserProfileData.lname}`,
-            callCategory: calleeDetails.callCategory,
-            photo: consulteaseUserProfileData.photo,
-          },
+          to: callerDetails.from,
+          response: 'accepted',
         }
       })) : null;
   
       console.log('log below -> send call-pickup event by private-socket-message')
     }
+    navigation.navigate('Videocall');
   }
 
   function handleCallReject(){
+    if (socketId && callerDetails.callId) {
+      (socketId && Utils.socket) ? (
+        Utils.socket.emit("messageDirectPrivate",{
+        content : {
+          type: 'callResponse',
+          from: socketId,
+          to: callerDetails.from,
+          response: 'rejected',
+        }
+      })) : null;
+  
+      console.log('log below -> send call-pickup event by private-socket-message')
+    }
+    navigation.navigate('Videocall');
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
     dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
-
   }
 
   const styles = StyleSheet.create({

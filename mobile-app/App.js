@@ -330,36 +330,40 @@ function App() {
   useEffect(() => {
     socketId !== null || undefined
       ? Utils.socket.on('messageDirectPrivate', (messageData) => {
-          const data = xss(JSON.parse(messageData).content);
+          // const data = xss(JSON.parse(messageData).content);
+          const message = messageData.content;
           console.log(
             '************ Incoming messageDirectPrivate received App.js useEffect line~359********',
-            data.type,
-            data,
+            message.type,
+            message,
           );
-          // if (data.content.type === 'call') {
-          //   // Do something when an incoming call is received
-          //   // For example, show a modal or notification
-          //   dispatch({
-          //     type: 'SET_CALLER_DETAILS',
-          //     payload: data.content.callerDetails,
-          //   });
-          //   dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: data.content });
-          //   console.log(
-          //     'Call ************ Incoming messageDirectPrivate received App.js useEffect line~359********',
-          //     data.content,
-          //     JSON.stringify(data.content),
-          //   );
-          //   navigation.navigate('VideoCalleePrompt');
-          // }
-          // //
-          // else if (data.content.type === 'callResponse') {
-          //   console.log(
-          //     'Call-Response ************ Incoming messageDirectPrivate received App.js useEffect line~366********',
-          //     data.content,
-          //     JSON.stringify(data.content),
-          //   );
-          //   navigation.navigate('WebView');
-          // }
+          // incoming call message from peer
+          if (message.type === 'videoCall') {
+            // Do something when an incoming call is received
+            // For example, show a modal or notification
+            dispatch({
+              type: 'SET_CALLER_DETAILS',
+              payload: message.callerDetails,
+            });
+            dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: message });
+            console.log(
+              'Call ************ Incoming messageDirectPrivate received App.js useEffect line~359********',
+              message,
+              JSON.stringify(message),
+            );
+            navigation.navigate('VideoCalleePrompt');
+          }
+          // outgoing call back/response message from peer
+          else if (message.type === 'callResponse') {
+            console.log(
+              'Call-Response ************ Incoming messageDirectPrivate received App.js useEffect line~366********',
+              message,
+              JSON.stringify(message),
+            );
+            message.response === 'accepted'
+              ? navigation.navigate('VideoCall')
+              : navigation.navigate('WebView');
+          }
         })
       : null;
     return () => {
@@ -440,10 +444,10 @@ function App() {
           {isCallViewOn ? (
             <>
               {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
-              {/* <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
+              <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
               <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
               <Stack.Screen name="VideoCall" component={VideoCallScreen} />
-              <Stack.Screen name="CallRating" component={CallRatingScreen} /> */}
+              <Stack.Screen name="CallRating" component={CallRatingScreen} />
               <Stack.Screen name="Home" component={Screens.HomeScreen} />
               <Stack.Screen name="Join" component={Screens.JoinScreen} />
               <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
