@@ -272,7 +272,7 @@ const useInitialURL = () => {
 };
 
 // APP COMPONENT
-function App(indexJsNavigationRef = { indexJsNavigationRef }) {
+function App({ indexJsNavigationRef }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { url: initialUrl } = useInitialURL();
