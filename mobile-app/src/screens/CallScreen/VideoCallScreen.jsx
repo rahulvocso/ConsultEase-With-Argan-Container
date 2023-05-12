@@ -107,6 +107,7 @@ const VideoCallScreen = () => {
     // })
     //navigation.navigate('CallRating')
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+    dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA', payload: false });
   };
 
   const handleCameraFacing = () => {

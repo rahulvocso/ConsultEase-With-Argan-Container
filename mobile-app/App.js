@@ -280,6 +280,7 @@ function App() {
   const device = useSelector((state) => state.media.device);
   const isCallViewOn = useSelector((state) => state.webview.isCallViewOn);
   const calleeDetails = useSelector((state) => state.webview.calleeDetails);
+  const key = useSelector((state) => state.meeting.key);
   //Consulteas user profile data.content received from webview
   const consulteaseUserProfileData = useSelector((state) =>
     state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
