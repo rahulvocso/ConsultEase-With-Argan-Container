@@ -272,9 +272,9 @@ const useInitialURL = () => {
 };
 
 // APP COMPONENT
-function App({ indexJsNavigationRef }) {
+function App() {
   const dispatch = useDispatch();
-  const navigation = useNavigation(indexJsNavigationRef);
+  const navigation = useNavigation();
   const { url: initialUrl } = useInitialURL();
   const socketId = useSelector((state) => state.socket.id);
   const device = useSelector((state) => state.media.device);
@@ -354,7 +354,7 @@ function App({ indexJsNavigationRef }) {
               JSON.stringify(message),
             );
             // navigation.navigate('VideoCalleePrompt', { key });
-            indexJsNavigationRef.current.navigate('VideoCalleePrompt');
+            navigation.navigate('VideoCalleePrompt');
             // indexJsNavigationRef.current.navigate('VideoCall');
             // navigation.navigate('Join', { key });
           }
@@ -368,7 +368,7 @@ function App({ indexJsNavigationRef }) {
             message.response === 'accepted'
               ? navigation.navigate('VideoCall', { key })
               : // indexJsNavigationRef.current.navigate('VideoCall')
-                (indexJsNavigationRef.current.navigate('WebView'),
+                (navigation.navigate('WebView'),
                 // navigation.navigate('WebView', { key }),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
                 dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }));
@@ -434,7 +434,7 @@ function App({ indexJsNavigationRef }) {
     <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
       {/* Theme.Variables.background */}
 
-      <>
+      <NavigationContainer>
         <StatusBar barStyle="dark-content" />
         <Stack.Navigator
           screenOptions={{
@@ -473,7 +473,7 @@ function App({ indexJsNavigationRef }) {
           )} */}
         </Stack.Navigator>
         {/* <Common.Snack /> */}
-      </>
+      </NavigationContainer>
     </SafeAreaView>
   );
 }

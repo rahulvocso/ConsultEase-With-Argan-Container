@@ -289,6 +289,14 @@ const VideoCallerPromptScreen = () => {
     isCameraOn ? dispatch(Actions.Media.releaseLocalVideo()) : dispatch(Actions.Media.getLocalVideo())
   };
 
+  const handleCallDisconnect = () => {
+    dispatch(Actions.Media.releaseLocalVideo());
+    dispatch(Actions.Media.releaseLocalAudio());
+    dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+    dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
+    navigation.navigate('WebView', { key });
+  }
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -555,13 +563,7 @@ const VideoCallerPromptScreen = () => {
                         // }
                         /> */}
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{
-                        // navigation.navigate('VideoCall', { key })
-                        // dispatch(Actions.Media.joinMeeting());
-                        // navigation.navigate('WebView',{ key });
-                        dispatch({ type: 'SET_CALL_VIEW_ON', payload: false })
-                      }
-                    }>
+                    <TouchableOpacity onPress={handleCallDisconnect}>
                         {/* <SvgUri
                         width="40"
                         height="40"

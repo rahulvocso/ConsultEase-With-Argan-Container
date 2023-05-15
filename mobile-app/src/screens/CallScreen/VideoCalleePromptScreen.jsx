@@ -105,12 +105,10 @@ const VideoCalleePromptScreen = () => {
       dispatch(Actions.IO.joinRoom(incomingCallDetails.callId)); 
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
-        content : {
           type: 'callResponse',
           from: socketId,
           to: incomingCallDetails.from,
-          response: 'accepted',
-        }
+          response: 'accepted'
       })) : null;
       navigation.navigate('VideoCall',{ key });
       console.log('log below -> send call-pickup event by private-socket-message')
