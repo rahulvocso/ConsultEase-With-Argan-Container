@@ -89,9 +89,13 @@ const VideoCallScreen = () => {
   useEffect(() => {
     if (ended) {
       // navigation.popToTop();
+      console("******CAll ENDED ******returning to webview")
+      navigation.navigate('WebView');
       dispatch({type: 'SET_CALL_VIEW_ON', payload: false})
     } else if (!joined) {
+      console("******CAll NOT JOINED ******returning to webview")
       // navigation.goBack();
+      navigation.navigate('WebView');
     } else {
       dispatch(Actions.Media.joinMeeting());
     }
@@ -150,8 +154,8 @@ const VideoCallScreen = () => {
         <View>
             <RTCView
               // ref={rtcRef}
-              streamURL={primaryVideoViewIsPeer ? (" ") : (video && video.stream && video.stream?.toURL()) }
-              // streamURL={interfaces[0].video.stream.toURL()}
+              // streamURL={primaryVideoViewIsPeer ? (" ") : (video && video.stream && video.stream?.toURL()) }
+              streamURL={interfaces[0].video.stream.toURL()}
               style={styles.rtcView}
               zOrder={-1}
               objectFit='cover'

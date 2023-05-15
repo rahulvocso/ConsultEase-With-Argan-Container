@@ -108,7 +108,6 @@ const VideoCallerPromptScreen = () => {
       calleeDetails && calleeDetails.user_id
     )
     if (socketId) {
-      // dispatch(Actions.IO.joinRoom(callId));
       // send initial call details, get room id , i.e '_id' from returned started call instance data
       if (
         Object.keys(consulteaseUserProfileData).length !== 0 &&
@@ -130,8 +129,12 @@ const VideoCallerPromptScreen = () => {
   useEffect(() => {
     if (socketId && callInstanceData._id) {
       // dispatch({ type: 'SET_CALL_STARTER_STATUS', payload: true})
+      if (Utils.isEmpty(key)) {
+        dispatch({ type: 'meeting-errors-key', error: 'Meeting key required' });
+        return;
+      }
+      dispatch({ type: 'meeting-errors-clear' });
       dispatch({ type: 'join', name, email});
-      dispatch(Actions.IO.joinRoom(callInstanceData._id)); // call_id or room_key = callInstanceState._id
       // send message to callee to open VideocalleePrompt screen/view on his/her phone
       (Utils.socket && consulteaseUserProfileData && calleeDetails) ? (
         Utils.socket.emit("messageDirectPrivate",
@@ -147,17 +150,13 @@ const VideoCallerPromptScreen = () => {
               },
             }
       )) : null;
-  
-      console.log('log below -> send call-pickup event by private-socket-message')
+      console.log('log below -> call started message event by private-socket-message')
     }
   }, [callInstanceData]);
 
   useEffect(()=>{
-    Object.keys(callInstanceData).length > 1 ? 
-      (
-        callInstanceData._id && dispatch({type: 'SET_CALL_ID', payload: callInstanceData._id}),
-        callInstanceData._id && dispatch({type: 'meeting-key', value: callInstanceData._id}) // sets callId/roomId/meeting-key
-      )
+    (socketId && callInstanceState._Id) ?
+      dispatch(Actions.IO.joinRoom(callInstanceData._id)) // call_id or room_key = callInstanceState._id
       :
       null
     console.log("callInstanceData received useEFf" ,callInstanceData)
