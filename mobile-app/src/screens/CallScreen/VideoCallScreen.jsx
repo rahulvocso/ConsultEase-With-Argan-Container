@@ -100,12 +100,14 @@ const VideoCallScreen = () => {
   // }, [socketId]);
 
 
-  const returnToWebview = () => {
+  const handleCallDisconnect = () => {
     // navigation.reset({
     //   index: 0,
     //   routes: [{ name: 'VideoCallerPrompt'}],
     // })
     //navigation.navigate('CallRating')
+    dispatch(Actions.Media.releaseLocalVideo());
+    dispatch(Actions.Media.releaseLocalAudio());
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
     dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     navigation.navigate('WebView', { key });
@@ -291,7 +293,7 @@ const VideoCallScreen = () => {
                         // }
                         /> */}
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={returnToWebview}>
+                    <TouchableOpacity onPress={handleCallDisconnect}>
                       <CallReject
                         width={40} 
                         height={40}
@@ -301,7 +303,6 @@ const VideoCallScreen = () => {
                     </View>
                 </View>
             </View>
-            
         </View>
     </View>
   );
