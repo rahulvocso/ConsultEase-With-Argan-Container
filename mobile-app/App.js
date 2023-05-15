@@ -346,6 +346,7 @@ function App({ indexJsNavigationRef }) {
             });
             dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: message });
             dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: message.callInstanceData });
+            dispatch({ type: 'SET_PEER_SOCKET_ID', payload: message.from });
             dispatch({ type: 'meeting-key', value: message.callInstanceData._Id });
             console.log(
               'Call ************ Incoming "videocall" messageDirectPrivate received App.js useEffect line~359********',
@@ -365,12 +366,13 @@ function App({ indexJsNavigationRef }) {
               JSON.stringify(message),
             );
             message.response === 'accepted'
-              ? navigation.navigate('VideoCall', { key })
+              ? navigation.navigate('VideoCall')
               : // indexJsNavigationRef.current.navigate('VideoCall')
                 (navigation.navigate('WebView'),
                 // navigation.navigate('WebView', { key }),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
                 dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }));
+            message.response === 'disconnected' ? navigation.navigate('WebView') : null;
           }
         })
       : null;

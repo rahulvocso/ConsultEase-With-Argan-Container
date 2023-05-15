@@ -58,15 +58,14 @@ const VideoCallScreen = () => {
   const [isCameraOn, setIsCameraOn] = useState(true); //video
   const [isMicOn, setIsMicOn] = useState(true);
 
- 
-
   const key = useSelector((state) => state.meeting.key);
   const active = useSelector((state) => !!state.media.local.video);
   const interfaces = useSelector((state) => state.media.interfaces);
   const joined = useSelector((state) => state.media.joined);
   const ended = useSelector((state) => state.meeting.ended);
-  const room = useSelector((state)=>state.meeting.room)
-  const callId = useSelector((state)=>state.webview.callInstanceData._Id)
+  const room = useSelector((state)=>state.meeting.room); 
+  const callId = useSelector((state)=>state.webview.callInstanceData._Id);
+  const peerSocketId = useSelector((state)=>state.webview.peerSocketId);
   
   const [ primaryVideoViewIsPeer, setPrimaryVideoViewIsPeer ] = useState(true)
 
@@ -107,11 +106,20 @@ const VideoCallScreen = () => {
     //   routes: [{ name: 'VideoCallerPrompt'}],
     // })
     //navigation.navigate('CallRating')
+    (socketId && Utils.socket) ? (
+      Utils.socket.emit("messageDirectPrivate",{
+      content : {
+        type: 'callResponse',
+        from: socketId,
+        to: peerSocketId,
+        response: 'disconnected',
+      }
+    })) : null;
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
     dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
-    navigation.navigate('WebView', { key });
+    navigation.navigate('WebView');
   };
 
   const handleCameraFacing = () => {

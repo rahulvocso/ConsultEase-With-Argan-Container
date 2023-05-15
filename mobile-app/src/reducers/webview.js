@@ -9,6 +9,7 @@ const initialState = {
     photo: undefined,
   },
   calleeSocketId: undefined,
+  peerSocketID: undefined,
   callInstanceData: {},
   incomingCallDetails: undefined,
   outgoingCallDetails: undefined,
@@ -39,6 +40,12 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         calleeSocketId: action.payload,
+      };
+
+    case 'SET_PEER_SOCKET_ID':
+      return {
+        ...state,
+        peerSocketId: action.payload,
       };
 
     case 'SET_CONSULTEASE_USER_PROFILE_DATA':

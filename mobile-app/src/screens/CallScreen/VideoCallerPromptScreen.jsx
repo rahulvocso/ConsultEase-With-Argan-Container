@@ -174,7 +174,11 @@ const VideoCallerPromptScreen = () => {
           //
           data.body.status === 'Online' &&
             (data.body.socket_id !== null || undefined || '') &&
-            dispatch({ type: 'SET_CALLEE_SOCKET_ID', payload: data.body.socket_id }); // set callee socet id in redux state
+            (
+              dispatch({ type: 'SET_CALLEE_SOCKET_ID', payload: data.body.socket_id }),
+              dispatch({ type: 'SET_PEER_SOCKET_ID', payload: data.body.socket_id })
+            )
+            
           //
           console.log(
             '****** Successful  VideoCallerPromptScreen.js  getSocket() socket_id Get req 200 ******* data.body',
@@ -288,6 +292,7 @@ const VideoCallerPromptScreen = () => {
   };
 
   const handleCallDisconnect = () => {
+
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });

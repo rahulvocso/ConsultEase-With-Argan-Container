@@ -148,7 +148,7 @@ const HomeSearchResults = () => {
 
   function getLocalStorageRecentSearches() {
     let local =
-      localStorage.getItem('localRecentSearches') != (undefined || null) &&
+      localStorage.getItem('localRecentSearches') !== (undefined || null) &&
       localStorage.getItem('localRecentSearches').length !== 0
         ? JSON.parse(localStorage.getItem('localRecentSearches'))
         : [];
@@ -214,7 +214,7 @@ const HomeSearchResults = () => {
                 Recent Searches
               </IonCardTitle>
               <div className="recentSearch-Item-Holder">
-                {recentSearches &&
+                {recentSearches.length !== 0 ?
                   recentSearches.map((recentSearchItem, index) => {
                     return (
                       <div
@@ -249,12 +249,13 @@ const HomeSearchResults = () => {
                         </IonGrid>
                       </div>
                     );
-                  })}
-                  {!recentSearches.length === 0 &&
-                    <div className="searchedProfile-TextDetail">
-                    <p>{recentSearches}</p>
-                  </div>
-                  }
+                  })
+                :
+                <div className="searchedProfile-TextDetail">
+                  <p>no recent searches</p>
+                </div>
+                }
+                
               </div>
             </div>
 

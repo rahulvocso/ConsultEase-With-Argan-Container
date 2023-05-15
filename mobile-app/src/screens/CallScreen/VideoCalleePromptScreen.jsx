@@ -75,7 +75,6 @@ const VideoCalleePromptScreen = () => {
     dispatch(Actions.Media.getLocalAudio());
     console.log('callerDetails inside VideoCalleePrompt',callerDetails)
     console.log('callerDetails.photo inside VideoCalleePrompt', typeof callerDetails.photo)
-
     // return () => {
     //     dispatch(Actions.Media.releaseLocalVideo());
     //     dispatch(Actions.Media.releaseLocalAudio());
@@ -117,7 +116,7 @@ const VideoCalleePromptScreen = () => {
   }
 
   function handleCallReject(){
-    if (socketId && incomingCallDetails.callId) {
+    if (socketId && callId) {
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
         content : {
