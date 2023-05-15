@@ -101,7 +101,7 @@ const VideoCalleePromptScreen = () => {
 
   function handleCallAccept(){
     // callerDetails name callCategory photo
-    if (socketId && incomingCallDetails.callId) {
+    if (socketId) {
       dispatch(Actions.IO.joinRoom(incomingCallDetails.callId)); 
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
