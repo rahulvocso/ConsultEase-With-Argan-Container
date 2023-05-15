@@ -87,6 +87,8 @@ const VideoCallerPromptScreen = () => {
   const active = useSelector((state) => !!state.media.local.video);
   const key = useSelector((state) => state.meeting.key);
   const room = useSelector((state)=>state.meeting.room)
+  const name = useSelector((state) => state.user.name);
+  const email = useSelector((state) => state.user.email);
 
   const deviceWidth = Dimensions.get('window').width; //useWindowDimensions().width;
   const deviceHeight = Dimensions.get('window').height; //useWindowDimensions().height;
@@ -127,6 +129,7 @@ const VideoCallerPromptScreen = () => {
 
   useEffect(() => {
     if (socketId && callInstanceData._id) {
+      dispatch({ type: 'join', name, email});
       dispatch(Actions.IO.joinRoom(callInstanceData._id)); // call_id or room_key = callInstanceState._id
       // send message to callee to open VideocalleePrompt screen/view on his/her phone
       (Utils.socket && consulteaseUserProfileData && calleeDetails) ? (
@@ -215,7 +218,7 @@ const VideoCallerPromptScreen = () => {
         if (data.status == 200) {
           // setCallInstanceState({ ...data.body, ...callInstanceState });
           dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: data.body });
-          dispatch({ type: 'meeting-key', value: data.body._id })
+          dispatch({ type: 'meeting-key', value: data.body._id });
           console.log(
             '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
             data.body,
@@ -464,7 +467,7 @@ const VideoCallerPromptScreen = () => {
                 </View>
                 <View style={styles.callViewBottomContainer}>
                     <View style={styles.controlButtonsContainer}>
-                    <TouchableOpacity onPress={ ()=>{
+                    {/* <TouchableOpacity onPress={ ()=>{
                       dispatch(Actions.Media.releaseLocalVideo());
                       dispatch(Actions.Media.releaseLocalAudio());
                       dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
@@ -474,16 +477,15 @@ const VideoCallerPromptScreen = () => {
                         width={30} 
                         height={30}
                         fill="white"
-                        // fill="#3DB271"
                         />                      
-                        {/* <SvgUri
+                        <SvgUri
                         width="25"
                         height="25"
                         fill="white"
                         source={require('../../../android/app/src/main/assets/GoBack.svg')}
                         // source={require('../../assets/images/GoBack.svg')}
-                        /> */}
-                    </TouchableOpacity>
+                        />
+                    </TouchableOpacity> */}
                     <TouchableOpacity onPress={handleCameraFacing}>
                         <CameraSwitch
                           width={35} 

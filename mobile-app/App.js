@@ -316,13 +316,21 @@ function App({ indexJsNavigationRef }) {
   // logs when user just enters call mode
   useEffect(() => {
     consulteaseUserProfileData
-      ? console.log(
+      ? (console.log(
           'In Container App.js UseEffect',
           'calleeDetails',
           calleeDetails,
           'consulteaseUserProfileData',
           consulteaseUserProfileData,
-        )
+        ),
+        dispatch({
+          type: 'user-email',
+          value: `${consulteaseUserProfileData.fname}${consulteaseUserProfileData.lname}abcd@gmail.com`,
+        }),
+        dispatch({
+          type: 'user-email',
+          value: `${consulteaseUserProfileData.fname}${consulteaseUserProfileData.lname}abcd@gmail.com`,
+        }))
       : null;
   }, [consulteaseUserProfileData, calleeDetails]);
   //

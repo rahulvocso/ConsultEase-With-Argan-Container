@@ -81,7 +81,7 @@ const VideoCallScreen = () => {
       dispatch(Actions.Media.releaseLocalAudio());
       dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
       // dispatch({ type: 'SET_CALLEE_DETAILS', payload: {} });
-  }
+    }
   }, []);
 
   useEffect(() => {

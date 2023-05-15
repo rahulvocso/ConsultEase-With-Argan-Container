@@ -43,8 +43,13 @@ const VideoCalleePromptScreen = () => {
   const calleeDetails = useSelector(state => state.webview.calleeDetails);
   const callerDetails = useSelector(state => state.webview.callerDetails);
   const incomingCallDetails = useSelector((state) => state.webview.incomingCallDetails);
+  const name = useSelector((state) => state.user.name);
+  const email = useSelector((state) => state.user.email);
   // const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
   // const key = useSelector(state => state.webview.key)
+  const consulteaseUserProfileData = useSelector((state) =>
+  state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
+  );
   const dispatch = useDispatch();
   const socketId = useSelector((state) => state.socket.id);
 
@@ -88,20 +93,11 @@ const VideoCalleePromptScreen = () => {
   //   }
   // }, [socketId]);
 
-  const returnToWebview = () => {
-    // handle call accept
-    // dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
-    // dispatch(Actions.Media.releaseLocalVideo());
-    // dispatch(Actions.Media.releaseLocalAudio());
-    // dispatch({type: 'meeting-key', value: incomingCallDetails.callId});
-    dispatch({ type: 'join', name: 'Foo Bar', email: 'consultease@gmail.com' })
-
-  };
-
   function handleCallAccept(){
     // callerDetails name callCategory photo
     if (socketId) {
-      dispatch(Actions.IO.joinRoom(incomingCallDetails.callId)); 
+      dispatch({ type: 'join', name, email});
+      dispatch(Actions.IO.joinRoom(callId)); 
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
           type: 'callResponse',
