@@ -55,7 +55,7 @@ const VideoCallScreen = () => {
 
   const [cameraIsFacingUser, setCameraIsFacingUser] = useState('user');
   const video = useSelector((state) => state.media.local.video);
-  const [isCameraOn, setIsCameraOn] = useState(video);
+  const [isCameraOn, setIsCameraOn] = useState(true); //video
   const [isMicOn, setIsMicOn] = useState(true);
 
  
@@ -107,7 +107,8 @@ const VideoCallScreen = () => {
     // })
     //navigation.navigate('CallRating')
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
-    dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA', payload: false });
+    dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
+    navigation.navigate('WebView', { key });
   };
 
   const handleCameraFacing = () => {
