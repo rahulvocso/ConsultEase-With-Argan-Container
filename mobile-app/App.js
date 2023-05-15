@@ -373,7 +373,7 @@ function App({ indexJsNavigationRef }) {
               message,
               JSON.stringify(message),
             );
-            message.response === 'accepted' ? navigation.navigate('Videocall') : null;
+            message.response === 'accepted' ? navigation.navigate('VideoCall') : null;
             message.response === 'rejected'
               ? (navigation.navigate('WebView'),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
