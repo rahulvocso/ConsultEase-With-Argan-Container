@@ -109,14 +109,14 @@ const VideoCallScreen = () => {
     // })
     //navigation.navigate('CallRating')
     (socketId && Utils.socket) ? (
-      Utils.socket.emit("messageDirectPrivate",{
-      content : {
+      Utils.socket.emit("messageDirectPrivate",
+      {
         type: 'callResponse',
         from: socketId,
         to: peerSocketId,
         response: 'disconnected',
       }
-    })) : null;
+    )) : null;
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
     dispatch(Actions.Media.leaveMeeting());
