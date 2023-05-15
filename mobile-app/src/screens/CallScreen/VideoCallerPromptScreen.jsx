@@ -66,6 +66,7 @@ const VideoCallerPromptScreen = () => {
   const calleeSocketId = useSelector((state)=> state.webview.calleeSocketId);
   const socketId = useSelector((state) => state.socket.id);
   const callInstanceData = useSelector((state) => state.webview.callInstanceData)
+  const callId = useSelector((state) => state.webview.callInstanceData.callId)
   // const incomingCallId = useSelector((state) => state.webview.incomingCallId);
   const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
   const joined = useSelector((state) => state.media.joined)
@@ -159,7 +160,7 @@ const VideoCallerPromptScreen = () => {
       dispatch(Actions.IO.joinRoom(callInstanceData._id)) // call_id or room_key = callInstanceState._id
       :
       null
-    console.log("callInstanceData received useEFf" ,callInstanceData)
+    console.log("callInstanceData received useEFf log in VideoCallerPrompt.js" ,callInstanceData)
     //
   },[callInstanceData])
 

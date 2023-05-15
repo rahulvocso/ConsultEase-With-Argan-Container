@@ -68,6 +68,7 @@ const VideoCallScreen = () => {
   const socketId = useSelector((state) => state.socket.id);
   const callId = useSelector((state)=>state.webview.callInstanceData._Id);
   const peerSocketId = useSelector((state)=>state.webview.peerSocketId);
+  const uuid = useSelector((state) => state.media.uuid);
 
   
   const [ primaryVideoViewIsPeer, setPrimaryVideoViewIsPeer ] = useState(true)
@@ -161,6 +162,10 @@ const VideoCallScreen = () => {
               objectFit='cover'
               mirror={true}
             />
+            {(interfaces[0].audio)
+              ? <RTCView streamURL={interfaces[0].audio.stream.toURL()} zOrder={-1} />
+              : null
+            }
             {/* host video */}
             {/* <RTCView
               // mirror={!interfaces[0].screen && peer.facingMode === 'user'}
@@ -182,14 +187,19 @@ const VideoCallScreen = () => {
                 >
                     <RTCView
                       // ref={rtcRef2}
-                      streamURL={primaryVideoViewIsPeer ? (video && video.stream && video.stream?.toURL()) : ("")
-                      }
+                      // streamURL={primaryVideoViewIsPeer ? (video && video.stream && video.stream?.toURL()) : ("")
+                      // }
+                      streamURL={interfaces[1].video.stream.toURL()}
                       // streamURL={interfaces[1].video.stream.toURL()}
                       style={styles.rtcView2}
                       zOrder={1}
                       objectFit={'cover'}
                       mirror={true}
                     />
+                      {(interfaces[0].audio)
+                        ? <RTCView streamURL={interfaces[1].audio.stream.toURL()} zOrder={-1} />
+                        : null
+                      }
                     {/* <RTCView streamURL={interfaces[1].audio.stream.toURL()} zOrder={1} /> */}
                 </View>
                 <View style={styles.callViewBottomContainer}>
