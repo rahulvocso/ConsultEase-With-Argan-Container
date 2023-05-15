@@ -98,7 +98,6 @@ const VideoCalleePromptScreen = () => {
     if (socketId) {
       dispatch({ type: 'join', name, email});
       dispatch(Actions.IO.joinRoom(callId)); 
-      dispatch({ type:'SET_ONGOING_CALL_STATUS', payload: true })
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
           type: 'callResponse',

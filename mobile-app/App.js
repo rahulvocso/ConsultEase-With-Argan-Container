@@ -443,14 +443,12 @@ function App({ indexJsNavigationRef }) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
       {/* Theme.Variables.background */}
-
       <>
         <StatusBar barStyle="dark-content" />
         <Stack.Navigator
           screenOptions={{
             header: ConditionalAppBar,
           }}
-          // navigation={navigation}
         >
           {/* {isCallViewOn ? ( */}
           <>
