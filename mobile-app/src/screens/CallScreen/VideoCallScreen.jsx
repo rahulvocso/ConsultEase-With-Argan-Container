@@ -28,6 +28,7 @@ import SvgUri from 'react-native-svg-uri';
 
 import Actions from '../../actions';
 import Theme from '../../theme';
+import Utils from '../../utils';
 import Timer from './Timer';
 
 
@@ -64,6 +65,7 @@ const VideoCallScreen = () => {
   const joined = useSelector((state) => state.media.joined);
   const ended = useSelector((state) => state.meeting.ended);
   const room = useSelector((state)=>state.meeting.room); 
+  const socketId = useSelector((state) => state.socket.id);
   const callId = useSelector((state)=>state.webview.callInstanceData._Id);
   const peerSocketId = useSelector((state)=>state.webview.peerSocketId);
   
@@ -117,6 +119,7 @@ const VideoCallScreen = () => {
     })) : null;
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
+    dispatch(Actions.Media.leaveMeeting());
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
     dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     navigation.navigate('WebView');

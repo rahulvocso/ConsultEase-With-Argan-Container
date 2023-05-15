@@ -45,7 +45,7 @@ const Timer = ( {timerLimit, callId} ) => {
   <Text style={styles.topProgressBarText}>
     {`${formatTime(timePassedHrMin.hr)}${formatTime(timePassedHrMin.min)}:${formatTime(timePassedHrMin.sec)} passed`}
     </Text>
-  <Text style={styles.topProgressBarText}>{callId}</Text>
+  <Text style={styles.topProgressBarText}>#{callId}</Text>
   </>
   )
 };

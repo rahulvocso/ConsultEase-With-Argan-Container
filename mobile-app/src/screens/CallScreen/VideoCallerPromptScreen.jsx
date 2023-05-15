@@ -215,10 +215,10 @@ const VideoCallerPromptScreen = () => {
         if (data.status == 200) {
           // setCallInstanceState({ ...data.body, ...callInstanceState });
           dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: data.body });
-          dispatch({ type: 'SET_OUTGOING_CALL_ID', payload: data.body._id});
           dispatch({ type: 'meeting-key', value: data.body._id })
           console.log(
             '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
+            data.body,
           );
         } else {
           console.log(

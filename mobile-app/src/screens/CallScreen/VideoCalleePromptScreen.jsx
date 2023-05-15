@@ -59,7 +59,7 @@ const VideoCalleePromptScreen = () => {
   const video = useSelector((state) => state.media.local.video);
   const active = useSelector((state) => !!state.media.local.video);
   const key = useSelector((state) => state.meeting.key);
-  const callId = useSelector(state => state.webview.callInstanceData._Id)
+  const callId = useSelector(state => state.webview.callInstanceData._Id);
 
   const [incomingCallAnswer, setIncomingCallAnswer]  = useState();
 
