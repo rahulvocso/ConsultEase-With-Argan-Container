@@ -348,7 +348,7 @@ function App({ indexJsNavigationRef }) {
             message,
           );
           // incoming call message from peer
-          if (message.type === 'videoCall' && !amICallSetter) {
+          if (message.type === 'videoCall') {
             dispatch({
               type: 'SET_CALLER_DETAILS',
               payload: message.callerDetails,

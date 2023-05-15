@@ -129,7 +129,7 @@ const VideoCallerPromptScreen = () => {
 
   useEffect(() => {
     if (socketId && callInstanceData._id) {
-      dispatch({ type: 'SET_CALL_STARTER_STATUS', payload: true});
+      // dispatch({ type: 'SET_CALL_STARTER_STATUS', payload: true})
       dispatch({ type: 'join', name, email});
       dispatch(Actions.IO.joinRoom(callInstanceData._id)); // call_id or room_key = callInstanceState._id
       // send message to callee to open VideocalleePrompt screen/view on his/her phone

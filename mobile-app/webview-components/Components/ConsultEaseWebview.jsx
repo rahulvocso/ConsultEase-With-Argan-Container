@@ -62,10 +62,6 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  // const updateSource = () => {
-  //   setRenderedOnce(true);
-  // };
-
   function alert(arg0) {
     throw new Error('Function not implemented.');
   }
@@ -78,11 +74,10 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
 
   // handles msg received from webview components
 
-  const handleWebViewMessage = (event) => {
+  function handleWebViewMessage(event){
     const message = JSON.parse(event.nativeEvent.data);
     const messageType = message.messageType;
     const messageData = message.messageData;
-
     console.log("message received" ,message ,messageType)
     // Use the messageType to distinguish between messages from different components
     switch (messageType) {
