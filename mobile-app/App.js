@@ -272,9 +272,9 @@ const useInitialURL = () => {
 };
 
 // APP COMPONENT
-function App() {
+function App({ indexJsNavigationRef }) {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation(indexJsNavigationRef.current);
   const { url: initialUrl } = useInitialURL();
   const socketId = useSelector((state) => state.socket.id);
   const device = useSelector((state) => state.media.device);
@@ -434,7 +434,7 @@ function App() {
     <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
       {/* Theme.Variables.background */}
 
-      <NavigationContainer>
+      <>
         <StatusBar barStyle="dark-content" />
         <Stack.Navigator
           screenOptions={{
@@ -473,7 +473,7 @@ function App() {
           )} */}
         </Stack.Navigator>
         {/* <Common.Snack /> */}
-      </NavigationContainer>
+      </>
     </SafeAreaView>
   );
 }

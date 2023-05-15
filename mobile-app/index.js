@@ -20,13 +20,13 @@ function Main() {
   const navigationRef = useRef();
 
   return (
-    // <NavigationContainer ref={navigationRef}>
-    //   <PaperProvider theme={Theme.Base}>
-    <Provider store={store}>
-      <App indexJsNavigationRef={navigationRef} />
-    </Provider>
-    //   </PaperProvider>
-    // </NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
+      <PaperProvider theme={Theme.Base}>
+        <Provider store={store}>
+          <App indexJsNavigationRef={navigationRef} />
+        </Provider>
+      </PaperProvider>
+    </NavigationContainer>
   );
 }
 
