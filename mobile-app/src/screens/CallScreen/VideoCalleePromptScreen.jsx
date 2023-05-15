@@ -106,7 +106,7 @@ const VideoCalleePromptScreen = () => {
           to: incomingCallDetails.from,
           response: 'accepted'
       })) : null;
-      navigation.navigate('VideoCall',{ key });
+      navigation.navigate('Meeting',{ key });
       console.log('log below -> send call-pickup event by private-socket-message')
     }
     
