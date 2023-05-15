@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     // height: '100%',
     height: deviceHeight,
     width: deviceWidth,
-    backgroundColor: "purple"
+    backgroundColor: "#000000"
     // position: 'absolute',
     // top: 0,
     // left: 0,

@@ -70,7 +70,7 @@ const VideoCalleePromptScreen = () => {
 
   // },[socketId])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
     console.log('callerDetails inside VideoCalleePrompt',callerDetails)
