@@ -450,7 +450,7 @@ function App({ indexJsNavigationRef }) {
             // gestureEnabled: true,
             // gestureDirection: 'vertical',
           }}
-          navigation={navigation}
+          // navigation={navigation}
         >
           {/* {isCallViewOn ? ( */}
           <>
