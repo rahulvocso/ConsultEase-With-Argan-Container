@@ -14,6 +14,8 @@ const initialState = {
   incomingCallDetails: undefined,
   outgoingCallDetails: undefined,
   isInternetConnected: undefined,
+  ongoingCallStatus: false,
+  amICallStarter: false,
 };
 
 // Define reducer function
@@ -23,6 +25,12 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         isCallViewOn: action.payload,
+      };
+
+    case 'SET_CALL_STARTER_STATUS':
+      return {
+        ...state,
+        amICallStarter: action.payload,
       };
 
     case 'SET_CALLEE_DETAILS':
@@ -73,6 +81,12 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         incomingCallDetails: action.payload,
+      };
+
+    case 'SET_ONGOING_CALL_STATUS':
+      return {
+        ...state,
+        ongoingCallStatus: action.payload,
       };
 
     case 'SET_INTERNET_CONNECTION':

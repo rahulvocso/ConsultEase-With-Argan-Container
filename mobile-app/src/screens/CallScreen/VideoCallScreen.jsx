@@ -76,6 +76,7 @@ const VideoCallScreen = () => {
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
+    dispatch({ type:'SET_ONGOING_CALL_STATUS', payload: true })
     return () => {
       dispatch(Actions.Media.releaseLocalVideo());
       dispatch(Actions.Media.releaseLocalAudio());

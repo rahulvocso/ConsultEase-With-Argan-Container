@@ -28,6 +28,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import { useNavigation } from '@react-navigation/native';
+
 import Immersive from 'react-native-immersive';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
@@ -36,6 +38,7 @@ import ConsultaseLogo from '../../android/app/src/main/assets/app-logo.svg';
 
 
 function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
+  const navigation = useNavigation();
   const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const dispatch = useDispatch();
   const [isNetConnected, setIsNetConnected] = useState(false)
@@ -91,6 +94,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
             "**message data**", messageData.name,
           );
           dispatch({ type: 'SET_CALL_VIEW_ON', payload: true });
+          navigation.navigate('VideoCallerPrompt');
           dispatch({ type: 'SET_CALLEE_DETAILS', payload: messageData })
         }
         break;
@@ -104,14 +108,6 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
           if (messageData !== undefined) {
             dispatch({ type: 'SET_CONSULTEASE_USER_PROFILE_DATA', payload: messageData })
           }
-          // set consulteaseUserProfileData on locally storage
-          // AsyncStorage.setItem('consulteaseUserProfileData', JSON.stringify(messageData))
-          // .then(() => {
-          //   console.log('consulteaseUserProfileData saved successfully comp:ConsultEaseWebview');
-          // })
-          // .catch((error) => {
-          //   console.log('Error saving consulteaseUserProfileData: ', error);
-          // })
         }
         break;
       default:
@@ -119,33 +115,6 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
         break;
     }
   }
-
-
-  // function reloadWebviewOnConnectionChange() {
-  //   NetInfo.fetch().then((state) => {
-  //     if (state.isConnected) {
-  //       webviewRef.current.reload();
-  //       setIsNetConnected(true)
-  //       console.log('netconnected',true)
-  //     } 
-  //     else if(!state.isConnected){
-  //       setIsNetConnected(false)
-  //       // unsubscribe();
-  //     }
-  //   });
-
-  //   const unsubscribe = NetInfo.addEventListener((state) => {
-  //     if (state.isConnected) {
-  //       webviewRef.current.reload();
-  //       setIsNetConnected(true)
-  //       unsubscribe();
-  //     } 
-  //     else if(!state.isConnected){
-  //       setIsNetConnected(false)
-  //       // unsubscribe();
-  //     }
-  //   });
-  // }
   
   function reloadWebviewOnConnectionChange() {
     NetInfo.fetch().then((state) => {

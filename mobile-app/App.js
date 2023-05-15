@@ -274,13 +274,14 @@ const useInitialURL = () => {
 // APP COMPONENT
 function App({ indexJsNavigationRef }) {
   const dispatch = useDispatch();
-  const navigation = useNavigation(indexJsNavigationRef.current);
+  const navigation = useNavigation(); //(indexJsNavigationRef.current);
   const { url: initialUrl } = useInitialURL();
   const socketId = useSelector((state) => state.socket.id);
   const device = useSelector((state) => state.media.device);
   const isCallViewOn = useSelector((state) => state.webview.isCallViewOn);
   const calleeDetails = useSelector((state) => state.webview.calleeDetails);
   const key = useSelector((state) => state.meeting.key);
+  const amICallSetter = useSelector((state) => state.webview.amICallSetter);
   //Consulteas user profile data.content received from webview
   const consulteaseUserProfileData = useSelector((state) =>
     state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
@@ -347,7 +348,7 @@ function App({ indexJsNavigationRef }) {
             message,
           );
           // incoming call message from peer
-          if (message.type === 'videoCall') {
+          if (message.type === 'videoCall' && !amICallSetter) {
             dispatch({
               type: 'SET_CALLER_DETAILS',
               payload: message.callerDetails,
@@ -364,7 +365,6 @@ function App({ indexJsNavigationRef }) {
             // navigation.navigate('VideoCalleePrompt', { key });
             navigation.navigate('VideoCalleePrompt');
             // indexJsNavigationRef.current.navigate('VideoCall');
-            // navigation.navigate('Join', { key });
           }
           // outgoing call back/response message from peer
           else if (message.type === 'callResponse') {
@@ -373,13 +373,14 @@ function App({ indexJsNavigationRef }) {
               message,
               JSON.stringify(message),
             );
-            message.response === 'accepted'
-              ? navigation.navigate('VideoCall')
-              : // indexJsNavigationRef.current.navigate('VideoCall')
-                (navigation.navigate('WebView'),
-                // navigation.navigate('WebView', { key }),
+            message.response === 'accepted' ? navigation.navigate('VideoCall') : null;
+            message.response ===
+              'rejected'(
+                // indexJsNavigationRef.current.navigate('VideoCall')
+                navigation.navigate('WebView'),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
-                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }));
+                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }),
+              );
             message.response === 'disconnected' ? navigation.navigate('WebView') : null;
           }
         })
@@ -448,26 +449,13 @@ function App({ indexJsNavigationRef }) {
         <Stack.Navigator
           screenOptions={{
             header: ConditionalAppBar,
-            // gestureResponseDistance: {
-            //   horizontal: 10,
-            //   vertical: {
-            //     primaryAxis: 10, // Minimum distance from top/bottom edge of the screen
-            //     secondaryAxis: 0, // Maximum distance from left/right edge of the screen
-            //   },
-            // },
-            // gestureEnabled: true,
-            // gestureDirection: 'vertical',
           }}
           // navigation={navigation}
         >
           {/* {isCallViewOn ? ( */}
           <>
-            {/* <Stack.Screen name="InternetServiceTest" component={InternetServiceTest} /> */}
-            {isCallViewOn ? (
-              <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
-            ) : (
-              <Stack.Screen name="WebView" component={ConsultEaseWebview} />
-            )}
+            <Stack.Screen name="WebView" component={ConsultEaseWebview} />
+            <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
             <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
             <Stack.Screen name="VideoCall" component={VideoCallScreen} />
             <Stack.Screen name="CallRating" component={CallRatingScreen} />
