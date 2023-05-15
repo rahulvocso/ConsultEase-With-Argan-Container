@@ -112,7 +112,7 @@ const VideoCalleePromptScreen = () => {
           response: 'accepted',
         }
       })) : null;
-      navigation.navigate('Videocall',{ key });
+      navigation.navigate('VideoCall',{ key });
       console.log('log below -> send call-pickup event by private-socket-message')
     }
     
