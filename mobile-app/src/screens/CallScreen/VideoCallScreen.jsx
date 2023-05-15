@@ -68,6 +68,7 @@ const VideoCallScreen = () => {
   const socketId = useSelector((state) => state.socket.id);
   const callId = useSelector((state)=>state.webview.callInstanceData._Id);
   const peerSocketId = useSelector((state)=>state.webview.peerSocketId);
+
   
   const [ primaryVideoViewIsPeer, setPrimaryVideoViewIsPeer ] = useState(true)
 
@@ -76,6 +77,7 @@ const VideoCallScreen = () => {
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
+    console.log('interfaces',interfaces);
     return () => {
       dispatch(Actions.Media.releaseLocalVideo());
       dispatch(Actions.Media.releaseLocalAudio());

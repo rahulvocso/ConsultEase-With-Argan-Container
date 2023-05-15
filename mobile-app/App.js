@@ -325,12 +325,12 @@ function App({ indexJsNavigationRef }) {
           consulteaseUserProfileData,
         ),
         dispatch({
-          type: 'user-email',
-          value: `${consulteaseUserProfileData.fname}${consulteaseUserProfileData.lname}abcd@gmail.com`,
+          type: 'user-name',
+          value: `${consulteaseUserProfileData.fname}${consulteaseUserProfileData.lname}`,
         }),
         dispatch({
           type: 'user-email',
-          value: `${consulteaseUserProfileData.fname}${consulteaseUserProfileData.lname}abcd@gmail.com`,
+          value: `${consulteaseUserProfileData.lname}abcd@gmail.com`,
         }))
       : null;
   }, [consulteaseUserProfileData, calleeDetails]);
