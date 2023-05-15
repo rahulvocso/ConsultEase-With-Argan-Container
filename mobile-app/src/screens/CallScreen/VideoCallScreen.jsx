@@ -66,6 +66,7 @@ const VideoCallScreen = () => {
   const joined = useSelector((state) => state.media.joined);
   const ended = useSelector((state) => state.meeting.ended);
   const room = useSelector((state)=>state.meeting.room)
+  const callId = useSelector((state)=>state.webview.callInstanceData._Id)
   
   const [ primaryVideoViewIsPeer, setPrimaryVideoViewIsPeer ] = useState(true)
 
@@ -161,7 +162,7 @@ const VideoCallScreen = () => {
             
             <View style={styles.callViewContainer}>
                 <View style={styles.topProgressBar}>        
-                    <Timer timerLimit={timerLimit}/>
+                    <Timer timerLimit={timerLimit} callId = {callId}/>
                 </View>
                 <View
                     style={styles.rtcView2Container}

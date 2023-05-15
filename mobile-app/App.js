@@ -340,16 +340,15 @@ function App({ indexJsNavigationRef }) {
           );
           // incoming call message from peer
           if (message.type === 'videoCall') {
-            // Do something when an incoming call is received
-            // For example, show a modal or notification
             dispatch({
               type: 'SET_CALLER_DETAILS',
               payload: message.callerDetails,
             });
             dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: message });
-            // dispatch({ type: 'meeting-key', value: message.callId });
+            dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: message.callInstanceData });
+            dispatch({ type: 'meeting-key', value: message.callInstanceData._Id });
             console.log(
-              'Call ************ Incoming messageDirectPrivate received App.js useEffect line~359********',
+              'Call ************ Incoming "videocall" messageDirectPrivate received App.js useEffect line~359********',
               message,
               JSON.stringify(message),
             );
@@ -361,7 +360,7 @@ function App({ indexJsNavigationRef }) {
           // outgoing call back/response message from peer
           else if (message.type === 'callResponse') {
             console.log(
-              'Call-Response ************ Incoming messageDirectPrivate received App.js useEffect line~366********',
+              'Call-Response ************ Incoming "callRespons" messageDirectPrivate received App.js useEffect line~366********',
               message,
               JSON.stringify(message),
             );

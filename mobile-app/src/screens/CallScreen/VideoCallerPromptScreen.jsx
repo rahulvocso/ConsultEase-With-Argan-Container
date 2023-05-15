@@ -135,7 +135,7 @@ const VideoCallerPromptScreen = () => {
               type: 'videoCall',
               from: socketId,
               to: calleeSocketId,
-              callId: callInstanceData._id,
+              callInstanceData: callInstanceData,
               callerDetails: {
               name: `${consulteaseUserProfileData.fname} ${consulteaseUserProfileData.lname}`,
               callCategory: calleeDetails.callCategory,
@@ -155,8 +155,6 @@ const VideoCallerPromptScreen = () => {
       (
         callInstanceData._id && dispatch({type: 'SET_CALL_ID', payload: callInstanceData._id}),
         callInstanceData._id && dispatch({type: 'meeting-key', value: callInstanceData._id}) // sets callId/roomId/meeting-key
-        // room creation and join
-        // dispatch({ type: 'join', name, email });
       )
       :
       null

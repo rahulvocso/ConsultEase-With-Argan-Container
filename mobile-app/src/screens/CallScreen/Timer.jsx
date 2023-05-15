@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-const Timer = ( {timerLimit} ) => {
+const Timer = ( {timerLimit, callId} ) => {
   const [timeRemaining, setTimeRemaining] = useState(timerLimit);
   const [timePassedHrMin, setTimePassedHrMin] = useState({ hr: 0, min: 0, sec: 0 });
   const [timeRemainingHrMin, setTimeRemainingHrMin] = useState({ hr: 0, min: 0, sec: 0 });
@@ -45,7 +45,7 @@ const Timer = ( {timerLimit} ) => {
   <Text style={styles.topProgressBarText}>
     {`${formatTime(timePassedHrMin.hr)}${formatTime(timePassedHrMin.min)}:${formatTime(timePassedHrMin.sec)} passed`}
     </Text>
-  <Text style={styles.topProgressBarText}>#CallId</Text>
+  <Text style={styles.topProgressBarText}>{callId}</Text>
   </>
   )
 };
