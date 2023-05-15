@@ -8,13 +8,14 @@ import {
   IonLabel,
   IonRadio,
   IonRadioGroup,
+  useIonToast,
 } from '@ionic/react';
 import Header from './Header';
 import CallCategorySelection from './CallCategorySelection';
 import './VideoCall.css';
 
 const InputVideoCallDetails = () => {
-  const room = useRef();
+  const [callCategorySubmitToast] = useIonToast();
   const callCategoryName = useRef('');
 
   let profile = JSON.parse(localStorage.getItem('currentProfileInView'));
@@ -28,12 +29,21 @@ const InputVideoCallDetails = () => {
     user_id: profile._id
   };
 
-  // let roomname = '';
-
   function handleVideoCallProcess() {
-    // roomname = room.current.value;
-    if (callCategoryName.current === '') {  // roomname === '' || 
-      alert('Enter room name/call category');
+    if (callCategoryName.current === '') { 
+      alert('"Oops! you forgot to select call category, please enter call category in order to proceed !!!');
+      callCategorySubmitToast({
+        message: 'Oops! you forgot to select call category, please select call category in order to proceed !!!',
+        duration: 2000,
+        position: 'top',
+        cssClass: 'custom-toast',
+        buttons: [
+          {
+            text: 'Dismiss',
+            role: 'cancel',
+          },
+        ],
+      });
     } else {
       console.log('ConsultEase videocall room join emit event generated from InputVideoCallDetails Component(webview endpoint)',calleeDetails);
       profile  && window.ReactNativeWebView.postMessage(

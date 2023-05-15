@@ -374,14 +374,16 @@ function App({ indexJsNavigationRef }) {
               JSON.stringify(message),
             );
             message.response === 'accepted' ? navigation.navigate('VideoCall') : null;
-            message.response ===
-              'rejected'(
-                // indexJsNavigationRef.current.navigate('VideoCall')
-                navigation.navigate('WebView'),
+            message.response === 'rejected'
+              ? (navigation.navigate('WebView'),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
-                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }),
-              );
-            message.response === 'disconnected' ? navigation.navigate('WebView') : null;
+                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }))
+              : null;
+            message.response === 'disconnected'
+              ? (navigation.navigate('WebView'),
+                dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
+                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }))
+              : null;
           }
         })
       : null;

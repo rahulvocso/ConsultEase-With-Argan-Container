@@ -152,8 +152,6 @@ const VideoCallerPromptScreen = () => {
     }
   }, [callInstanceData]);
 
-// https://arganbackend.onrender.com/meeting/put-your-room-or-call-id-here to make callee join this works for argan web only** no use here
-
   useEffect(()=>{
     Object.keys(callInstanceData).length > 1 ? 
       (

@@ -101,12 +101,7 @@ const VideoCallScreen = () => {
   //   }
   // }, [socketId]);
 
-
   const handleCallDisconnect = () => {
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: 'VideoCallerPrompt'}],
-    // })
     //navigation.navigate('CallRating')
     (socketId && Utils.socket) ? (
       Utils.socket.emit("messageDirectPrivate",
