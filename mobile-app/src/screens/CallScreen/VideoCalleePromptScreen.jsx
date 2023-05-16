@@ -45,8 +45,6 @@ const VideoCalleePromptScreen = () => {
   const incomingCallDetails = useSelector((state) => state.webview.incomingCallDetails);
   const name = useSelector((state) => state.user.name);
   const email = useSelector((state) => state.user.email);
-  // const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
-  // const key = useSelector(state => state.webview.key)
   const consulteaseUserProfileData = useSelector((state) =>
   state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
   );
@@ -64,16 +62,8 @@ const VideoCalleePromptScreen = () => {
   const video = useSelector((state) => state.media.local.video);
   const active = useSelector((state) => !!state.media.local.video);
   const key = useSelector((state) => state.meeting.key);
-  const callId = useSelector(state => state.webview.callInstanceData._Id);
 
   const [incomingCallAnswer, setIncomingCallAnswer]  = useState();
-
-  // useEffect(()=>{
-  //   socket.on('message', (message) => {
-  //     console.log('Received message:', message);
-  //   });
-
-  // },[socketId])
 
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
@@ -86,15 +76,7 @@ const VideoCalleePromptScreen = () => {
     // }
   }, [])
 
-  // useEffect(() => {
-  //   if (socketId && incomingCallDetails && incomingCallAnswer) {
-  //     dispatch(Actions.IO.joinRoom(incomingCallId)); // call_id or room_key = callInstanceState._id
-  //     // navigation.navigate('VideoCall', { key });
-  //   }
-  // }, [socketId]);
-
   function handleCallAccept(){
-    // callerDetails name callCategory photo
     if (socketId) {
       dispatch({ type: 'meeting-errors-clear' });
       dispatch({ type: 'join', name, email});
@@ -105,14 +87,14 @@ const VideoCalleePromptScreen = () => {
           to: incomingCallDetails.from,
           response: 'accepted'
       })) : null;
-      dispatch(Actions.IO.joinRoom(callId)); 
+      dispatch(Actions.IO.joinRoom(key)); 
       navigation.navigate('Meeting',{ key });
       console.log('log below -> send call-pickup event by private-socket-message')
     }  
   }
 
   function handleCallReject(){
-    if (socketId && callId) {
+    if (socketId && key) {
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
         content : {
@@ -125,7 +107,7 @@ const VideoCalleePromptScreen = () => {
   
       console.log('log below -> send call-pickup event by private-socket-message')
     }
-    // dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+    dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
     dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
@@ -254,7 +236,7 @@ const VideoCalleePromptScreen = () => {
           {video ? 
             <RTCView
             // ref={rtcRef}
-            streamURL={video && video.stream && video.stream?.toURL()}
+            streamURL={video && video.stream && video.stream.toURL()}
             style={styles.rtcView}
             zOrder={-1}
             objectFit='cover'
