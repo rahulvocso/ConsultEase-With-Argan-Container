@@ -330,7 +330,7 @@ function App({ indexJsNavigationRef }) {
         }),
         dispatch({
           type: 'user-email',
-          value: `${consulteaseUserProfileData.lname}abcd@gmail.com`,
+          value: `${consulteaseUserProfileData.fname}abcd@gmail.com`,
         }))
       : null;
   }, [consulteaseUserProfileData, calleeDetails]);
