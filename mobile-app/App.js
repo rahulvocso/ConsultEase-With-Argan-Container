@@ -356,7 +356,7 @@ function App({ indexJsNavigationRef }) {
             dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: message });
             dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: message.callInstanceData });
             dispatch({ type: 'SET_PEER_SOCKET_ID', payload: message.from });
-            dispatch({ type: 'meeting-key', value: message.callInstanceData._Id });
+            dispatch({ type: 'meeting-key', value: xss(message.callInstanceData._id) });
             console.log(
               'Call ************ Incoming "videocall" messageDirectPrivate received App.js useEffect line~359********',
               message,
@@ -369,7 +369,7 @@ function App({ indexJsNavigationRef }) {
           // outgoing call back/response message from peer
           else if (message.type === 'callResponse') {
             console.log(
-              'Call-Response ************ Incoming "callRespons" messageDirectPrivate received App.js useEffect line~366********',
+              'Call-Response ************ Incoming "callResponse" messageDirectPrivate received App.js useEffect line~366********',
               message,
               JSON.stringify(message),
             );

@@ -30,6 +30,7 @@ import { useNavigation } from '@react-navigation/native';
 import Actions from '../../actions';
 import Theme from '../../theme';
 import Utils from '../../utils';
+import xss from 'xss';
 
 import AvatarSample from '../../../android/app/src/main/assets/AvatarSample.png';
 // import CallAccept from '../../assets/images/CallAccept.svg';
@@ -156,8 +157,8 @@ const VideoCallerPromptScreen = () => {
   }, [callInstanceData]);
 
   useEffect(()=>{
-    (socketId && callInstanceState._Id) ?
-      dispatch(Actions.IO.joinRoom(callInstanceData._id)) // call_id or room_key = callInstanceState._id
+    (socketId && key) ?
+      dispatch(Actions.IO.joinRoom(key)) // call_id or room_key = xss(callInstanceState._id)
       :
       null
     console.log("callInstanceData received useEFf log in VideoCallerPrompt.js" ,callInstanceData)
@@ -175,7 +176,7 @@ const VideoCallerPromptScreen = () => {
         if (data.status == 200) {
           //
           data.body.status === 'Online' &&
-            (data.body.socket_id !== null || undefined || '') &&
+            (data.body.socket_id !== (null || undefined || '')) &&
             (
               dispatch({ type: 'SET_CALLEE_SOCKET_ID', payload: data.body.socket_id }),
               dispatch({ type: 'SET_PEER_SOCKET_ID', payload: data.body.socket_id })
@@ -202,7 +203,6 @@ const VideoCallerPromptScreen = () => {
   };
 
   const initCall = async () => {
-    // initialize call instance
     await post(
       'call/init',
       {
@@ -215,9 +215,8 @@ const VideoCallerPromptScreen = () => {
       .then((data) => {
         console.log('postSocket.js, data', data);
         if (data.status == 200) {
-          // setCallInstanceState({ ...data.body, ...callInstanceState });
           dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: data.body });
-          dispatch({ type: 'meeting-key', value: data.body._id });
+          dispatch({ type: 'meeting-key', value: xss(data.body._id) });
           console.log(
             '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
             data.body,
@@ -235,46 +234,6 @@ const VideoCallerPromptScreen = () => {
         );
       });
   };
-
-
-  // useEffect(()=>{
-  //   callId && dispatch({ type: 'join', name: 'Foo Bar', email: 'consultease@gmail.com' })
-  // },[callId])
-
-  // if room is created/joined then ping callee to pick or reject call
-  useEffect(()=>{
-    // socketId ? Utils.socket.to(calleeSocketId).emit("message", {
-    // socketId && Utils.socket ? Utils.socket.to(socketId).emit("message", {
-    //   from: socketId,  
-    //   to: calleeSocketId,
-    //   type: 'call',
-    //   callerDetails: {
-    //     name: `${consulteaseUserProfileData.fname} ${consulteaseUserProfileData.lname}`,
-    //     callCategory: calleeDetails.callCategory,
-    //     photo: consulteaseUserProfileData.photo,
-    //   },
-    // }) : null;
-    // Utils.socket.emit('private_message', { to: 'socket_id_here', message: 'Hello there!' });
-
-    // (socketId && Utils.socket) ? Utils.socket.emit("message",{
-    //   // to: calleeSocketId,
-    //   // to: socketId,
-    //   messageData : {
-    //     type: 'call',
-    //     callerDetails: {
-    //       name: `${consulteaseUserProfileData.fname} ${consulteaseUserProfileData.lname}`,
-    //       callCategory: calleeDetails.callCategory,
-    //       photo: consulteaseUserProfileData.photo,
-    //     },
-    //   }
-    // }) : null;
-
-    // console.log('log below -> send call-pickup event by private-socket-message')
-      
-    // return (
-    //   Utils.socket.off('message')
-    // )
-  },[])
  
 
   const handleCameraFacing = () => {
