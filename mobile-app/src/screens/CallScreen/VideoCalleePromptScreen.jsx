@@ -78,8 +78,6 @@ const VideoCalleePromptScreen = () => {
 
   function handleCallAccept(){
     if (socketId) {
-      dispatch({ type: 'meeting-errors-clear' });
-      dispatch({ type: 'join', name, email});
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
           type: 'callResponse',
