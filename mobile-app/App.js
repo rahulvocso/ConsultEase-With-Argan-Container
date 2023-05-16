@@ -399,7 +399,7 @@ function App({ indexJsNavigationRef }) {
               message,
               JSON.stringify(message),
             );
-            message.response === 'accepted' ? navigation.navigate('Meeting') : null;
+            message.response === 'accepted' ? navigation.navigate('Meeting', { key }) : null;
             message.response === 'rejected'
               ? (navigation.navigate('WebView'),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),

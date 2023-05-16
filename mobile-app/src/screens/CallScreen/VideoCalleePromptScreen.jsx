@@ -75,6 +75,7 @@ const VideoCalleePromptScreen = () => {
         // dispatch(Actions.Media.releaseLocalAudio());
         dispatch({ type: 'meeting-errors-clear' });
         dispatch({ type: 'join', name, email});
+        console.log('*****JOINED*****',joined);
       }
   }, [])
 
@@ -94,7 +95,7 @@ const VideoCalleePromptScreen = () => {
           to: incomingCallDetails.from,
           response: 'accepted'
       })) : null;
-      navigation.navigate('Meeting',{ key });
+      navigation.navigate('Meeting', { key });
       console.log('log below -> send call-pickup event by private-socket-message')
     }  
   }

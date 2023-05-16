@@ -104,6 +104,7 @@ const VideoCallerPromptScreen = () => {
     return ()=>{
       dispatch({ type: 'meeting-errors-clear' });
       dispatch({ type: 'join', name, email});
+      console.log('*****Joined*****', joined)
     }
   }, []);
 
