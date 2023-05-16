@@ -138,8 +138,7 @@ const VideoCallerPromptScreen = () => {
       //   dispatch({ type: 'meeting-errors-key', error: 'Meeting key required' });
       //   return;
       // }
-      console.log("callInstanceData received useEFf log in VideoCallerPrompt.js" ,callInstanceData)
-      key ? dispatch(Actions.IO.joinRoom(key)) : null// call_id or room_key = xss(callInstanceState._id)
+      console.log("callInstanceData received useEFf log in VideoCallerPrompt" , callInstanceData)
       // send message to callee to open VideocalleePrompt screen/view on his/her phone
       (Utils.socket && consulteaseUserProfileData && calleeDetails) ? (
         Utils.socket.emit("messageDirectPrivate",
@@ -156,6 +155,7 @@ const VideoCallerPromptScreen = () => {
             }
       )) : null;
       console.log('log below -> call started message event by private-socket-message')
+      key ? dispatch(Actions.IO.joinRoom(key)) : null// call_id or room_key = xss(callInstanceState._id)
     }
   }, [callInstanceData]);
   
