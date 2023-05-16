@@ -62,6 +62,7 @@ const VideoCallScreen = () => {
   const key = useSelector((state) => state.meeting.key);
   const active = useSelector((state) => !!state.media.local.video);
   const interfaces = useSelector((state) => state.media.interfaces);
+  const filteredInterfaces = interfaces.filter((e) => !hidden.set.has(e.id));
   const joined = useSelector((state) => state.media.joined);
   const ended = useSelector((state) => state.meeting.ended);
   const room = useSelector((state)=>state.meeting.room); 
@@ -83,7 +84,6 @@ const VideoCallScreen = () => {
       dispatch(Actions.Media.releaseLocalVideo());
       dispatch(Actions.Media.releaseLocalAudio());
       dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
-      // dispatch({ type: 'SET_CALLEE_DETAILS', payload: {} });
     }
   }, []);
 
@@ -156,14 +156,14 @@ const VideoCallScreen = () => {
             <RTCView
               // ref={rtcRef}
               // streamURL={primaryVideoViewIsPeer ? (" ") : (video && video.stream && video.stream?.toURL()) }
-              streamURL={interfaces[0].video.stream.toURL()}
+              streamURL={filteredInterfaces[0].video.stream.toURL()}
               style={styles.rtcView}
               zOrder={-1}
               objectFit='cover'
               mirror={true}
             />
             {(interfaces[0].audio)
-              ? <RTCView streamURL={interfaces[0].audio.stream.toURL()} zOrder={-1} />
+              ? <RTCView streamURL={filteredInterfaces[0].audio.stream.toURL()} zOrder={-1} />
               : null
             }
             {/* host video */}
@@ -189,7 +189,7 @@ const VideoCallScreen = () => {
                       // ref={rtcRef2}
                       // streamURL={primaryVideoViewIsPeer ? (video && video.stream && video.stream?.toURL()) : ("")
                       // }
-                      streamURL={interfaces[1].video.stream.toURL()}
+                      streamURL={filteredInterfaces[1].video.stream.toURL()}
                       // streamURL={interfaces[1].video.stream.toURL()}
                       style={styles.rtcView2}
                       zOrder={1}
@@ -197,7 +197,7 @@ const VideoCallScreen = () => {
                       mirror={true}
                     />
                       {(interfaces[0].audio)
-                        ? <RTCView streamURL={interfaces[1].audio.stream.toURL()} zOrder={-1} />
+                        ? <RTCView streamURL={filteredInterfaces[1].audio.stream.toURL()} zOrder={-1} />
                         : null
                       }
                     {/* <RTCView streamURL={interfaces[1].audio.stream.toURL()} zOrder={1} /> */}
