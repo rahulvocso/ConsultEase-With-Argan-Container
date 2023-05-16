@@ -362,9 +362,7 @@ function App({ indexJsNavigationRef }) {
               message,
               JSON.stringify(message),
             );
-            // navigation.navigate('VideoCalleePrompt', { key });
             navigation.navigate('VideoCalleePrompt');
-            // indexJsNavigationRef.current.navigate('VideoCall');
           }
           // outgoing call back/response message from peer
           else if (message.type === 'callResponse') {
@@ -381,6 +379,7 @@ function App({ indexJsNavigationRef }) {
               : null;
             message.response === 'disconnected'
               ? (navigation.navigate('WebView'),
+                dispatch(Actions.Media.leaveMeeting()),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
                 dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }))
               : null;
