@@ -88,6 +88,10 @@ const VideoCallScreen = () => {
     }
   }, []);
 
+  useEffect(()=>{
+    console.log("****VIDEO****",video);
+  },[video])
+
   useEffect(() => {
     if (ended) {
       // navigation.popToTop();
