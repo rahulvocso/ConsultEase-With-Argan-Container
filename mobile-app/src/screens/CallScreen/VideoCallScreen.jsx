@@ -67,7 +67,7 @@ const VideoCallScreen = () => {
   const ended = useSelector((state) => state.meeting.ended);
   const room = useSelector((state)=>state.meeting.room); 
   const socketId = useSelector((state) => state.socket.id);
-  const callId = useSelector((state)=>state.webview.callInstanceData._Id);
+  const callId = useSelector((state)=>state.webview.callInstanceData._id);
   const peerSocketId = useSelector((state)=>state.webview.peerSocketId);
   const uuid = useSelector((state) => state.media.uuid);
 
