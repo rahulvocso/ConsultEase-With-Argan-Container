@@ -88,7 +88,7 @@ const VideoCalleePromptScreen = () => {
           response: 'accepted'
       })) : null;
       dispatch(Actions.IO.joinRoom(key)); 
-      navigation.navigate('Meeting',{ key });
+      navigation.navigate('VideoCall',{ key });
       console.log('log below -> send call-pickup event by private-socket-message')
     }  
   }
@@ -96,14 +96,14 @@ const VideoCalleePromptScreen = () => {
   function handleCallReject(){
     if (socketId && key) {
       (socketId && Utils.socket) ? (
-        Utils.socket.emit("messageDirectPrivate",{
-        content : {
+        Utils.socket.emit("messageDirectPrivate",
+        {
           type: 'callResponse',
           from: socketId,
           to: incomingCallDetails.from,
           response: 'rejected',
         }
-      })) : null;
+      )) : null;
   
       console.log('log below -> send call-pickup event by private-socket-message')
     }
