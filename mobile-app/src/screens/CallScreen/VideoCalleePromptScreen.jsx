@@ -78,8 +78,14 @@ const VideoCalleePromptScreen = () => {
       }
   }, [])
 
+  useEffect(() => {
+    if (socketId && key) {
+      dispatch(Actions.IO.joinRoom(key));
+    }
+  }, [socketId, key]);
+
   function handleCallAccept(){
-    key ? dispatch(Actions.IO.joinRoom(key)) : null;
+    // key ? dispatch(Actions.IO.joinRoom(key)) : null;
     if (socketId) {
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
