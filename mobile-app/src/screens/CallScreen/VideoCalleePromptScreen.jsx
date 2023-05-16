@@ -68,14 +68,14 @@ const VideoCalleePromptScreen = () => {
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
-    dispatch({ type: 'meeting-errors-clear' });
-    dispatch({ type: 'join', name, email});
     console.log('callerDetails inside VideoCalleePrompt',callerDetails)
     console.log('callerDetails.photo inside VideoCalleePrompt', typeof callerDetails.photo)
-    // return () => {
-    //     dispatch(Actions.Media.releaseLocalVideo());
-    //     dispatch(Actions.Media.releaseLocalAudio());
-    // }
+    return () => {
+        // dispatch(Actions.Media.releaseLocalVideo());
+        // dispatch(Actions.Media.releaseLocalAudio());
+        dispatch({ type: 'meeting-errors-clear' });
+        dispatch({ type: 'join', name, email});
+      }
   }, [])
 
   function handleCallAccept(){
@@ -87,7 +87,7 @@ const VideoCalleePromptScreen = () => {
           to: incomingCallDetails.from,
           response: 'accepted'
       })) : null;
-      dispatch(Actions.IO.joinRoom(key)); 
+      key ? dispatch(Actions.IO.joinRoom(key)) : null;
       navigation.navigate('Meeting',{ key });
       console.log('log below -> send call-pickup event by private-socket-message')
     }  

@@ -101,6 +101,10 @@ const VideoCallerPromptScreen = () => {
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
+    return ()=>{
+      dispatch({ type: 'meeting-errors-clear' });
+      dispatch({ type: 'join', name, email});
+    }
   }, []);
 
   useEffect(() => {
@@ -130,13 +134,14 @@ const VideoCallerPromptScreen = () => {
 
   useEffect(() => {
     if (socketId && callInstanceData._id) {
-      // dispatch({ type: 'SET_CALL_STARTER_STATUS', payload: true})
-      if (Utils.isEmpty(key)) {
-        dispatch({ type: 'meeting-errors-key', error: 'Meeting key required' });
-        return;
-      }
-      dispatch({ type: 'meeting-errors-clear' });
-      dispatch({ type: 'join', name, email});
+      // if (Utils.isEmpty(key)) {
+      //   dispatch({ type: 'meeting-errors-key', error: 'Meeting key required' });
+      //   return;
+      // }
+      console.log("callInstanceData received useEFf log in VideoCallerPrompt.js" ,callInstanceData)
+      (socketId && key)
+      ? dispatch(Actions.IO.joinRoom(key)) // call_id or room_key = xss(callInstanceState._id)
+      : null;
       // send message to callee to open VideocalleePrompt screen/view on his/her phone
       (Utils.socket && consulteaseUserProfileData && calleeDetails) ? (
         Utils.socket.emit("messageDirectPrivate",
@@ -155,16 +160,6 @@ const VideoCallerPromptScreen = () => {
       console.log('log below -> call started message event by private-socket-message')
     }
   }, [callInstanceData]);
-
-  useEffect(()=>{
-    (socketId && key) ?
-      dispatch(Actions.IO.joinRoom(key)) // call_id or room_key = xss(callInstanceState._id)
-      :
-      null
-    console.log("callInstanceData received useEFf log in VideoCallerPrompt.js" ,callInstanceData)
-    //
-  },[callInstanceData])
-
   
   const getCalleeSocket = async () => {
     // get callee user socket_id related data
@@ -217,6 +212,7 @@ const VideoCallerPromptScreen = () => {
         if (data.status == 200) {
           dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: data.body });
           dispatch({ type: 'meeting-key', value: xss(data.body._id) });
+          data.body._id ? dispatch({ type: 'meeting-errors-clear' }) : null;
           console.log(
             '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
             data.body,
