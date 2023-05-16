@@ -384,7 +384,6 @@ function App({ indexJsNavigationRef }) {
             dispatch({ type: 'SET_PEER_SOCKET_ID', payload: message.from });
             dispatch({ type: 'meeting-key', value: xss(message.callInstanceData._id) });
             callInstanceData._id ? dispatch({ type: 'meeting-errors-clear' }) : null;
-            key ? dispatch(Actions.IO.joinRoom(key)) : null;
             console.log(
               'Call ************ Incoming "videocall" messageDirectPrivate received App.js useEffect line~359********',
               message,
