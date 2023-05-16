@@ -25,6 +25,7 @@ function MeetingManager() {
   const dispatch = useDispatch();
   const joined = useSelector((state) => state.media.joined);
   const ended = useSelector((state) => state.meeting.ended);
+  const video = useSelector((state) => state.media.local.video);
 
   useEffect(() => {
     if (ended) {
