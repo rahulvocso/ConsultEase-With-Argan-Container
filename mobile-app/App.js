@@ -348,8 +348,26 @@ function App({ indexJsNavigationRef }) {
             message,
           );
           console.log('***current navigation screen', navigation.getCurrentRoute().name);
+
+          // response if callee is busy on another call
+          // ['VideoCallerPrompt', 'VideoCalleePrompt', 'VideoCall'].includes(
+          //   navigation.getCurrentRoute().name,
+          // )
+          //   ? Utils.socket.emit('messageDirectPrivate', {
+          //       type: 'calleeResponse',
+          //       from: socketId,
+          //       to: message.from,
+          //       response: 'busy',
+          //     })
+          //   : null;
+
           // incoming call message from peer
-          if (message.type === 'videoCall') {
+          if (
+            message.type === 'videoCall' &&
+            !['VideoCallerPrompt', 'VideoCalleePrompt', 'VideoCall'].includes(
+              navigation.getCurrentRoute().name, //checks if user is on another call
+            )
+          ) {
             dispatch({
               type: 'SET_CALLER_DETAILS',
               payload: message.callerDetails,
@@ -365,6 +383,7 @@ function App({ indexJsNavigationRef }) {
             );
             navigation.navigate('VideoCalleePrompt');
           }
+
           // outgoing call back/response message from peer
           else if (message.type === 'calleeResponse') {
             console.log(
