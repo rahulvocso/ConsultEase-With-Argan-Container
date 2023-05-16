@@ -79,6 +79,7 @@ const VideoCalleePromptScreen = () => {
   }, [])
 
   function handleCallAccept(){
+    key ? dispatch(Actions.IO.joinRoom(key)) : null;
     if (socketId) {
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
@@ -87,7 +88,6 @@ const VideoCalleePromptScreen = () => {
           to: incomingCallDetails.from,
           response: 'accepted'
       })) : null;
-      key ? dispatch(Actions.IO.joinRoom(key)) : null;
       navigation.navigate('Meeting',{ key });
       console.log('log below -> send call-pickup event by private-socket-message')
     }  
