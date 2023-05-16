@@ -88,7 +88,7 @@ const VideoCalleePromptScreen = () => {
           response: 'accepted'
       })) : null;
       dispatch(Actions.IO.joinRoom(key)); 
-      navigation.navigate('VideoCall',{ key });
+      navigation.navigate('Meeting',{ key });
       console.log('log below -> send call-pickup event by private-socket-message')
     }  
   }
