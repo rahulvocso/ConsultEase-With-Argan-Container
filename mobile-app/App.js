@@ -365,7 +365,7 @@ function App({ indexJsNavigationRef }) {
             navigation.navigate('VideoCalleePrompt');
           }
           // outgoing call back/response message from peer
-          else if (message.type === 'callResponse') {
+          else if (message.type === 'calleeResponse') {
             console.log(
               'Call-Response ************ Incoming "callResponse" messageDirectPrivate received App.js useEffect line~366********',
               message,
@@ -377,6 +377,14 @@ function App({ indexJsNavigationRef }) {
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
                 dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }))
               : null;
+          } else if (message.type === 'callerResponse') {
+            message.response === 'disconnectedByCallerBeforeCalleeResponse'
+              ? (navigation.navigate('WebView'),
+                dispatch(Actions.Media.leaveMeeting()),
+                dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
+                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }))
+              : null;
+          } else if (message.type === 'callResponse') {
             message.response === 'disconnected'
               ? (navigation.navigate('WebView'),
                 dispatch(Actions.Media.leaveMeeting()),

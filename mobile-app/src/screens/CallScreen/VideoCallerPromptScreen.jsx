@@ -253,7 +253,19 @@ const VideoCallerPromptScreen = () => {
   };
 
   const handleCallDisconnect = () => {
-
+    if (socketId) {
+      (socketId && Utils.socket) ? (
+        Utils.socket.emit("messageDirectPrivate",
+        {
+          type: 'callResponse',
+          from: socketId,
+          to: calleeSocketId,
+          response: 'disconnectedByCallerBeforeCalleeResponse',
+        }
+      )) : null;
+  
+      console.log('Call disconnected by caller')
+    }
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });

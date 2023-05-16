@@ -82,7 +82,7 @@ const VideoCalleePromptScreen = () => {
     if (socketId) {
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
-          type: 'callResponse',
+          type: 'calleeResponse',
           from: socketId,
           to: incomingCallDetails.from,
           response: 'accepted'
@@ -94,11 +94,11 @@ const VideoCalleePromptScreen = () => {
   }
 
   function handleCallReject(){
-    if (socketId && key) {
+    if (socketId) {
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",
         {
-          type: 'callResponse',
+          type: 'calleeResponse',
           from: socketId,
           to: incomingCallDetails.from,
           response: 'rejected',
