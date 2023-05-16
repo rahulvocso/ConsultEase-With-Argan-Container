@@ -257,7 +257,7 @@ const VideoCallerPromptScreen = () => {
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",
         {
-          type: 'callResponse',
+          type: 'callerResponse',
           from: socketId,
           to: calleeSocketId,
           response: 'disconnectedByCallerBeforeCalleeResponse',
