@@ -139,9 +139,7 @@ const VideoCallerPromptScreen = () => {
       //   return;
       // }
       console.log("callInstanceData received useEFf log in VideoCallerPrompt.js" ,callInstanceData)
-      (socketId && key)
-      ? dispatch(Actions.IO.joinRoom(key)) // call_id or room_key = xss(callInstanceState._id)
-      : null;
+      key ? dispatch(Actions.IO.joinRoom(key)) : null// call_id or room_key = xss(callInstanceState._id)
       // send message to callee to open VideocalleePrompt screen/view on his/her phone
       (Utils.socket && consulteaseUserProfileData && calleeDetails) ? (
         Utils.socket.emit("messageDirectPrivate",
