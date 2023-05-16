@@ -319,8 +319,6 @@ function App({ indexJsNavigationRef }) {
     consulteaseUserProfileData
       ? (console.log(
           'In Container App.js UseEffect',
-          'calleeDetails',
-          calleeDetails,
           'consulteaseUserProfileData',
           consulteaseUserProfileData,
         ),
@@ -333,8 +331,16 @@ function App({ indexJsNavigationRef }) {
           value: `${consulteaseUserProfileData.fname}abcd@gmail.com`,
         }))
       : null;
-  }, [consulteaseUserProfileData, calleeDetails]);
-  //
+  }, [consulteaseUserProfileData]);
+
+  useEffect(() => {
+    calleeDetails
+      ? console.log(
+          '***calleeDetails set, log in(react-native App.js UseEffect line~338)',
+          calleeDetails,
+        )
+      : null;
+  }, [calleeDetails]);
 
   // listen for any direct private message sent by any other socket_id user
   useEffect(() => {
@@ -391,7 +397,7 @@ function App({ indexJsNavigationRef }) {
               message,
               JSON.stringify(message),
             );
-            message.response === 'accepted' ? navigation.navigate('Meeting') : null;
+            message.response === 'accepted' ? navigation.navigate('VideoCall') : null;
             message.response === 'rejected'
               ? (navigation.navigate('WebView'),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
