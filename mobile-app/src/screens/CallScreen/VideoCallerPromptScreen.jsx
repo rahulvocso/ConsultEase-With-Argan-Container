@@ -216,6 +216,8 @@ const VideoCallerPromptScreen = () => {
           console.log(
             '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
             data.body,
+            ' data.body._id',
+            data.body._id,
           );
         } else {
           console.log(
