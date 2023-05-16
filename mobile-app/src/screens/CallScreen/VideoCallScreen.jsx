@@ -79,7 +79,8 @@ const VideoCallScreen = () => {
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
-    console.log('interfaces',interfaces);
+    console.log('****interfaces',interfaces);
+    dispatch(Actions.Media.joinMeeting());
     return () => {
       dispatch(Actions.Media.releaseLocalVideo());
       dispatch(Actions.Media.releaseLocalAudio());
