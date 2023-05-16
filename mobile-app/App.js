@@ -283,7 +283,6 @@ function App({ indexJsNavigationRef }) {
   const key = useSelector((state) => state.meeting.key);
   const amICallSetter = useSelector((state) => state.webview.amICallSetter);
   const callInstanceData = useSelector((state) => state.webview.callInstanceData);
-  s;
   //Consulteas user profile data.content received from webview
   const consulteaseUserProfileData = useSelector((state) =>
     state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
