@@ -282,8 +282,6 @@ function App({ indexJsNavigationRef }) {
   const calleeDetails = useSelector((state) => state.webview.calleeDetails);
   const key = useSelector((state) => state.meeting.key);
   const amICallSetter = useSelector((state) => state.webview.amICallSetter);
-  const name = useSelector((state) => state.user.name);
-  const email = useSelector((state) => state.user.email);
   //Consulteas user profile data.content received from webview
   const consulteaseUserProfileData = useSelector((state) =>
     state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
@@ -328,7 +326,7 @@ function App({ indexJsNavigationRef }) {
         ),
         dispatch({
           type: 'user-name',
-          value: `${consulteaseUserProfileData.fname} ${consulteaseUserProfileData.lname}`,
+          value: `${consulteaseUserProfileData.fname}${consulteaseUserProfileData.lname}`,
         }),
         dispatch({
           type: 'user-email',
@@ -359,8 +357,6 @@ function App({ indexJsNavigationRef }) {
             dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: message.callInstanceData });
             dispatch({ type: 'SET_PEER_SOCKET_ID', payload: message.from });
             dispatch({ type: 'meeting-key', value: xss(message.callInstanceData._id) });
-            dispatch({ type: 'meeting-errors-clear' });
-            dispatch({ type: 'join', name, email });
             console.log(
               'Call ************ Incoming "videocall" messageDirectPrivate received App.js useEffect line~359********',
               message,

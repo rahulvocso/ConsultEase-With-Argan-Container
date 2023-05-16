@@ -68,6 +68,8 @@ const VideoCalleePromptScreen = () => {
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     dispatch(Actions.Media.getLocalAudio());
+    dispatch({ type: 'meeting-errors-clear' });
+    dispatch({ type: 'join', name, email});
     console.log('callerDetails inside VideoCalleePrompt',callerDetails)
     console.log('callerDetails.photo inside VideoCalleePrompt', typeof callerDetails.photo)
     // return () => {
