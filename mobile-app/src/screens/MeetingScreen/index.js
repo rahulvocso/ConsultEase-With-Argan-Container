@@ -36,6 +36,10 @@ function MeetingManager() {
     }
   }, [joined]);
 
+  useEffect(() => {
+    console.log('****VIDEO****', video);
+  }, [video]);
+
   return null;
 }
 
