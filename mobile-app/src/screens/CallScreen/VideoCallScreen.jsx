@@ -77,8 +77,10 @@ const VideoCallScreen = () => {
   const timerLimit = 3660;
   
   useEffect(() => {
-    dispatch(Actions.Media.getLocalVideo());
-    dispatch(Actions.Media.getLocalAudio());
+    !video 
+      ? (dispatch(Actions.Media.getLocalVideo()),
+        dispatch(Actions.Media.getLocalAudio()))
+      : null;
     console.log('****interfaces',interfaces);
     dispatch(Actions.Media.joinMeeting());
     return () => {
