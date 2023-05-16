@@ -347,7 +347,7 @@ function App({ indexJsNavigationRef }) {
             message.type,
             message,
           );
-          navigation.getCurrentRoute().name;
+          console.log('***current navigation screen', navigation.getCurrentRoute().name);
           // incoming call message from peer
           if (message.type === 'videoCall') {
             dispatch({
@@ -363,7 +363,7 @@ function App({ indexJsNavigationRef }) {
               message,
               JSON.stringify(message),
             );
-            console.log('***current navigation screen', navigation.navigate('VideoCalleePrompt'));
+            navigation.navigate('VideoCalleePrompt');
           }
           // outgoing call back/response message from peer
           else if (message.type === 'calleeResponse') {
