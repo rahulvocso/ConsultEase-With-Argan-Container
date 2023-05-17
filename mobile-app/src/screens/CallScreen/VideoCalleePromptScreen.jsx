@@ -96,7 +96,7 @@ const VideoCalleePromptScreen = () => {
           to: incomingCallDetails.from,
           response: 'accepted'
       })) : null;
-      navigation.navigate('Meeting', { key });
+      navigation.navigate('Meeting');
       console.log('log below -> send call-pickup event by private-socket-message')
     }  
   }
@@ -119,7 +119,7 @@ const VideoCalleePromptScreen = () => {
     dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
-    navigation.navigate('WebView', { key });
+    navigation.navigate('WebView');
   }
 
   const styles = StyleSheet.create({

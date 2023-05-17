@@ -82,10 +82,10 @@ const VideoCallScreen = () => {
         dispatch(Actions.Media.getLocalAudio()))
       : null;
     console.log('****interfaces',interfaces);
-    dispatch(Actions.Media.joinMeeting());
+    // dispatch(Actions.Media.joinMeeting());
     return () => {
-      dispatch(Actions.Media.releaseLocalVideo());
-      dispatch(Actions.Media.releaseLocalAudio());
+      // dispatch(Actions.Media.releaseLocalVideo());
+      // dispatch(Actions.Media.releaseLocalAudio());
       dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     }
   }, []);

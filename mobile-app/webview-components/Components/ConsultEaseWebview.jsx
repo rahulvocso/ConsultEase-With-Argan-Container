@@ -67,12 +67,6 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
     throw new Error('Function not implemented.');
   }
 
-  const runScript = `
-  // document.body.style.backgroundColor = 'red';
-  // setTimeout(function() { window.alert('hi') }, 2000);
-  true; // note: this is required, or you'll sometimes get silent failures
-  `;
-
   // handles msg received from webview components
 
   function handleWebViewMessage(event){
@@ -139,23 +133,30 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
     });
   }
   
-  const sendMessageToWebview = `
-    import {useHistory} from 'react-router';
-    const lastRoutes = ['videocall','/videocall'];
-    const history = useHistory();
-    console.log('****injeting js in webview to change route from videocall to profile')
-    lastRoutes.includes(history.location.pathname) && history.push('profile');
-  `;
+  // const sendMessageToWebview = `
+  //   import {useHistory} from 'react-router';
+  //   const lastRoutes = ['videocall','/videocall'];
+  //   const history = useHistory();
+  //   console.log('****injeting js in webview to change route from videocall to profile')
+  //   lastRoutes.includes(history.location.pathname) && history.push('profile');
+  // `;
 
-  useEffect(() => {
-    // reloadWebviewOnConnectionChange();
-    webviewRef.current?.injectJavaScript(sendMessageToWebview);
-    // return () => {
-    //   if (unsubscribeRef.current) {
-    //     unsubscribeRef.current();
-    //   }
-    // };
-  }, []);
+  // const runScript = `
+  // // document.body.style.backgroundColor = 'red';
+  // // setTimeout(function() { window.alert('hi') }, 2000);
+  // true; // note: this is required, or you'll sometimes get silent failures
+  // `;
+
+  // const sendMessageToWebview = () => {
+  //   const message = 'webview in view checking last screen if its /videocall';
+  //   const runCode = `window.postMessage('${message}', '*');`;
+  //   webviewRef.current.injectJavaScript(runCode);
+  // };
+
+
+  // useEffect(() => {
+  //   webviewRef.current.postMessage(`window.postMessage('${'messageFromWebviewContainer'}', '*');`);
+  // }, []);
 
 
 
