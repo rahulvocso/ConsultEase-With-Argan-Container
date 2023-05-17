@@ -148,7 +148,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
   `;
 
   useEffect(() => {
-    reloadWebviewOnConnectionChange();
+    // reloadWebviewOnConnectionChange();
     webviewRef.current?.injectJavaScript(sendMessageToWebview);
     // return () => {
     //   if (unsubscribeRef.current) {

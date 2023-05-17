@@ -337,7 +337,7 @@ function App({ indexJsNavigationRef }) {
   useEffect(() => {
     calleeDetails
       ? console.log(
-          '***calleeDetails set, log in(react-native App.js UseEffect line~338)',
+          '***calleeDetails set, log in(react-native App.js UseEffect line~340)',
           calleeDetails,
         )
       : null;
