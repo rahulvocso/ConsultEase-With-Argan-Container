@@ -165,7 +165,7 @@ const InputVideoCallDetails = () => {
 
           <IonRadioGroup
             value={callCategoryName}
-            onIonChange={e => (setCallCategoryName(e.target.value))}
+            onIonChange={e => (setCallCategoryName(e.target.value === undefined ? '' : e.target.value))}
             allowEmptySelection={true}>
             {profile.profile.categories.map((category, index) => (
               <IonItem key={`${category.name}${index}`}>
