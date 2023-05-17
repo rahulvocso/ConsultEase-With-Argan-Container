@@ -272,7 +272,7 @@ const useInitialURL = () => {
 };
 
 // APP COMPONENT
-function App({ indexJsNavigationRef }) {
+function App() {
   const dispatch = useDispatch();
   const navigation = useNavigation(); //(indexJsNavigationRef.current);
   const { url: initialUrl } = useInitialURL();
@@ -485,7 +485,6 @@ function App({ indexJsNavigationRef }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Theme.Variables.background }}>
-      {/* Theme.Variables.background */}
       <>
         <StatusBar barStyle="dark-content" />
         <Stack.Navigator
@@ -493,7 +492,6 @@ function App({ indexJsNavigationRef }) {
             header: ConditionalAppBar,
           }}
         >
-          {/* {isCallViewOn ? ( */}
           <>
             <Stack.Screen name="WebView" component={ConsultEaseWebview} />
             <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
@@ -505,10 +503,6 @@ function App({ indexJsNavigationRef }) {
             <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
             <Stack.Screen name="Meeting" component={MeetingNavigator} />
           </>
-          {/* ) : (
-            <Stack.Screen name="WebView" component={ConsultEaseWebview} />
-            // </> ConsultEaseWebview />
-          )} */}
         </Stack.Navigator>
         {/* <Common.Snack /> */}
       </>

@@ -237,7 +237,7 @@ const VideoCallerPromptScreen = () => {
       })
       .catch((error) => {
         console.error(
-          'Error occurred during API call: VideoCallerPromptScreen.js  fetchData()',
+          'Error occurred during API call: VideoCallerPromptScreen.js during fetchData()',
           error,
         );
       });

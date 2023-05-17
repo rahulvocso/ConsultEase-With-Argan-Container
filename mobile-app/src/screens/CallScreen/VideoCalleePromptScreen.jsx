@@ -51,6 +51,7 @@ const VideoCalleePromptScreen = () => {
   state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
   );
   const callInstanceData = useSelector((state)=> state.webview.callInstanceData);
+  const callId = useSelector((state)=> state.webview.callInstanceData._id)
 
   const dispatch = useDispatch();
   const socketId = useSelector((state) => state.socket.id);
@@ -83,10 +84,10 @@ const VideoCalleePromptScreen = () => {
   }, [])
 
   useEffect(() => {
-    if (socketId && key) {
-      dispatch(Actions.IO.joinRoom(key));
+    if (socketId && callId) {
+      dispatch(Actions.IO.joinRoom(callId));
     }
-  }, [socketId, key]);
+  }, [socketId, callId]);
 
   function handleCallAccept(){
     // key ? dispatch(Actions.IO.joinRoom(key)) : null;

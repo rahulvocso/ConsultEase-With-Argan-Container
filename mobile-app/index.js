@@ -17,10 +17,8 @@ notifee.registerForegroundService(() => {
 });
 
 function Main() {
-  const navigationRef = useRef();
-
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer>
       <PaperProvider theme={Theme.Base}>
         <Provider store={store}>
           <App indexJsNavigationRef={navigationRef} />
