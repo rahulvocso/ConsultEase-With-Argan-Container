@@ -45,6 +45,8 @@ const VideoCalleePromptScreen = () => {
   const incomingCallDetails = useSelector((state) => state.webview.incomingCallDetails);
   const name = useSelector((state) => state.user.name);
   const email = useSelector((state) => state.user.email);
+  const joined = useSelector((state) => state.media.joined);
+  const ended = useSelector((state) => state.meeting.ended);
   const consulteaseUserProfileData = useSelector((state) =>
   state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
   );
@@ -62,7 +64,6 @@ const VideoCalleePromptScreen = () => {
   const video = useSelector((state) => state.media.local.video);
   const active = useSelector((state) => !!state.media.local.video);
   const key = useSelector((state) => state.meeting.key);
-
   const [incomingCallAnswer, setIncomingCallAnswer]  = useState();
 
   useEffect(() => {
@@ -75,7 +76,7 @@ const VideoCalleePromptScreen = () => {
         // dispatch(Actions.Media.releaseLocalAudio());
         dispatch({ type: 'meeting-errors-clear' });
         dispatch({ type: 'join', name, email});
-        console.log('*****JOINED*****',joined);
+        console.log('*****JOINED**,**ENDED, VideoCalleePromptScreen.js',joined, ended);
       }
   }, [])
 

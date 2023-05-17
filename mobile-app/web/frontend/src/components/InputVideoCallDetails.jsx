@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 
 import {
   IonButton,
@@ -14,9 +14,18 @@ import Header from './Header';
 import CallCategorySelection from './CallCategorySelection';
 import './VideoCall.css';
 
+import {useHistory} from 'react-router';
+
+import useFetch from '../hooks/useFetch';
+
 const InputVideoCallDetails = () => {
+  const { get } = useFetch('https://callingserver.onrender.com/api/v1/');
+  const history = useHistory();
   const [callCategorySubmitToast] = useIonToast();
-  const callCategoryName = useRef('');
+  let  [callCategoryName, setCallCategoryName] = useState('');
+  let callResolution = false
+  const [consulteaseUserProfileData, setConsulteaseUserProfileData] = useState(JSON.parse(localStorage.getItem('consulteaseUserProfileData')))
+  const [calleeSocketId, setCalleeSocketId] = useState('');
 
   let profile = JSON.parse(localStorage.getItem('currentProfileInView'));
 
@@ -25,16 +34,53 @@ const InputVideoCallDetails = () => {
       ? `${profile.fname + ' ' + (profile.lname ? `${profile.lname}` : '')}`
       : 'name unavailable',
     photo: profile.photo,
-    callCategory: callCategoryName.current,
-    user_id: profile._id
+    callCategory: callCategoryName,
+    user_id: profile._id,
   };
 
+  useEffect(()=>{
+    // get callee user socket_id related data
+    if(consulteaseUserProfileData.auth_token && profile._id){
+      !calleeSocketId && get(`user/getSocket?&user_id=${profile._id}`, {
+        auth_token: consulteaseUserProfileData.auth_token,
+      })
+        .then((data) => {
+          console.log('getSocket.js, data', data);
+          if(data.status === 200 &&
+            data.body.status === 'Online' &&
+            data.body.socket_id !== (null || undefined || '')
+            )
+            {
+            setCalleeSocketId(data.body.socket_id);
+            console.log(
+              '****** Successful  InputVideoCallDetails.js  getSocket() socket_id Get req 200 ******* data.body',
+              data.body._id,
+            );
+          } else {
+            console.log(
+              '****** Unsuccessfull  InputVideoCallDetails.js  getSocket() socket_id Get req ******* data.body',
+              data.status,
+              data.body,
+            );
+          }
+        })
+        .catch((error) => {
+          console.error(
+            'Error occurred during API call: VideoCallerPromptScreen.js 186 getSocket.js',
+            error,
+          );
+        });
+    }
+  },[consulteaseUserProfileData.auth_token, profile._id])
+
   function handleVideoCallProcess() {
-    if (callCategoryName.current === '') { 
-      alert('"Oops! you forgot to select call category, please enter call category in order to proceed !!!');
+    console.log('in handleVideocallProcess() InputVideoCallDetails.js');
+    if (profile._id === consulteaseUserProfileData._id){
+      callResolution = true;
+      console.log("You cannot call yourself!!!");
       callCategorySubmitToast({
-        message: 'Oops! you forgot to select call category, please select call category in order to proceed !!!',
-        duration: 2000,
+        message: "Oops, you can't call yourself. Please choose someone else",
+        duration: 3000,
         position: 'top',
         cssClass: 'custom-toast',
         buttons: [
@@ -44,19 +90,72 @@ const InputVideoCallDetails = () => {
           },
         ],
       });
-    } else {
-      console.log('ConsultEase videocall room join emit event generated from InputVideoCallDetails Component(webview endpoint)',calleeDetails);
-      profile  && window.ReactNativeWebView.postMessage(
-        `${JSON.stringify({
-          messageType: 'calleeDetails',
-          messageData: {
-            ...calleeDetails,
-            callCategory: callCategoryName.current,
-          }
-        })}`,
-      );
+      return;
     }
-    console.log('in handleVideocallProcess()');
+    if (callCategoryName === '') { 
+      // alert('"Oops!, you forgot to select call category. Please enter call category in order to proceed !!!');
+      callResolution = true;
+      callCategorySubmitToast({
+        message: 'Oops!, you forgot to select call category, please select call category in order to proceed !!!',
+        duration: 3000,
+        position: 'top',
+        cssClass: 'custom-toast',
+        buttons: [
+          {
+            text: 'Dismiss',
+            role: 'cancel',
+          },
+        ],
+      });
+      return;
+    } else if(callCategoryName !== '' && profile && profile._id !== consulteaseUserProfileData._id){
+      console.log('ConsultEase videocall room join emit event generated from InputVideoCallDetails Component(webview endpoint)',calleeDetails);
+        // best case
+        if(profile && calleeSocketId !== ''){
+          callResolution = true;
+          (window.ReactNativeWebView.postMessage(
+          `${JSON.stringify({
+            messageType: 'calleeDetails',
+            messageData: {
+              ...calleeDetails,
+              callCategory: callCategoryName,
+              calleeSocketId: calleeSocketId,
+            }
+            })}`
+          ));
+          console.log({
+            messageType: 'calleeDetails',
+            messageData: {
+              ...calleeDetails,
+              callCategory: callCategoryName,
+              calleeSocketId: calleeSocketId,
+            }
+          }, 'calleeDetails')
+        }
+        // if calleeSocketId could not be fetched or fetched after clicking submit button
+        if(profile && calleeSocketId === ''){
+          callResolution = true;
+          history.goBack();
+          callCategorySubmitToast({
+            message: 'SERVER ERROR!!!, Please click video call button again or try after some time',
+            duration: 3000,
+            position: 'top',
+            cssClass: 'custom-toast',
+            buttons: [
+              {
+                text: 'Dismiss',
+                role: 'cancel',
+              },
+            ],
+          });
+        }
+      //
+    }
+    if(!callResolution){
+      handleVideoCallProcess() 
+    } else if(callResolution) {
+      return
+    }
   }
   return (
     <div id="lobby">
@@ -78,7 +177,7 @@ const InputVideoCallDetails = () => {
 
           <IonRadioGroup
             value={callCategoryName}
-            onIonChange={e => (callCategoryName.current = e.target.value)}
+            onIonChange={e => (setCallCategoryName(e.target.value))}
             //onIonChange={(e) => setCallCategoryName(e.target.value)}
             allowEmptySelection={true}>
             {profile.profile.categories.map((category, index) => (
@@ -96,8 +195,9 @@ const InputVideoCallDetails = () => {
           //ref={button}
           id="button"
           onClick={() => {
-              handleVideoCallProcess();
-            console.log('Selected call category:', callCategoryName.current);
+            callResolution = false;
+            handleVideoCallProcess();
+            console.log('Selected call category:', callCategoryName);
             //console.log("Oops! you forgot to select call category");
           }}>
           Submit

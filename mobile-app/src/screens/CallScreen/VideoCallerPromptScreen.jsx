@@ -67,7 +67,7 @@ const VideoCallerPromptScreen = () => {
   const calleeSocketId = useSelector((state)=> state.webview.calleeSocketId);
   const socketId = useSelector((state) => state.socket.id);
   const callInstanceData = useSelector((state) => state.webview.callInstanceData)
-  const callId = useSelector((state) => state.webview.callInstanceData.callId)
+  const callId = useSelector((state) => state.webview.callInstanceData._id)
   // const incomingCallId = useSelector((state) => state.webview.incomingCallId);
   const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
   const joined = useSelector((state) => state.media.joined)
@@ -103,30 +103,30 @@ const VideoCallerPromptScreen = () => {
     dispatch(Actions.Media.getLocalAudio());
     return ()=>{
       dispatch({ type: 'meeting-errors-clear' });
-      dispatch({ type: 'join', name, email});
-      console.log('*****Joined*****', joined)
+      key && dispatch({ type: 'join', name, email});
+      console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
     }
   }, []);
 
-  useEffect(() => {
-    console.log(
-      "calleeDetails inside VideoCallerPrompt",
-      "calleeDetails.user_id",
-      calleeDetails && calleeDetails.user_id
-    )
-    if (socketId) {
-      // send initial call details, get room id , i.e '_id' from returned started call instance data
-      if (
-        Object.keys(consulteaseUserProfileData).length !== 0 &&
-        consulteaseUserProfileData.auth_token &&
-        consulteaseUserProfileData._id &&
-        calleeDetails &&
-        calleeDetails.callCategory
-      ) {
-        getCalleeSocket() //get callee socket data    
-      } 
-    }
-  }, [consulteaseUserProfileData, calleeDetails]);
+  // useEffect(() => {
+  //   console.log(
+  //     "calleeDetails inside VideoCallerPrompt",
+  //     "calleeDetails.user_id",
+  //     calleeDetails && calleeDetails.user_id
+  //   )
+  //   if (socketId) {
+  //     // send initial call details, get room id , i.e '_id' from returned started call instance data
+  //     if (
+  //       Object.keys(consulteaseUserProfileData).length !== 0 &&
+  //       consulteaseUserProfileData.auth_token &&
+  //       consulteaseUserProfileData._id &&
+  //       calleeDetails &&
+  //       calleeDetails.callCategory
+  //     ) {
+  //       getCalleeSocket() //get callee socket data    
+  //     } 
+  //   }
+  // }, [consulteaseUserProfileData, calleeDetails]);
 
   useEffect(() => {
     calleeSocketId ? initCall() : null; // get initial call instance data
@@ -144,7 +144,7 @@ const VideoCallerPromptScreen = () => {
 
       // dispatch(Actions.IO.joinRoom(key)); // call_id or room_key = xss(callInstanceState._id)
       // send message to callee to open VideocalleePrompt screen/view on his/her phone
-      (consulteaseUserProfileData && calleeDetails && callInstanceData) ? (
+      (consulteaseUserProfileData && calleeDetails) ? (
         Utils.socket.emit("messageDirectPrivate",
             {
               type: 'videoCall',
@@ -157,16 +157,18 @@ const VideoCallerPromptScreen = () => {
               photo: consulteaseUserProfileData.photo,
               },
             }
-      )) : null;
+      ),
+      console.log('****messageDirectPrivate for call initiation sent to callee')
+      ) : null;
       console.log('log below -> call started message event by private-socket-message')
     }
   }, [callInstanceData]);
 
   useEffect(() => {
-    if (socketId && key) {
-      dispatch(Actions.IO.joinRoom(key));
+    if (socketId && key && callId) {
+      dispatch(Actions.IO.joinRoom(callId));
     }
-  }, [socketId, key]);
+  }, [callId]);
 
   
   const getCalleeSocket = async () => {

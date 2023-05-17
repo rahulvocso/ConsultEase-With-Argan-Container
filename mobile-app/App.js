@@ -382,7 +382,7 @@ function App({ indexJsNavigationRef }) {
             dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: message });
             dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: message.callInstanceData });
             dispatch({ type: 'SET_PEER_SOCKET_ID', payload: message.from });
-            dispatch({ type: 'meeting-key', value: xss(message.callInstanceData._id) });
+            dispatch({ type: 'meeting-key', value: message.callInstanceData._id });
             callInstanceData._id ? dispatch({ type: 'meeting-errors-clear' }) : null;
             console.log(
               'Call ************ Incoming "videocall" messageDirectPrivate received App.js useEffect line~359********',
@@ -444,18 +444,18 @@ function App({ indexJsNavigationRef }) {
       });
   }, []);
 
-  useEffect(() => {
-    let url = initialUrl;
-    if (url) {
-      if (url.endsWith('/')) {
-        url = url.slice(0, url.length - 1);
-      }
-      const array = url.split('/');
-      const key = array[array.length - 1];
-      dispatch({ type: 'meeting-key', value: xss((key || '').toLowerCase()) });
-      navigation.navigate('Join', { key });
-    }
-  }, [initialUrl]);
+  // useEffect(() => {
+  //   let url = initialUrl;
+  //   if (url) {
+  //     if (url.endsWith('/')) {
+  //       url = url.slice(0, url.length - 1);
+  //     }
+  //     const array = url.split('/');
+  //     const key = array[array.length - 1];
+  //     dispatch({ type: 'meeting-key', value: xss((key || '').toLowerCase()) });
+  //     navigation.navigate('Join', { key });
+  //   }
+  // }, [initialUrl]);
 
   useEffect(() => {
     if (!socketId) {

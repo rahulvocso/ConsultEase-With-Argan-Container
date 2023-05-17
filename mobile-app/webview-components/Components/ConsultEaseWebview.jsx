@@ -39,13 +39,14 @@ import ConsultaseLogo from '../../android/app/src/main/assets/app-logo.svg';
 
 function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
   const navigation = useNavigation();
-  const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
   const dispatch = useDispatch();
   const [isNetConnected, setIsNetConnected] = useState(false)
   const [renderedOnce, setRenderedOnce] = useState(false);
   const webviewRef = useRef();
   const unsubscribeRef = useRef(null);
   const isDarkMode = useColorScheme() === 'dark';
+
+  const isCallViewOn = useSelector(state => state.webview.isCallViewOn);
 
   // useEffect(() => {
   //   const unsubscribe = NetInfo.addEventListener((state) => {
@@ -86,11 +87,12 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
           console.log(
             'Message received to turn camera On from ConsultEase(InputVideoCallDetails.jsx)!!!',
             "**message type**", messageType,
-            "**message data**", messageData.name,
+            "**message data**", messageData,
           );
           dispatch({ type: 'SET_CALL_VIEW_ON', payload: true });
           navigation.navigate('VideoCallerPrompt');
           dispatch({ type: 'SET_CALLEE_DETAILS', payload: messageData })
+          dispatch({ type: 'SET_CALLEE_SOCKET_ID' ,payload: messageData.calleeSocketId})
         }
         break;
       case 'consulteaseUserProfileData':
@@ -137,9 +139,17 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
     });
   }
   
+  const sendMessageToWebview = `
+    import {useHistory} from 'react-router';
+    const lastRoutes = ['videocall','/videocall'];
+    const history = useHistory();
+    console.log('****injeting js in webview to change route from videocall to profile')
+    lastRoutes.includes(history.location.pathname) && history.push('profile');
+  `;
+
   useEffect(() => {
     reloadWebviewOnConnectionChange();
-  
+    webviewRef.current?.injectJavaScript(sendMessageToWebview);
     // return () => {
     //   if (unsubscribeRef.current) {
     //     unsubscribeRef.current();
@@ -167,10 +177,10 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
             //   ? 
             {
               // uri: 'http://10.0.2.2:3056',
-              // uri: 'http://192.168.0.138:3056',
+              uri: 'http://192.168.0.138:3056',
               // uri: 'https://vocso.com',
               // uri: 'https://6453486d4c12434c3bbc8bcc--consultease.netlify.app'
-              uri: 'https://64620df4656dba0fe21fb01b--super-cajeta-000cea.netlify.app'
+              // uri: 'https://64620df4656dba0fe21fb01b--super-cajeta-000cea.netlify.app'
               
             }
               // : undefined
@@ -198,6 +208,7 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
           }}
           // onLoad={updateSource}
           onMessage={ (event) => handleWebViewMessage(event) }
+
           scalesPageToFit={true}
           scrollEnabled={true}
           showsHorizontalScrollIndicator={false}

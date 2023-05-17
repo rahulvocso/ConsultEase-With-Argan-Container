@@ -63,10 +63,6 @@ const Home = React.memo( () => {
         if (data.status !== 200 || auth_token === '') {
           history.push('/login');
         }
-
-        //commentd 30 dec, to be uncommented after login component works properly
-        // and directs to home page
-        //else
         setProfiles([...profiles, ...data.body.data]);
         setPage({
           pageNumber: data.body.pageNumber,
@@ -95,6 +91,7 @@ const Home = React.memo( () => {
       get('user/', {auth_token: auth_token}).then(data => {
         setConsultEaseUserId(data.body._id);
         localStorage.setItem('consultEaseUserId', data.body._id);
+        localStorage.setItem('consulteaseUserProfileData', JSON.stringify(data.body) );
         console.log('User data... ');
         console.log(data.body, data.body.profile, data.body._id);
         // to send message(user profile details) to webview 
