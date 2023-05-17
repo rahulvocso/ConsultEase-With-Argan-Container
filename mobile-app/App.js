@@ -310,7 +310,7 @@ function App() {
     // HeadlessJsTaskService.register(CheckInternetService, 'CheckInternetTask');
   }, []);
 
-  useState(() => {
+  useEffect(() => {
     isCallViewOn ? null : dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     console.log('** isCallViewOn changed in container App.js UseEffect **', isCallViewOn);
   }, [isCallViewOn]);

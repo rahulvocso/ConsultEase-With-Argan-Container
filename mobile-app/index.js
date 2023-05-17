@@ -21,7 +21,7 @@ function Main() {
     <NavigationContainer>
       <PaperProvider theme={Theme.Base}>
         <Provider store={store}>
-          <App indexJsNavigationRef={navigationRef} />
+          <App />
         </Provider>
       </PaperProvider>
     </NavigationContainer>
