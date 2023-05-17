@@ -23,6 +23,9 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
+import Sound from 'react-native-sound';
+import InCallManager from 'react-native-incall-manager';
+
 // import Svg from '../../../Svg';
 // import CallReject from './Svgs/CallReject';
 // import Sound from 'react-native-sound';
@@ -42,9 +45,12 @@ import MicOn from '../../../android/app/src/main/assets/MicOn.svg';
 import MicOn1 from '../../../android/app/src/main/assets/MicOn1.svg';
 import MicOff from '../../../android/app/src/main/assets/MicOff.svg';
 import MicOff1 from '../../../android/app/src/main/assets/MicOff1.svg';
+import SpeakerOn from '../../../android/app/src/main/assets/SpeakerOn.svg';
+import SpeakerOff from '../../../android/app/src/main/assets/SpeakerOff.svg';
 import CameraOn from '../../../android/app/src/main/assets/CameraOn.svg';
 import CameraOff from '../../../android/app/src/main/assets/CameraOff.svg';
 import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
+import InstagramVideoCallTone from '../../../android/app/src/main/assets/audio/InstagramVideoCallTone.mp3'
 
 
 // import notifee, {AndroidImportance} from '@notifee/react-native';
@@ -94,6 +100,116 @@ const VideoCallerPromptScreen = () => {
 
   const deviceWidth = Dimensions.get('window').width; //useWindowDimensions().width;
   const deviceHeight = Dimensions.get('window').height; //useWindowDimensions().height;
+
+  // ringtone playing code
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [ringtoneIntervalId, setAudioIntervalId] = useState(null);
+  const [ringtone, setRingtone] = useState(null);
+  const [ringtoneOnSpeaker, setRingtoneOnSpeaker] = useState(false);
+
+  const [shouldComponentUnmount, setShouldComponentUnmount] = useState(false);
+
+  if (shouldUnmount) {
+    return null; // Unmount the component
+  }
+
+  useEffect(() => {
+    //
+    // Initialize the Sound object with the audio file
+    const audioPath = 'path_to_your_audio_file.mp3';
+    const sound = new Sound(InstagramVideoCallTone, Sound.MAIN_BUNDLE, error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+      if (error) {
+        console.log('Failed to load the sound', error);
+      } else {
+        setRingtone(sound);
+      }
+    });
+
+    // Set the audio mode to earpiece initially
+    InCallManager.setSpeakerphoneOn(false);
+
+    // Set the duration of each audio loop in milliseconds
+    const loopDuration = 5000;
+     // Set the maximum duration for playing the audio
+     const maxDuration = 20000;
+     // Get the actual duration of the audio file
+     const audioDuration = sound.getDuration() * 1000;
+
+     const loopCount = Math.ceil(maxDuration / loopDuration);
+     const totalDuration = loopDuration * loopCount;
+
+     const playAudioLoop = () => {
+       sound.play();
+       setTimeout(() => {
+         sound.stop();
+         playAudioLoop();
+       }, loopDuration);
+     };
+
+     playAudioLoop();
+
+    //  const timeoutId = setTimeout(() => {
+    //   sound.stop();
+    // }, totalDuration);
+
+    // Schedule the next audio loop after the loopDuration
+    const intervalId = setInterval(() => {
+      sound.stop(); // Stop the previous loop
+      sound.play(); // Start a new loop
+    }, loopDuration);
+
+    // Schedule stopping the audio playback after the maximum duration
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId); // Stop the audio loops
+      sound.stop(); // Stop the audio playback
+    }, audioDuration * loopCount);
+
+    //component mount duration code starts
+    const componentMountDuration = 30000; // Duration in milliseconds
+    const componentMountTimeoutId = setTimeout(() => {
+      setShouldUnmount(true);
+    }, componentMountDuration);
+    //component mount duration code ends
+
+    return () => {
+      // Clean up the interval when the component unmounts
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+      clearTimeout(componentMountTimeoutId);
+      // Clean up the sound when the component unmounts
+      if(sound){
+        sound.release();
+      }
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   const sound = new Sound('audio.mp3', Sound.MAIN_BUNDLE, (error) => {
+  //     if (error) {
+  //       console.log('Error loading sound:', error);
+  //       return;
+  //     }
+      
+  //     // Set the duration of each audio loop in milliseconds
+  //     const loopDuration = 5000;
+
+  //     // Start playing the audio immediately
+  //     sound.play();
+
+  //     // Schedule the next audio loop after the loopDuration
+  //     const intervalId = setInterval(() => {
+  //       sound.stop(); // Stop the previous loop
+  //       sound.play(); // Start a new loop
+  //     }, loopDuration);
+
+  //     // Clean up the interval when the component unmounts
+  //     return () => clearInterval(intervalId);
+  //   });
+    
+  //   // Clean up the sound when the component unmounts
+  //   return () => sound.release();
+  // }, []);
+  
   //
 
 
@@ -248,6 +364,11 @@ const VideoCallerPromptScreen = () => {
     setCameraIsFacingUser((cameraIsFacingUser)=>(!cameraIsFacingUser))
     dispatch(Actions.Media.flipCamera())
   };
+
+  const handleRingtoneSpeakerOutput = () => {
+    setAudioOnSpeaker(!audioOnSpeaker);
+    InCallManager.setSpeakerphoneOn(!InCallManager.isSpeakerphoneOn());
+  }
 
   const handleMicToggle = () => {
     setIsMicOn(isMicOn => !isMicOn);
@@ -471,6 +592,28 @@ const VideoCallerPromptScreen = () => {
                           fill="white"
                           // fill="#3DB271"
                         />
+                        {/* <SvgUri
+                        width="35"
+                        height="35"
+                        fill="white"
+                        source={require('../../../android/app/src/main/assets/CameraSwitch.svg')}
+                        // source={require('../../assets/images/CameraSwitch.svg')}
+                        /> */}
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleRingtoneSpeakerOutput}>
+                        {ringtoneOnSpeaker ?
+                          <SpeakerOn
+                          width={35} 
+                          height={35}
+                          fill="white"
+                        />
+                        :
+                        <SpeakerOff
+                          width={35} 
+                          height={35}
+                          fill="white"
+                        />
+                        }
                         {/* <SvgUri
                         width="35"
                         height="35"
