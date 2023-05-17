@@ -444,6 +444,10 @@ function App({ indexJsNavigationRef }) {
       .catch((e) => {
         Utils.logger.error('could not read user email from async storage', e);
       });
+    return () => {
+      dispatch(Actions.Media.releaseLocalVideo());
+      dispatch(Actions.Media.releaseLocalAudio());
+    };
   }, []);
 
   // useEffect(() => {

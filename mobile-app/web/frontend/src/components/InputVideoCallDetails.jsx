@@ -19,13 +19,12 @@ import {useHistory} from 'react-router';
 import useFetch from '../hooks/useFetch';
 
 const InputVideoCallDetails = () => {
-  const { get } = useFetch('https://callingserver.onrender.com/api/v1/');
-  const history = useHistory();
+  // const { get } = useFetch('https://callingserver.onrender.com/api/v1/');
+  // const history = useHistory();
   const [callCategorySubmitToast] = useIonToast();
   let  [callCategoryName, setCallCategoryName] = useState('');
-  let callResolution = false
   const [consulteaseUserProfileData, setConsulteaseUserProfileData] = useState(JSON.parse(localStorage.getItem('consulteaseUserProfileData')))
-  const [calleeSocketId, setCalleeSocketId] = useState('');
+  // const [calleeSocketId, setCalleeSocketId] = useState('');
 
   let profile = JSON.parse(localStorage.getItem('currentProfileInView'));
 
@@ -76,7 +75,6 @@ const InputVideoCallDetails = () => {
   function handleVideoCallProcess() {
     console.log('in handleVideocallProcess() InputVideoCallDetails.js');
     if (profile._id === consulteaseUserProfileData._id){
-      callResolution = true;
       console.log("You cannot call yourself!!!");
       callCategorySubmitToast({
         message: "Oops, you can't call yourself. Please choose someone else",
@@ -94,7 +92,6 @@ const InputVideoCallDetails = () => {
     }
     if (callCategoryName === '') { 
       // alert('"Oops!, you forgot to select call category. Please enter call category in order to proceed !!!');
-      callResolution = true;
       callCategorySubmitToast({
         message: 'Oops!, you forgot to select call category, please select call category in order to proceed !!!',
         duration: 3000,
@@ -113,7 +110,6 @@ const InputVideoCallDetails = () => {
       console.log('ConsultEase videocall room join emit event generated from InputVideoCallDetails Component(webview endpoint)',calleeDetails);
         // best case
         if(profile ){ //&& calleeSocketId !== ''){
-          callResolution = true;
           (window.ReactNativeWebView.postMessage(
           `${JSON.stringify({
             messageType: 'calleeDetails',
@@ -162,15 +158,6 @@ const InputVideoCallDetails = () => {
     <div id="lobby">
       <Header type="videoCall" handleRight={''} title="Video Call" />
       <div className="videoCallRoomDetails">
-        {/* <IonItem className="roomInput">
-          <IonCardSubtitle className="text">Video Call Room :</IonCardSubtitle>
-          <IonInput
-            ref={room}
-            id="room"
-            type="text"
-            //value={roomInputValue}
-            placeholder=" enter room name"></IonInput>
-        </IonItem> */}
         <div className="callCategory">
           <IonCardSubtitle color={callCategoryName && 'primary'}>
             Please select call category:
@@ -179,7 +166,6 @@ const InputVideoCallDetails = () => {
           <IonRadioGroup
             value={callCategoryName}
             onIonChange={e => (setCallCategoryName(e.target.value))}
-            //onIonChange={(e) => setCallCategoryName(e.target.value)}
             allowEmptySelection={true}>
             {profile.profile.categories.map((category, index) => (
               <IonItem key={`${category.name}${index}`}>
@@ -196,7 +182,6 @@ const InputVideoCallDetails = () => {
           //ref={button}
           id="button"
           onClick={() => {
-            callResolution = false;
             handleVideoCallProcess();
             console.log('Selected call category:', callCategoryName);
             //console.log("Oops! you forgot to select call category");
