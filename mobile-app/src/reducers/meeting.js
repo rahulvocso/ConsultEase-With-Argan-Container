@@ -1,7 +1,7 @@
 import randomWords from 'random-words';
 
 const initialState = {
-  key: randomWords(4).join('-'),
+  key: '', //randomWords(4).join('-'),
   errors: {
     key: null,
   },

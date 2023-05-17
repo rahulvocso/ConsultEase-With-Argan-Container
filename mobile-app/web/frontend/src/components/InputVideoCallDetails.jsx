@@ -38,40 +38,40 @@ const InputVideoCallDetails = () => {
     user_id: profile._id,
   };
 
-  useEffect(()=>{
-    // get callee user socket_id related data
-    if(consulteaseUserProfileData.auth_token && profile._id){
-      !calleeSocketId && get(`user/getSocket?&user_id=${profile._id}`, {
-        auth_token: consulteaseUserProfileData.auth_token,
-      })
-        .then((data) => {
-          console.log('getSocket.js, data', data);
-          if(data.status === 200 &&
-            data.body.status === 'Online' &&
-            data.body.socket_id !== (null || undefined || '')
-            )
-            {
-            setCalleeSocketId(data.body.socket_id);
-            console.log(
-              '****** Successful  InputVideoCallDetails.js  getSocket() socket_id Get req 200 ******* data.body',
-              data.body._id,
-            );
-          } else {
-            console.log(
-              '****** Unsuccessfull  InputVideoCallDetails.js  getSocket() socket_id Get req ******* data.body',
-              data.status,
-              data.body,
-            );
-          }
-        })
-        .catch((error) => {
-          console.error(
-            'Error occurred during API call: VideoCallerPromptScreen.js 186 getSocket.js',
-            error,
-          );
-        });
-    }
-  },[consulteaseUserProfileData.auth_token, profile._id])
+  // useEffect(()=>{
+  //   // get callee user socket_id related data
+  //   if(consulteaseUserProfileData.auth_token && profile._id){
+  //     !calleeSocketId && get(`user/getSocket?&user_id=${profile._id}`, {
+  //       auth_token: consulteaseUserProfileData.auth_token,
+  //     })
+  //       .then((data) => {
+  //         console.log('getSocket.js, data', data);
+  //         if(data.status === 200 &&
+  //           data.body.status === 'Online' &&
+  //           data.body.socket_id !== (null || undefined || '')
+  //           )
+  //           {
+  //           setCalleeSocketId(data.body.socket_id);
+  //           console.log(
+  //             '****** Successful  InputVideoCallDetails.js  getSocket() socket_id Get req 200 ******* data.body',
+  //             data.body._id,
+  //           );
+  //         } else {
+  //           console.log(
+  //             '****** Unsuccessfull  InputVideoCallDetails.js  getSocket() socket_id Get req ******* data.body',
+  //             data.status,
+  //             data.body,
+  //           );
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error(
+  //           'Error occurred during API call: VideoCallerPromptScreen.js 186 getSocket.js',
+  //           error,
+  //         );
+  //       });
+  //   }
+  // },[consulteaseUserProfileData.auth_token, profile._id])
 
   function handleVideoCallProcess() {
     console.log('in handleVideocallProcess() InputVideoCallDetails.js');
@@ -108,10 +108,11 @@ const InputVideoCallDetails = () => {
         ],
       });
       return;
-    } else if(callCategoryName !== '' && profile && profile._id !== consulteaseUserProfileData._id){
+    }
+    if(callCategoryName !== '' && profile && profile._id !== consulteaseUserProfileData._id){
       console.log('ConsultEase videocall room join emit event generated from InputVideoCallDetails Component(webview endpoint)',calleeDetails);
         // best case
-        if(profile && calleeSocketId !== ''){
+        if(profile ){ //&& calleeSocketId !== ''){
           callResolution = true;
           (window.ReactNativeWebView.postMessage(
           `${JSON.stringify({
@@ -119,7 +120,7 @@ const InputVideoCallDetails = () => {
             messageData: {
               ...calleeDetails,
               callCategory: callCategoryName,
-              calleeSocketId: calleeSocketId,
+              // calleeSocketId: calleeSocketId,
             }
             })}`
           ));
@@ -128,34 +129,34 @@ const InputVideoCallDetails = () => {
             messageData: {
               ...calleeDetails,
               callCategory: callCategoryName,
-              calleeSocketId: calleeSocketId,
+              // calleeSocketId: calleeSocketId,
             }
           }, 'calleeDetails')
         }
         // if calleeSocketId could not be fetched or fetched after clicking submit button
-        if(profile && calleeSocketId === ''){
-          callResolution = true;
-          history.goBack();
-          callCategorySubmitToast({
-            message: 'SERVER ERROR!!!, Please click video call button again or try after some time',
-            duration: 3000,
-            position: 'top',
-            cssClass: 'custom-toast',
-            buttons: [
-              {
-                text: 'Dismiss',
-                role: 'cancel',
-              },
-            ],
-          });
-        }
+        // if(profile && calleeSocketId === ''){
+        //   callResolution = true;
+        //   history.goBack();
+        //   callCategorySubmitToast({
+        //     message: 'SERVER ERROR!!!, Please click video call button again or try after some time',
+        //     duration: 3000,
+        //     position: 'top',
+        //     cssClass: 'custom-toast',
+        //     buttons: [
+        //       {
+        //         text: 'Dismiss',
+        //         role: 'cancel',
+        //       },
+        //     ],
+        //   });
+        // }
       //
     }
-    if(!callResolution){
-      handleVideoCallProcess() 
-    } else if(callResolution) {
-      return
-    }
+    // if(!callResolution){
+    //   handleVideoCallProcess() 
+    // } else if(callResolution) {
+    //   return
+    // }
   }
   return (
     <div id="lobby">

@@ -50,6 +50,8 @@ const VideoCalleePromptScreen = () => {
   const consulteaseUserProfileData = useSelector((state) =>
   state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
   );
+  const callInstanceData = useSelector((state)=> state.webview.callInstanceData);
+
   const dispatch = useDispatch();
   const socketId = useSelector((state) => state.socket.id);
 
@@ -96,7 +98,7 @@ const VideoCalleePromptScreen = () => {
           to: incomingCallDetails.from,
           response: 'accepted'
       })) : null;
-      navigation.navigate('Meeting');
+      navigation.navigate('Meeting', {key: callInstanceData._id});
       console.log('log below -> send call-pickup event by private-socket-message')
     }  
   }

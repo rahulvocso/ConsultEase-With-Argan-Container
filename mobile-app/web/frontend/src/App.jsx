@@ -132,21 +132,13 @@ const App = () => {
     });
   }, [activeTab]);
 
-  // useEffect(() => { //04-05-23 for testing back navigation using device back button
-  //   const handleBackButton = (event) => {
-  //     event.preventDefault();
-  //     history.goBack();
-  //   };
-
-  //   window.history.pushState(null, "", window.location.href);
-
-  //   window.onpopstate = handleBackButton;
-
-  //   return () => {
-  //     window.onpopstate = null;
-  //   };
-  // }, [history]);
-
+  useEffect(()=>{
+    const lastRoutes = ['videocall','/videocall'];
+    console.log('*****history.location.pathname',history.location.pathname)
+    if(lastRoutes.includes(history.location.pathname)){
+      history.push('profile');
+    }
+  },[])
   
   return (
     <IonApp>

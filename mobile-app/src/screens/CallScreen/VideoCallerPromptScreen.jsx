@@ -108,25 +108,25 @@ const VideoCallerPromptScreen = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log(
-  //     "calleeDetails inside VideoCallerPrompt",
-  //     "calleeDetails.user_id",
-  //     calleeDetails && calleeDetails.user_id
-  //   )
-  //   if (socketId) {
-  //     // send initial call details, get room id , i.e '_id' from returned started call instance data
-  //     if (
-  //       Object.keys(consulteaseUserProfileData).length !== 0 &&
-  //       consulteaseUserProfileData.auth_token &&
-  //       consulteaseUserProfileData._id &&
-  //       calleeDetails &&
-  //       calleeDetails.callCategory
-  //     ) {
-  //       getCalleeSocket() //get callee socket data    
-  //     } 
-  //   }
-  // }, [consulteaseUserProfileData, calleeDetails]);
+  useEffect(() => {
+    console.log(
+      "calleeDetails inside VideoCallerPrompt",
+      "calleeDetails.user_id",
+      calleeDetails && calleeDetails.user_id
+    )
+    if (socketId) {
+      // send initial call details, get room id , i.e '_id' from returned started call instance data
+      if (
+        Object.keys(consulteaseUserProfileData).length !== 0 &&
+        consulteaseUserProfileData.auth_token &&
+        consulteaseUserProfileData._id &&
+        calleeDetails &&
+        calleeDetails.callCategory
+      ) {
+        getCalleeSocket() //get callee socket data    
+      } 
+    }
+  }, [consulteaseUserProfileData, calleeDetails]);
 
   useEffect(() => {
     calleeSocketId ? initCall() : null; // get initial call instance data

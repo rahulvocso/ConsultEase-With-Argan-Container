@@ -56,6 +56,7 @@ const VideoCallScreen = () => {
 
   const [cameraIsFacingUser, setCameraIsFacingUser] = useState('user');
   const video = useSelector((state) => state.media.local.video);
+  const audio = useSelector((state) => state.media.local.audio);
   const [isCameraOn, setIsCameraOn] = useState(true); //video
   const [isMicOn, setIsMicOn] = useState(true);
 
@@ -77,10 +78,8 @@ const VideoCallScreen = () => {
   const timerLimit = 3660;
   
   useEffect(() => {
-    !video 
-      ? (dispatch(Actions.Media.getLocalVideo()),
-        dispatch(Actions.Media.getLocalAudio()))
-      : null;
+    !video ? dispatch(Actions.Media.getLocalVideo()) : null;
+    !audio ? dispatch(Actions.Media.getLocalAudio()) : null;
     console.log('****interfaces',interfaces);
     // dispatch(Actions.Media.joinMeeting());
     return () => {
