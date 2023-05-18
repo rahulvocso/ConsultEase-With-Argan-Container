@@ -109,12 +109,11 @@ const VideoCallerPromptScreen = () => {
 
   const [shouldComponentUnmount, setShouldComponentUnmount] = useState(false);
 
-  if (shouldUnmount) {
+  if (shouldComponentUnmount) {
     return null; // Unmount the component
   }
 
   useEffect(() => {
-    //
     // Initialize the Sound object with the audio file
     const audioPath = 'path_to_your_audio_file.mp3';
     const sound = new Sound(InstagramVideoCallTone, Sound.MAIN_BUNDLE, error => { // testing('' in place of Sound.MAIN_BUNDLE) 
