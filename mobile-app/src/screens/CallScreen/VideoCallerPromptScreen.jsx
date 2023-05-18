@@ -109,39 +109,6 @@ const VideoCallerPromptScreen = () => {
 
   const [shouldComponentUnmount, setShouldComponentUnmount] = useState(false);
 
-  // if (shouldComponentUnmount) {
-  //   return null; // Unmount the component
-  // }
-
-  // useEffect(() => {
-  //   const sound = new Sound('audio.mp3', Sound.MAIN_BUNDLE, (error) => {
-  //     if (error) {
-  //       console.log('Error loading sound:', error);
-  //       return;
-  //     }
-      
-  //     // Set the duration of each audio loop in milliseconds
-  //     const loopDuration = 5000;
-
-  //     // Start playing the audio immediately
-  //     sound.play();
-
-  //     // Schedule the next audio loop after the loopDuration
-  //     const intervalId = setInterval(() => {
-  //       sound.stop(); // Stop the previous loop
-  //       sound.play(); // Start a new loop
-  //     }, loopDuration);
-
-  //     // Clean up the interval when the component unmounts
-  //     return () => clearInterval(intervalId);
-  //   });
-    
-  //   // Clean up the sound when the component unmounts
-  //   return () => sound.release();
-  // }, []);
-  
-  //
-
   useEffect(() => {
     console.log(
       "calleeDetails inside VideoCallerPrompt",
@@ -202,7 +169,7 @@ const VideoCallerPromptScreen = () => {
     // Initialize the Sound object with the audio file
     const audioPath = 'path_to_your_audio_file.mp3';
     Sound.setCategory('Playback');
-    const sound = new Sound('InstagramVideoCallTone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+    const sound = new Sound('instagram_videocall_ringtone.mp3', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
       if (error) {
         console.log('******Failed to load the sound', error);
       } else {
