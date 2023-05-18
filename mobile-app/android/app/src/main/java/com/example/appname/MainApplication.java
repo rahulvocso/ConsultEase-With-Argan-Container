@@ -20,14 +20,6 @@ import com.zmxv.RNSound.RNSoundPackage; // <-- New
 public class MainApplication extends Application implements ReactApplication {
   public ReactApplicationContext reactContext;
 
-  @Override
-  protected List<ReactPackage> getPackages() {
-    return Arrays.<ReactPackage>asList(
-        new MainReactPackage(),
-        new RNSoundPackage() // <-- New
-    );
-  }
-
   private final ReactNativeHost mReactNativeHost = new DefaultReactNativeHost(this) {
     @Override
     public boolean getUseDeveloperSupport() {

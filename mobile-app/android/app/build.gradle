@@ -164,7 +164,7 @@ dependencies {
     }
 
 
-    compile project(':react-native-sound')
+    implementation project(':react-native-sound')
 
     implementation project(':react-native-webview')
 
