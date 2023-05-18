@@ -155,7 +155,7 @@ const VideoCallerPromptScreen = () => {
 
     // Schedule the next audio loop after the loopDuration
     const ringtoneIntervalId = setInterval(() => {
-      sound.stop(); // Stop the previous loop
+      sound.release(); // Stop the previous loop
       sound.play(); // Start a new loop
     }, audioDuration);
 
