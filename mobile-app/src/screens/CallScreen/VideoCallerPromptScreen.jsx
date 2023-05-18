@@ -202,7 +202,7 @@ const VideoCallerPromptScreen = () => {
     // Initialize the Sound object with the audio file
     const audioPath = 'path_to_your_audio_file.mp3';
     Sound.setCategory('Playback');
-    const sound = new Sound('../../assets/audio/InstagramVideoCallTone.mp3', bull , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+    const sound = new Sound('../../assets/audio/InstagramVideoCallTone.mp3', null , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
       if (error) {
         console.log('******Failed to load the sound', error);
       } else {
