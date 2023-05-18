@@ -110,14 +110,14 @@ const VideoCallerPromptScreen = () => {
   const [shouldComponentUnmount, setShouldComponentUnmount] = useState(false);
 
   Sound.setCategory('Playback');
-    const sound = new Sound('instagram_videocall_ringtone.mp3', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
-      if (error) {
-        console.log('******Failed to load the sound', error);
-      } else {
-        console.log('******Ringtone set', error);
-        setRingtone(sound);
-      }
-    });
+  const sound = new Sound('instagram_videocall_ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+    if (error) {
+      console.log('******Failed to load the sound', error);
+    } else {
+      console.log('******Ringtone set', error);
+      setRingtone(sound);
+    }
+  });
 
   useEffect(() => {
     console.log(
