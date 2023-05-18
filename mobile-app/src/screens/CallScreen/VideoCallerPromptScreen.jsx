@@ -120,6 +120,7 @@ const VideoCallerPromptScreen = () => {
       if (error) {
         console.log('Failed to load the sound', error);
       } else {
+        console.log('Ringtone set', error);
         setRingtone(sound);
       }
     });
@@ -128,43 +129,38 @@ const VideoCallerPromptScreen = () => {
     InCallManager.setSpeakerphoneOn(false);
 
     // Set the duration of each audio loop in milliseconds
-    const loopDuration = 5000;
+    // const loopDuration = 5000;
      // Set the maximum duration for playing the audio
-     const maxDuration = 20000;
+     const maxDuration = 40000;
      // Get the actual duration of the audio file
-     const audioDuration = sound.getDuration() * 1000;
+     const ringtoneDuration = (sound.getDuration() * 1000);
+     const audioDuration = ringtoneDuration <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
 
-     const loopCount = Math.ceil(maxDuration / loopDuration);
-     const totalDuration = loopDuration * loopCount;
+    //  const loopCount = Math.ceil(maxDuration / loopDuration);
+    //  const totalDuration = loopDuration * loopCount;
 
-     const playAudioLoop = () => {
-       sound.play();
-       setTimeout(() => {
-         sound.stop();
-         playAudioLoop();
-       }, loopDuration);
-     };
+    //  const playAudioLoop = () => {
+    //    sound.play();
+    //    setTimeout(() => {
+    //      sound.stop();
+    //      playAudioLoop();
+    //    }, loopDuration);
+    //  };
 
-     playAudioLoop();
+    //  playAudioLoop();
 
     //  const timeoutId = setTimeout(() => {
     //   sound.stop();
     // }, totalDuration);
 
     // Schedule the next audio loop after the loopDuration
-    const intervalId = setInterval(() => {
+    const ringtoneIntervalId = setInterval(() => {
       sound.stop(); // Stop the previous loop
       sound.play(); // Start a new loop
-    }, loopDuration);
-
-    // Schedule stopping the audio playback after the maximum duration
-    const timeoutId = setTimeout(() => {
-      clearInterval(intervalId); // Stop the audio loops
-      sound.stop(); // Stop the audio playback
-    }, audioDuration * loopCount);
+    }, audioDuration);
 
     //component mount duration code starts
-    const componentMountDuration = 30000; // Duration in milliseconds
+    const componentMountDuration = maxDuration; // Duration in milliseconds
     const componentMountTimeoutId = setTimeout(() => {
       setShouldUnmount(true);
     }, componentMountDuration);
@@ -172,8 +168,7 @@ const VideoCallerPromptScreen = () => {
 
     return () => {
       // Clean up the interval when the component unmounts
-      clearInterval(intervalId);
-      clearTimeout(timeoutId);
+      clearInterval(ringtoneIntervalId);
       clearTimeout(componentMountTimeoutId);
       // Clean up the sound when the component unmounts
       if(sound){
