@@ -15,7 +15,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 // import com.example.appname.service.InternetCheckServiceModule;
 // import com.voximplant.foregroundservice.VIForegroundServicePackage;
 
-import com.zmxv.RNSound.RNSoundPackage; // <-- New
+// import com.zmxv.RNSound.RNSoundPackage; // <-- New
 
 public class MainApplication extends Application implements ReactApplication {
   public ReactApplicationContext reactContext;
@@ -34,8 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
       // example:
       // packages.add(new MyReactNativePackage());
 
-      packages.add(new RNSoundPackage());
-      packages.add(new MainReactPackage());
+      // packages.add(new RNSoundPackage());
+      // packages.add(new MainReactPackage());
 
       // packages.add(new VIForegroundServicePackage());
 
