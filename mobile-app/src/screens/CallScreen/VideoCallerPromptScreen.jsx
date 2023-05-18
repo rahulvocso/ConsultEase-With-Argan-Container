@@ -109,78 +109,9 @@ const VideoCallerPromptScreen = () => {
 
   const [shouldComponentUnmount, setShouldComponentUnmount] = useState(false);
 
-  if (shouldComponentUnmount) {
-    return null; // Unmount the component
-  }
-
-  useEffect(() => {
-
-    dispatch(Actions.Media.getLocalVideo());
-    dispatch(Actions.Media.getLocalAudio());
-
-    // Initialize the Sound object with the audio file
-    const audioPath = 'path_to_your_audio_file.mp3';
-    const sound = new Sound(InstagramVideoCallTone, Sound.MAIN_BUNDLE, error => { // testing('' in place of Sound.MAIN_BUNDLE) 
-      if (error) {
-        console.log('Failed to load the sound', error);
-      } else {
-        console.log('Ringtone set', error);
-        setRingtone(sound);
-      }
-    });
-    sound.play();
-    // Set the audio mode to earpiece initially
-    InCallManager.setForceSpeakerphoneOn(true);
-
-    // Set the duration of each audio loop in milliseconds
-    // const loopDuration = 5000;
-     // Set the maximum duration for playing the audio
-     const maxDuration = 40000;
-     // Get the actual duration of the audio file
-     const ringtoneDuration = (sound.getDuration() * 1000);
-     const audioDuration = ringtoneDuration <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
-
-    //  const loopCount = Math.ceil(maxDuration / loopDuration);
-    //  const totalDuration = loopDuration * loopCount;
-
-    //  const playAudioLoop = () => {
-    //    sound.play();
-    //    setTimeout(() => {
-    //      sound.stop();
-    //      playAudioLoop();
-    //    }, loopDuration);
-    //  };
-
-    //  playAudioLoop();
-
-    //  const timeoutId = setTimeout(() => {
-    //   sound.stop();
-    // }, totalDuration);
-
-    // Schedule the next audio loop after the loopDuration
-    const ringtoneIntervalId = setInterval(() => {
-      sound.release(); // Stop the previous loop
-      sound.play(); // Start a new loop
-    }, audioDuration);
-
-    //component mount duration code starts
-    const componentMountDuration = maxDuration; // Duration in milliseconds
-    const componentUnmountTimeoutId = setTimeout(() => {
-      setShouldComponentUnmount(true);
-    }, componentMountDuration);
-    //component mount duration code ends
-
-    return () => {
-      clearInterval(ringtoneIntervalId);
-      clearTimeout(componentUnmountTimeoutId);
-      if(sound){
-        sound.release();
-      }
-      dispatch({ type: 'meeting-errors-clear' });
-      key && dispatch({ type: 'join', name, email});
-      console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
-    }
-  }, []);
+  // if (shouldComponentUnmount) {
+  //   return null; // Unmount the component
+  // }
 
   // useEffect(() => {
   //   const sound = new Sound('audio.mp3', Sound.MAIN_BUNDLE, (error) => {
@@ -272,6 +203,74 @@ const VideoCallerPromptScreen = () => {
       dispatch(Actions.IO.joinRoom(callId));
     }
   }, [callId]);
+
+
+  useEffect(() => {
+    dispatch(Actions.Media.getLocalVideo());
+    dispatch(Actions.Media.getLocalAudio());
+    // Initialize the Sound object with the audio file
+    const audioPath = 'path_to_your_audio_file.mp3';
+    const sound = new Sound(InstagramVideoCallTone, Sound.MAIN_BUNDLE, error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+      if (error) {
+        console.log('Failed to load the sound', error);
+      } else {
+        console.log('Ringtone set', error);
+        setRingtone(sound);
+      }
+    });
+    sound.play();
+    // Set the audio mode to earpiece initially
+    // InCallManager.setForceSpeakerphoneOn(true);
+
+    // Set the duration of each audio loop in milliseconds
+    // const loopDuration = 5000;
+     // Set the maximum duration for playing the audio
+     const maxDuration = 40000;
+     // Get the actual duration of the audio file
+     const ringtoneDuration = (sound.getDuration() * 1000);
+     const audioDuration = ringtoneDuration <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
+
+    //  const loopCount = Math.ceil(maxDuration / loopDuration);
+    //  const totalDuration = loopDuration * loopCount;
+
+    //  const playAudioLoop = () => {
+    //    sound.play();
+    //    setTimeout(() => {
+    //      sound.stop();
+    //      playAudioLoop();
+    //    }, loopDuration);
+    //  };
+
+    //  playAudioLoop();
+
+    //  const timeoutId = setTimeout(() => {
+    //   sound.stop();
+    // }, totalDuration);
+
+    // Schedule the next audio loop after the loopDuration
+    const ringtoneIntervalId = setInterval(() => {
+      sound.release(); // Stop the previous loop
+      sound.play(); // Start a new loop
+    }, audioDuration);
+
+    //component mount duration code starts
+    const componentMountDuration = maxDuration; // Duration in milliseconds
+    const componentUnmountTimeoutId = setTimeout(() => {
+      setShouldComponentUnmount(true);
+    }, componentMountDuration);
+    //component mount duration code ends
+
+    return () => {
+      if(sound){
+        sound.release();
+      }
+      dispatch({ type: 'meeting-errors-clear' });
+      key && dispatch({ type: 'join', name, email});
+      console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
+      clearInterval(ringtoneIntervalId);
+      //clearTimeout(componentUnmountTimeoutId);
+    }
+  }, []);
 
   
   const getCalleeSocket = async () => {
