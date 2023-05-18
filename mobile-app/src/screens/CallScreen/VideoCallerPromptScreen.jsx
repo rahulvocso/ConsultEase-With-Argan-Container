@@ -161,15 +161,15 @@ const VideoCallerPromptScreen = () => {
 
     //component mount duration code starts
     const componentMountDuration = maxDuration; // Duration in milliseconds
-    const componentMountTimeoutId = setTimeout(() => {
-      setShouldUnmount(true);
+    const componentUnmountTimeoutId = setTimeout(() => {
+      setShouldComponentUnmount(true);
     }, componentMountDuration);
     //component mount duration code ends
 
     return () => {
       // Clean up the interval when the component unmounts
       clearInterval(ringtoneIntervalId);
-      clearTimeout(componentMountTimeoutId);
+      clearTimeout(componentUnmountTimeoutId);
       // Clean up the sound when the component unmounts
       if(sound){
         sound.release();
