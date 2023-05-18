@@ -210,11 +210,11 @@ const VideoCallerPromptScreen = () => {
         setRingtone(sound);
       }
     });
-    sound.play((success) => {
+    sound.play((success, error) => {
       if (success) {
         console.log('****Ringtone Sound played successfully');
       } else {
-        console.log('**** Ringtone Sound playback failed');
+        console.log('**** Ringtone Sound playback failed',error);
       }
     });
     // Set the audio mode to earpiece initially
