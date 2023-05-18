@@ -360,7 +360,7 @@ const VideoCallerPromptScreen = () => {
   };
 
   const handleRingtoneSpeakerOutput = () => {
-    setAudioOnSpeaker(!audioOnSpeaker);
+    setRingtoneOnSpeaker(!ringtoneOnSpeaker);
     InCallManager.setSpeakerphoneOn(!InCallManager.isSpeakerphoneOn());
   }
 
