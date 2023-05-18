@@ -109,6 +109,16 @@ const VideoCallerPromptScreen = () => {
 
   const [shouldComponentUnmount, setShouldComponentUnmount] = useState(false);
 
+  Sound.setCategory('Playback');
+    const sound = new Sound('instagram_videocall_ringtone.mp3', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+      if (error) {
+        console.log('******Failed to load the sound', error);
+      } else {
+        console.log('******Ringtone set', error);
+        setRingtone(sound);
+      }
+    });
+
   useEffect(() => {
     console.log(
       "calleeDetails inside VideoCallerPrompt",
@@ -168,15 +178,15 @@ const VideoCallerPromptScreen = () => {
     dispatch(Actions.Media.getLocalAudio());
     // Initialize the Sound object with the audio file
     const audioPath = 'path_to_your_audio_file.mp3';
-    Sound.setCategory('Playback');
-    const sound = new Sound('instagram_videocall_ringtone.mp3', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
-      if (error) {
-        console.log('******Failed to load the sound', error);
-      } else {
-        console.log('******Ringtone set', error);
-        setRingtone(sound);
-      }
-    });
+    // Sound.setCategory('Playback');
+    // const sound = new Sound('instagram_videocall_ringtone.mp3', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+    //   if (error) {
+    //     console.log('******Failed to load the sound', error);
+    //   } else {
+    //     console.log('******Ringtone set', error);
+    //     setRingtone(sound);
+    //   }
+    // });
     sound.play((success, error) => {
       if (success) {
         console.log('****Ringtone Sound played successfully');
