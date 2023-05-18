@@ -33,17 +33,17 @@ import Timer from './Timer';
 
 
 // import notifee, {AndroidImportance} from '@notifee/react-native';
-import GoBack from '../../../android/app/src/main/assets/GoBack.svg';
-import GoBack1 from '../../../android/app/src/main/assets/GoBack1.svg';
-import CameraSwitch from '../../../android/app/src/main/assets/CameraSwitch.svg';
-import Monitor1 from '../../../android/app/src/main/assets/Monitor1.svg';
-import MicOn from '../../../android/app/src/main/assets/MicOn.svg';
-import MicOn1 from '../../../android/app/src/main/assets/MicOn1.svg';
-import MicOff from '../../../android/app/src/main/assets/MicOff.svg';
-import MicOff1 from '../../../android/app/src/main/assets/MicOff1.svg';
-import CameraOn from '../../../android/app/src/main/assets/CameraOn.svg';
-import CameraOff from '../../../android/app/src/main/assets/CameraOff.svg';
-import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
+import GoBack from '../../assets/images/GoBack.svg';
+import GoBack1 from '../../assets/images/GoBack1.svg';
+import CameraSwitch from '../../assets/images/CameraSwitch.svg';
+import Monitor1 from '../../assets/images/Monitor1.svg';
+import MicOn from '../../assets/images/MicOn.svg';
+import MicOn1 from '../../assets/images/MicOn1.svg';
+import MicOff from '../../assets/images/MicOff.svg';
+import MicOff1 from '../../assets/images/MicOff1.svg';
+import CameraOn from '../../assets/images/CameraOn.svg';
+import CameraOff from '../../assets/images/CameraOff.svg';
+import CallReject from '../../assets/images/CallReject.svg';
 
 const deviceWidth = Dimensions.get('window').width; //useWindowDimensions().width;
 const deviceHeight = Dimensions.get('window').height; //useWindowDimensions().height;

@@ -35,22 +35,22 @@ import Theme from '../../theme';
 import Utils from '../../utils';
 import xss from 'xss';
 
-import AvatarSample from '../../../android/app/src/main/assets/AvatarSample.png';
+import AvatarSample from '../../assets/images/AvatarSample.png';
 // import CallAccept from '../../assets/images/CallAccept.svg';
 // import CallReject from '../../assets/images/CallReject.svg';
-import GoBack from '../../../android/app/src/main/assets/GoBack.svg';
-import GoBack1 from '../../../android/app/src/main/assets/GoBack1.svg';
-import CameraSwitch from '../../../android/app/src/main/assets/CameraSwitch.svg';
-import MicOn from '../../../android/app/src/main/assets/MicOn.svg';
-import MicOn1 from '../../../android/app/src/main/assets/MicOn1.svg';
-import MicOff from '../../../android/app/src/main/assets/MicOff.svg';
-import MicOff1 from '../../../android/app/src/main/assets/MicOff1.svg';
-import SpeakerOn from '../../../android/app/src/main/assets/SpeakerOn.svg';
-import SpeakerOff from '../../../android/app/src/main/assets/SpeakerOff.svg';
-import CameraOn from '../../../android/app/src/main/assets/CameraOn.svg';
-import CameraOff from '../../../android/app/src/main/assets/CameraOff.svg';
-import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
-import InstagramVideoCallTone from '../../../android/app/src/main/assets/audio/InstagramVideoCallTone.mp3'
+import GoBack from '../../assets/images/GoBack.svg';
+import GoBack1 from '../../assets/images/GoBack1.svg';
+import CameraSwitch from '../../assets/images/CameraSwitch.svg';
+import MicOn from '../../assets/images/MicOn.svg';
+import MicOn1 from '../../assets/images/MicOn1.svg';
+import MicOff from '../../assets/images/MicOff.svg';
+import MicOff1 from '../../assets/images/MicOff1.svg';
+import SpeakerOn from '../../assets/images/SpeakerOn.svg';
+import SpeakerOff from '../../assets/images/SpeakerOff.svg';
+import CameraOn from '../../assets/images/CameraOn.svg';
+import CameraOff from '../../assets/images/CameraOff.svg';
+import CallReject from '../../assets/images/CallReject.svg';
+import InstagramVideoCallTone from '../../assets/audio/InstagramVideoCallTone.mp3'
 
 
 // import notifee, {AndroidImportance} from '@notifee/react-native';

@@ -35,8 +35,8 @@ import Utils from '../../utils';
 
 import AvatarSample from '../../assets/images/AvatarSample.png';
 // import CallAccept from '../../assets/images/CallAccept.svg';
-import CallAccept from '../../../android/app/src/main/assets/CallAccept.svg';
-import CallReject from '../../../android/app/src/main/assets/CallReject.svg';
+import CallAccept from '../../assets/images/CallAccept.svg';
+import CallReject from '../../assets/images/CallReject.svg';
 // import CallReject from '../../assets/images/CallReject.svg';
 
 const VideoCalleePromptScreen = () => {
