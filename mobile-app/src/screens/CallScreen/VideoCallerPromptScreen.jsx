@@ -114,6 +114,10 @@ const VideoCallerPromptScreen = () => {
   }
 
   useEffect(() => {
+
+    dispatch(Actions.Media.getLocalVideo());
+    dispatch(Actions.Media.getLocalAudio());
+
     // Initialize the Sound object with the audio file
     const audioPath = 'path_to_your_audio_file.mp3';
     const sound = new Sound(InstagramVideoCallTone, Sound.MAIN_BUNDLE, error => { // testing('' in place of Sound.MAIN_BUNDLE) 
@@ -124,9 +128,9 @@ const VideoCallerPromptScreen = () => {
         setRingtone(sound);
       }
     });
-
+    sound.play();
     // Set the audio mode to earpiece initially
-    InCallManager.setSpeakerphoneOn(true);
+    InCallManager.setForceSpeakerphoneOn(true);
 
     // Set the duration of each audio loop in milliseconds
     // const loopDuration = 5000;
@@ -167,13 +171,14 @@ const VideoCallerPromptScreen = () => {
     //component mount duration code ends
 
     return () => {
-      // Clean up the interval when the component unmounts
       clearInterval(ringtoneIntervalId);
       clearTimeout(componentUnmountTimeoutId);
-      // Clean up the sound when the component unmounts
       if(sound){
         sound.release();
       }
+      dispatch({ type: 'meeting-errors-clear' });
+      key && dispatch({ type: 'join', name, email});
+      console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
     }
   }, []);
 
@@ -205,18 +210,6 @@ const VideoCallerPromptScreen = () => {
   // }, []);
   
   //
-
-
-  // get audio video before component renders UI
-  useEffect(() => {
-    dispatch(Actions.Media.getLocalVideo());
-    dispatch(Actions.Media.getLocalAudio());
-    return ()=>{
-      dispatch({ type: 'meeting-errors-clear' });
-      key && dispatch({ type: 'join', name, email});
-      console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
-    }
-  }, []);
 
   useEffect(() => {
     console.log(
