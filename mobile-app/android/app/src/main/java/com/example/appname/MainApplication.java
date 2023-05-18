@@ -15,8 +15,18 @@ import com.facebook.react.bridge.ReactApplicationContext;
 // import com.example.appname.service.InternetCheckServiceModule;
 // import com.voximplant.foregroundservice.VIForegroundServicePackage;
 
+import com.zmxv.RNSound.RNSoundPackage; // <-- New
+
 public class MainApplication extends Application implements ReactApplication {
   public ReactApplicationContext reactContext;
+
+  @Override
+  protected List<ReactPackage> getPackages() {
+    return Arrays.<ReactPackage>asList(
+        new MainReactPackage(),
+        new RNSoundPackage() // <-- New
+    );
+  }
 
   private final ReactNativeHost mReactNativeHost = new DefaultReactNativeHost(this) {
     @Override
@@ -31,6 +41,9 @@ public class MainApplication extends Application implements ReactApplication {
       // Packages that cannot be auto linked yet can be added manually here, for
       // example:
       // packages.add(new MyReactNativePackage());
+
+      packages.add(new RNSoundPackage());
+      packages.add(new MainReactPackage());
 
       // packages.add(new VIForegroundServicePackage());
 

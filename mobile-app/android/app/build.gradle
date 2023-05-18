@@ -163,6 +163,9 @@ dependencies {
         }
     }
 
+
+    compile project(':react-native-sound')
+
     implementation project(':react-native-webview')
 
 //    implementation 'com.transistorsoft:react-native-background-fetch:+'
