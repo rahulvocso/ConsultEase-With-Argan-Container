@@ -218,9 +218,16 @@ const VideoCallerPromptScreen = () => {
         setRingtone(sound);
       }
     });
-    sound.play();
+    sound.play((success) => {
+      if (success) {
+        console.log('****Ringtone Sound played successfully');
+      } else {
+        console.log('**** Ringtone Sound playback failed');
+      }
+    });
     // Set the audio mode to earpiece initially
-    InCallManager.setForceSpeakerphoneOn(true);
+    // InCallManager.start({ media: 'audio' });
+    // InCallManager.setForceSpeakerphoneOn(true);
 
     // Set the duration of each audio loop in milliseconds
     // const loopDuration = 5000;
@@ -262,6 +269,7 @@ const VideoCallerPromptScreen = () => {
 
     return () => {
       if(sound){
+        sound.stop();
         sound.release();
       }
       dispatch({ type: 'meeting-errors-clear' });
