@@ -169,15 +169,6 @@ const VideoCallerPromptScreen = () => {
 
   useEffect(() => {
     if (socketId && callInstanceData && Utils.socket) {
-      // if (Utils.isEmpty(key)) {
-      //   dispatch({ type: 'meeting-errors-key', error: 'Meeting key required' });
-      //   return;
-      // }
-
-      // console.log("callInstanceData received useEFf log in VideoCallerPrompt" , callInstanceData)
-
-      // dispatch(Actions.IO.joinRoom(key)); // call_id or room_key = xss(callInstanceState._id)
-      // send message to callee to open VideocalleePrompt screen/view on his/her phone
       (consulteaseUserProfileData && calleeDetails) ? (
         Utils.socket.emit("messageDirectPrivate",
             {
@@ -210,11 +201,12 @@ const VideoCallerPromptScreen = () => {
     dispatch(Actions.Media.getLocalAudio());
     // Initialize the Sound object with the audio file
     const audioPath = 'path_to_your_audio_file.mp3';
+    Sound.setCategory('Playback');
     const sound = new Sound('../../assets/audio/InstagramVideoCallTone.mp3', Sound.MAIN_BUNDLE, error => { // testing('' in place of Sound.MAIN_BUNDLE) 
       if (error) {
-        console.log('Failed to load the sound', error);
+        console.log('******Failed to load the sound', error);
       } else {
-        console.log('Ringtone set', error);
+        console.log('******Ringtone set', error);
         setRingtone(sound);
       }
     });
@@ -227,7 +219,7 @@ const VideoCallerPromptScreen = () => {
     });
     // Set the audio mode to earpiece initially
     // InCallManager.start({ media: 'audio' });
-    // InCallManager.setForceSpeakerphoneOn(true);
+    // InCallManager.setForceSpeakerphoneOn(false);
 
     // Set the duration of each audio loop in milliseconds
     // const loopDuration = 5000;
@@ -360,8 +352,8 @@ const VideoCallerPromptScreen = () => {
   };
 
   const handleRingtoneSpeakerOutput = () => {
+    InCallManager.setSpeakerphoneOn(!ringtoneOnSpeaker);
     setRingtoneOnSpeaker(!ringtoneOnSpeaker);
-    InCallManager.setSpeakerphoneOn(!InCallManager.isSpeakerphoneOn());
   }
 
   const handleMicToggle = () => {
