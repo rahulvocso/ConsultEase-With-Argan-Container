@@ -126,7 +126,7 @@ const VideoCallerPromptScreen = () => {
     });
 
     // Set the audio mode to earpiece initially
-    InCallManager.setSpeakerphoneOn(false);
+    InCallManager.setSpeakerphoneOn(true);
 
     // Set the duration of each audio loop in milliseconds
     // const loopDuration = 5000;
