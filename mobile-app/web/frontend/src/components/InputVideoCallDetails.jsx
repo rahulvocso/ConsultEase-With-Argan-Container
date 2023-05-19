@@ -159,7 +159,7 @@ const InputVideoCallDetails = () => {
       <Header type="videoCall" handleRight={''} title="Video Call" />
       <div className="videoCallRoomDetails">
         <div className="callCategory">
-          <IonCardSubtitle color={callCategoryName && 'primary'}>
+          <IonCardSubtitle color={'primary'}>
             Please select call category:
           </IonCardSubtitle>
 
@@ -180,6 +180,8 @@ const InputVideoCallDetails = () => {
         </div>
         <IonButton
           //ref={button}
+          // fill={ callCategoryName ? 'solid' : 'outline'}
+          color={ callCategoryName ? 'primary' : 'dark'}
           id="button"
           onClick={() => {
             handleVideoCallProcess();

@@ -101,23 +101,10 @@ const VideoCallerPromptScreen = () => {
   const deviceWidth = Dimensions.get('window').width; //useWindowDimensions().width;
   const deviceHeight = Dimensions.get('window').height; //useWindowDimensions().height;
 
-  // ringtone playing code
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [ringtoneIntervalId, setAudioIntervalId] = useState(null);
-  const [ringtone, setRingtone] = useState(null);
+  // ringtone playing code states
+  const [ringtone, setRingtone] = useState(false);
   const [ringtoneOnSpeaker, setRingtoneOnSpeaker] = useState(false);
-
   const [shouldComponentUnmount, setShouldComponentUnmount] = useState(false);
-
-  Sound.setCategory('Playback');
-  const sound = new Sound('instagram_videocall_ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
-    if (error) {
-      console.log('******Failed to load the sound', error);
-    } else {
-      console.log('******Ringtone set', error);
-      setRingtone(sound);
-    }
-  });
 
   useEffect(() => {
     console.log(
@@ -175,59 +162,67 @@ const VideoCallerPromptScreen = () => {
 
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
-    dispatch(Actions.Media.getLocalAudio());
+    //dispatch(Actions.Media.getLocalAudio());
     // Initialize the Sound object with the audio file
     const audioPath = 'path_to_your_audio_file.mp3';
-    // Sound.setCategory('Playback');
-    // const sound = new Sound('instagram_videocall_ringtone.mp3', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
-    //   if (error) {
-    //     console.log('******Failed to load the sound', error);
-    //   } else {
-    //     console.log('******Ringtone set', error);
-    //     setRingtone(sound);
-    //   }
-    // });
-    sound.play((success, error) => {
-      if (success) {
-        console.log('****Ringtone Sound played successfully');
+    //Sound.setCategory('Ambient'); //Playback  Ambient mixes with other audio //deprecated ??
+    InCallManager.start();
+    const sound = new Sound('ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+      if (error) {
+        console.log('******Failed to load the sound', error);
+        InCallManager.setForceSpeakerphoneOn(true);
       } else {
-        console.log('**** Ringtone Sound playback failed',error);
+        console.log('******Ringtone set', error);
+        setRingtone(sound);
       }
     });
-    // Set the audio mode to earpiece initially
-    // InCallManager.start({ media: 'audio' });
-    // InCallManager.setForceSpeakerphoneOn(false);
-
+    //sound.setNumberOfLoops(-1);
+    //sound.setVolume(1.0);
+    // sound.play((success, error) => {
+    //   if (success) {
+    //     console.log('****Ringtone Sound played successfully');
+    //   } else {
+    //     console.log('**** Ringtone Sound playback failed',error);
+    //   }
+    // });
     // Set the duration of each audio loop in milliseconds
     // const loopDuration = 5000;
      // Set the maximum duration for playing the audio
-     const maxDuration = 40000;
+     const maxDuration = 60000;
      // Get the actual duration of the audio file
      const ringtoneDuration = (sound.getDuration() * 1000);
      const audioDuration = ringtoneDuration <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
 
     //  const loopCount = Math.ceil(maxDuration / loopDuration);
     //  const totalDuration = loopDuration * loopCount;
+    let timeoutId;
+    const playAudioInLoop = () => {
+      sound.play();
+      timeoutId = setTimeout(() => {
+        playAudioInLoop();
+      }, 100);
+    };
 
-    //  const playAudioLoop = () => {
-    //    sound.play();
-    //    setTimeout(() => {
-    //      sound.stop();
-    //      playAudioLoop();
-    //    }, loopDuration);
-    //  };
-
-    //  playAudioLoop();
+     playAudioInLoop();
 
     //  const timeoutId = setTimeout(() => {
     //   sound.stop();
     // }, totalDuration);
 
     // Schedule the next audio loop after the loopDuration
-    const ringtoneIntervalId = setInterval(() => {
-      sound.release(); // Stop the previous loop
-      sound.play(); // Start a new loop
-    }, audioDuration);
+    // const ringtoneIntervalId = setInterval(() => {
+    //    sound.play();
+    //   //   (success, error) => {
+    //   //   if (success) {
+    //   //     // Set the audio mode to earpiece initially
+    //   //     console.log('****Ringtone Sound played successfully');
+    //   //     //InCallManager.start({ media: 'audio' });
+    //   //   // InCallManager.setForceSpeakerphoneOn(ringtoneOnSpeaker);
+    //   //   } else {
+    //   //     console.log('**** Ringtone Sound playback failed',error);
+    //   //   }
+    //   // });
+    // })
 
     //component mount duration code starts
     const componentMountDuration = maxDuration; // Duration in milliseconds
@@ -240,15 +235,21 @@ const VideoCallerPromptScreen = () => {
       if(sound){
         sound.stop();
         sound.release();
+        InCallManager.stop();
       }
       dispatch({ type: 'meeting-errors-clear' });
       key && dispatch({ type: 'join', name, email});
       console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
-      clearInterval(ringtoneIntervalId);
-      //clearTimeout(componentUnmountTimeoutId);
+      //clearInterval(ringtoneIntervalId);
+      clearTimeout(componentUnmountTimeoutId);
     }
   }, []);
 
+  useEffect(()=>{
+    if(shouldComponentUnmount){
+      navigation.navigate('WebView');
+    }
+  },[shouldComponentUnmount])
   
   const getCalleeSocket = async () => {
     // get callee user socket_id related data
@@ -329,8 +330,18 @@ const VideoCallerPromptScreen = () => {
   };
 
   const handleRingtoneSpeakerOutput = () => {
-    InCallManager.setSpeakerphoneOn(!ringtoneOnSpeaker);
-    setRingtoneOnSpeaker(!ringtoneOnSpeaker);
+    if(ringtoneOnSpeaker === true){
+      //setAudioMode(InCallManager.AUDIO_MODE.EARPIECE)
+      setRingtoneOnSpeaker(false);
+      InCallManager.setForceSpeakerphoneOn(false);
+    }
+    else{
+      //setAudioMode(InCallManager.AUDIO_MODE.NORMAL)
+      setRingtoneOnSpeaker(true);
+      InCallManager.setForceSpeakerphoneOn(true);
+    }
+    // InCallManager.setForceSpeakerphoneOn(!ringtoneOnSpeaker);
+    // setRingtoneOnSpeaker(!ringtoneOnSpeaker);
   }
 
   const handleMicToggle = () => {
