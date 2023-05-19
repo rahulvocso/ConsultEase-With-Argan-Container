@@ -167,7 +167,7 @@ const VideoCallerPromptScreen = () => {
     const audioPath = 'path_to_your_audio_file.mp3';
     //Sound.setCategory('Ambient'); //Playback  Ambient mixes with other audio //deprecated ??
     InCallManager.start();
-    const sound = new Sound('ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+    const sound = new Sound('instagram_videocall_ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
       if (error) {
         console.log('******Failed to load the sound', error);
         InCallManager.setForceSpeakerphoneOn(true);
