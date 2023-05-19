@@ -384,7 +384,6 @@ const styles = StyleSheet.create({
     //backgroundColor: '#fff',
     // alignContent: 'flex-start',
     // justifyContent: 'center',
-
     position: 'absolute',
     top: 0,
     height: deviceHeight,

@@ -493,11 +493,12 @@ function App() {
           }}
         >
           <>
+            <Stack.Screen name="CallRating" component={CallRatingScreen} />
             <Stack.Screen name="WebView" component={ConsultEaseWebview} />
             <Stack.Screen name="VideoCallerPrompt" component={VideoCallerPromptScreen} />
             <Stack.Screen name="VideoCalleePrompt" component={VideoCalleePromptScreen} />
             <Stack.Screen name="VideoCall" component={VideoCallScreen} />
-            <Stack.Screen name="CallRating" component={CallRatingScreen} />
+            {/* <Stack.Screen name="CallRating" component={CallRatingScreen} /> */}
             <Stack.Screen name="Home" component={Screens.HomeScreen} />
             <Stack.Screen name="Join" component={Screens.JoinScreen} />
             <Stack.Screen name="Settings" component={Screens.SettingsScreen} />
