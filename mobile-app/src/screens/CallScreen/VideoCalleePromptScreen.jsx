@@ -90,7 +90,7 @@ const VideoCalleePromptScreen = () => {
     console.log('callerDetails.photo inside VideoCalleePrompt', typeof callerDetails.photo)
     // const audioPath = 'path_to_your_audio_file.mp3';
     //Sound.setCategory('Ambient'); //Playback  Ambient mixes with other audio //deprecated ??
-    InCallManager.setForceSpeakerphoneOn(false);
+    InCallManager.setForceSpeakerphoneOn(true);
     InCallManager.start();
     const sound = new Sound('instagram_videocall_ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
       if (error) {
