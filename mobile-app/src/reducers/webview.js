@@ -10,7 +10,7 @@ const initialState = {
   },
   calleeSocketId: undefined,
   peerSocketID: undefined,
-  callInstanceData: {},
+  callInstanceData: undefined,
   proceedToJoinCall: false,
   incomingCallDetails: undefined,
   outgoingCallDetails: undefined,
