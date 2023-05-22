@@ -254,8 +254,7 @@ const HomeSearchResults = () => {
                 <div className="searchedProfile-TextDetail">
                   <p>no recent searches</p>
                 </div>
-                }
-                
+                } 
               </div>
             </div>
 

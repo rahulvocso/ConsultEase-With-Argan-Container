@@ -74,10 +74,11 @@ const VideoCallReview = () => {
               return value === "starOutline" ? 
                 <TouchableOpacity
                   onPress={() => {
-                    setStars((preState) => index);
-                    console.log(index + 1);
-                    setRating(index + 1);
-                    setFirstRender(false);
+                    setStars((preState) => index)
+                    console.log(index + 1)
+                    setRating(index + 1)
+                    setFirstRender(false)
+                    key= {index}
                   }}
                 >
                   <StarOutlined
@@ -89,10 +90,11 @@ const VideoCallReview = () => {
                 :
                 <TouchableOpacity
                   onPress={() => {
-                    setStars((preState) => index);
-                    console.log(index + 1);
-                    setRating(index + 1);
-                    setFirstRender(false);
+                    setStars((preState) => index)
+                    console.log(index + 1)
+                    setRating(index + 1)
+                    setFirstRender(false)
+                    key= {index}
                   }}
                 >
                   <StarSolid
@@ -116,7 +118,7 @@ const VideoCallReview = () => {
             selectTextOnFocus={true}
             scrollEnabled={true}
             textAlign="left"
-            keyboardType="text"
+            keyboardType="default"
           />
           <View style={styles.submitButtons}>
             <Button
@@ -186,14 +188,15 @@ reviewStars: {
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
-  marginTop: 40,
+  marginTop: 20,
 },
 input: {
   // height: 100,
   margin: 20,
-  marginBottom: 40,
+  marginBottom: 30,
   borderWidth: 1,
-  borderColor: '#3DB271',
+  color: '#3DB271',
+  borderColor: 'grey',
   borderRadius: 10,
   padding: 10,
 },
@@ -210,7 +213,7 @@ closeButton: {
 submitButton: {
   // backgroundColor: '#3DB271',
   // color: '#ffffff',
-  paddingLeft: 96,
+  paddingLeft: 40,
 },
 submitClose: {
   flexDirection: 'row',
