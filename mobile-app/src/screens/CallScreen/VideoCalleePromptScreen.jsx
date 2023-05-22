@@ -131,10 +131,9 @@ const VideoCalleePromptScreen = () => {
     // })
 
     //component unmount code starts
-    const componentMountDuration = maxDuration; // Duration in milliseconds
-    componentUnmountTimeoutRef.current = setTimeout(() => {
-      setShouldComponentUnmount(true);
-    }, componentMountDuration);
+    // componentUnmountTimeoutRef.current = setTimeout(() => {
+    //   setShouldComponentUnmount(true);
+    // }, maxDuration);
     //component unmount duration code ends
 
     return () => {

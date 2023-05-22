@@ -179,11 +179,10 @@ const VideoCallerPromptScreen = () => {
     });
     //sound.setNumberOfLoops(-1);
     //sound.setVolume(1.0);
-     const maxDuration = 60000;
+     const maxDuration = 10000;
      const ringtoneDuration = (sound.getDuration() * 1000);
      const audioDuration = ringtoneDuration <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
 
-    let timeoutId;
     const playAudioInLoop = () => {
       sound.stop();
       sound.play();
@@ -210,10 +209,9 @@ const VideoCallerPromptScreen = () => {
     // })
 
     //component mount duration code starts
-    const componentMountDuration = maxDuration; // Duration in milliseconds
-    componentUnmountTimeoutRef.current = setTimeout(() => {
-      setShouldComponentUnmount(true);
-    }, componentMountDuration);
+    // componentUnmountTimeoutRef.current = setTimeout(() => {
+    //   setShouldComponentUnmount(true);
+    // }, maxDuration);
     //component mount duration code ends
 
     return () => {
