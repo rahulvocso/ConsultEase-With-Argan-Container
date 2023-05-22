@@ -34,10 +34,9 @@ import Theme from '../../theme';
 import Utils from '../../utils';
 
 import AvatarSample from '../../assets/images/AvatarSample.png';
-// import CallAccept from '../../assets/images/CallAccept.svg';
 import CallAccept from '../../assets/images/CallAccept.svg';
 import CallReject from '../../assets/images/CallReject.svg';
-// import CallReject from '../../assets/images/CallReject.svg';
+
 
 const VideoCalleePromptScreen = () => {
   const navigation = useNavigation();
@@ -88,8 +87,6 @@ const VideoCalleePromptScreen = () => {
     dispatch(Actions.Media.getLocalAudio());
     console.log('callerDetails inside VideoCalleePrompt',callerDetails)
     console.log('callerDetails.photo inside VideoCalleePrompt', typeof callerDetails.photo)
-    // const audioPath = 'path_to_your_audio_file.mp3';
-    //Sound.setCategory('Ambient'); //Playback  Ambient mixes with other audio //deprecated ??
     InCallManager.setForceSpeakerphoneOn(true);
     InCallManager.start();
     const sound = new Sound('instagram_videocall_ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
@@ -101,12 +98,9 @@ const VideoCalleePromptScreen = () => {
       }
     });
     const maxDuration = 40000;
-    // Get the actual duration of the audio file
     const ringtoneDuration = (sound.getDuration() * 1000);
     const audioDuration = ringtoneDuration <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
 
-    //  const loopCount = Math.ceil(maxDuration / loopDuration);
-    //  const totalDuration = loopDuration * loopCount;
     let timeoutId;
     InCallManager.setForceSpeakerphoneOn(true);
     const playAudioInLoop = () => {
@@ -118,10 +112,6 @@ const VideoCalleePromptScreen = () => {
     };
 
      playAudioInLoop();
-
-    //  const timeoutId = setTimeout(() => {
-    //   sound.stop();
-    // }, totalDuration);
 
     // Schedule the next audio loop after the loopDuration
     // const ringtoneIntervalId = setInterval(() => {
@@ -333,13 +323,11 @@ const VideoCalleePromptScreen = () => {
         <View style={styles.callPromptContainer}>
             <View style={styles.callPromptAvatar}>
                 <Image
-                style={{width: 80, height: 80, borderRadius: 50, objectFit: "contain"}}
-                source={ callerDetails.length!= 0 && callerDetails.photo ? 
-                  {uri: callerDetails.photo} :
-                  AvatarSample
-                }
-                // defaultSource={FallbackImage}
-                // accessibilityLabel={alt}
+                  style={{width: 80, height: 80, borderRadius: 50, objectFit: "contain"}}
+                  source={ callerDetails.length!= 0 && callerDetails.photo ? 
+                    {uri: callerDetails.photo} :
+                    AvatarSample
+                  }
                 />
 
                 <Text style={styles.callPromptCallingName}>
@@ -362,13 +350,6 @@ const VideoCalleePromptScreen = () => {
                     height={60}
                     fill="red"
                   />
-                {/* <SvgUri
-                    width="60"
-                    height="60"
-                    fill="red"
-                    // source={require('../../assets/images/CallReject.svg')}
-                    source={require('../../../android/app/src/main/assets/CallReject.svg')}
-                /> */}
                 </TouchableOpacity>
                 <TouchableOpacity
                 onPress={() => {
@@ -380,13 +361,6 @@ const VideoCalleePromptScreen = () => {
                     height={60}
                     fill="green"
                   />
-                {/* <SvgUri
-                    width="60"
-                    height="60"
-                    fill="green"
-                    // source={require('../../assets/images/CallAccept.svg')}   
-                    source={require('../../../android/app/src/main/assets/CallAccept.svg')}                   
-                /> */}
                 </TouchableOpacity>
             </View>
         </View>

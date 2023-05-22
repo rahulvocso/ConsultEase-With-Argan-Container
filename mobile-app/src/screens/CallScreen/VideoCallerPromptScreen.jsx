@@ -52,14 +52,10 @@ import CameraOff from '../../assets/images/CameraOff.svg';
 import CallReject from '../../assets/images/CallReject.svg';
 import InstagramVideoCallTone from '../../assets/audio/InstagramVideoCallTone.mp3'
 
-
-// import notifee, {AndroidImportance} from '@notifee/react-native';
 import CallDisconnect from '../../assets/images/CallReject.svg';
-// import getSocket from '../../foreground-background-services/getSocket';
 import useFetch from '../../hooks/useFetch';
 import initCallDetailsGetRoom from './initCallDetailsGetRoom';
-// import getCalleeSocket from './getCalleeSocket.js';
-// import initCall from './initCall';
+
 
 const VideoCallerPromptScreen = () => {
   const dispatch = useDispatch();
@@ -73,7 +69,6 @@ const VideoCallerPromptScreen = () => {
   const calleeSocketId = useSelector((state)=> state.webview.calleeSocketId);
   const socketId = useSelector((state) => state.socket.id);
   const callInstanceData = useSelector((state) => state.webview.callInstanceData)
-  // const incomingCallId = useSelector((state) => state.webview.incomingCallId);
   const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
   const proceedToJoinCall = useSelector((state)=> state.webview.isCallAccepted);
   const joined = useSelector((state) => state.media.joined)
@@ -89,6 +84,7 @@ const VideoCallerPromptScreen = () => {
   const mic = useSelector((state) => state.media.local.audio)
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isMicOn, setIsMicOn] = useState(true);
+  
   // call instance data after initiating call
   const [callInstanceState, setCallInstanceState] = useState({})
 
@@ -113,7 +109,6 @@ const VideoCallerPromptScreen = () => {
       calleeDetails && calleeDetails.user_id
     )
     if (socketId) {
-      // send initial call details, get room id , i.e '_id' from returned started call instance data
       if (
         Object.keys(consulteaseUserProfileData).length !== 0 &&
         consulteaseUserProfileData.auth_token &&
@@ -167,7 +162,6 @@ const VideoCallerPromptScreen = () => {
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
     //dispatch(Actions.Media.getLocalAudio());
-    // Initialize the Sound object with the audio file
     const audioPath = 'path_to_your_audio_file.mp3';
     //Sound.setCategory('Ambient'); //Playback  Ambient mixes with other audio //deprecated ??
     InCallManager.setForceSpeakerphoneOn(false);
@@ -183,25 +177,13 @@ const VideoCallerPromptScreen = () => {
     });
     //sound.setNumberOfLoops(-1);
     //sound.setVolume(1.0);
-    // sound.play((success, error) => {
-    //   if (success) {
-    //     console.log('****Ringtone Sound played successfully');
-    //   } else {
-    //     console.log('**** Ringtone Sound playback failed',error);
-    //   }
-    // });
-    // Set the duration of each audio loop in milliseconds
-    // const loopDuration = 5000;
-     // Set the maximum duration for playing the audio
      const maxDuration = 60000;
-     // Get the actual duration of the audio file
      const ringtoneDuration = (sound.getDuration() * 1000);
      const audioDuration = ringtoneDuration <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
 
-    //  const loopCount = Math.ceil(maxDuration / loopDuration);
-    //  const totalDuration = loopDuration * loopCount;
     let timeoutId;
     const playAudioInLoop = () => {
+      sound.stop();
       sound.play();
       timeoutId = setTimeout(() => {
         playAudioInLoop();
@@ -209,10 +191,6 @@ const VideoCallerPromptScreen = () => {
     };
 
      playAudioInLoop();
-
-    //  const timeoutId = setTimeout(() => {
-    //   sound.stop();
-    // }, totalDuration);
 
     // Schedule the next audio loop after the loopDuration
     // const ringtoneIntervalId = setInterval(() => {
@@ -244,12 +222,13 @@ const VideoCallerPromptScreen = () => {
       }
       //clearInterval(ringtoneIntervalId);
       clearTimeout(timeoutId);
-      proceedToJoinCall && clearTimeout(componentUnmountTimeoutId);
+      !proceedToJoinCall && clearTimeout(componentUnmountTimeoutId);
     }
   }, []);
 
   useEffect(()=>{
     if(shouldComponentUnmount){
+      console.log("******Navigating to webview, component_mount/call_prompt duration completed, call not answered by callee!!")
       navigation.navigate('WebView');
     }
   },[shouldComponentUnmount])
@@ -307,7 +286,7 @@ const VideoCallerPromptScreen = () => {
           dispatch({ type: 'meeting-key', value: xss(data.body._id) });
           data.body._id ? dispatch({ type: 'meeting-errors-clear' }) : null;
           // send message to callee call init
-          if (socketId && callInstanceData !== undefined && Utils.socket) {
+          if (socketId && Utils.socket) {
             (consulteaseUserProfileData && calleeDetails) ? (
               Utils.socket.emit("messageDirectPrivate",
                   {
@@ -565,25 +544,6 @@ const VideoCallerPromptScreen = () => {
                 </View>
                 <View style={styles.callViewBottomContainer}>
                     <View style={styles.controlButtonsContainer}>
-                    {/* <TouchableOpacity onPress={ ()=>{
-                      dispatch(Actions.Media.releaseLocalVideo());
-                      dispatch(Actions.Media.releaseLocalAudio());
-                      dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
-                      dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
-                      }}>  
-                        <GoBack1
-                        width={30} 
-                        height={30}
-                        fill="white"
-                        />                      
-                        <SvgUri
-                        width="25"
-                        height="25"
-                        fill="white"
-                        source={require('../../../android/app/src/main/assets/GoBack.svg')}
-                        // source={require('../../assets/images/GoBack.svg')}
-                        />
-                    </TouchableOpacity> */}
                     <TouchableOpacity onPress={handleCameraFacing}>
                         <CameraSwitch
                           width={35} 
@@ -591,13 +551,6 @@ const VideoCallerPromptScreen = () => {
                           fill="white"
                           // fill="#3DB271"
                         />
-                        {/* <SvgUri
-                        width="35"
-                        height="35"
-                        fill="white"
-                        source={require('../../../android/app/src/main/assets/CameraSwitch.svg')}
-                        // source={require('../../assets/images/CameraSwitch.svg')}
-                        /> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleRingtoneSpeakerOutput}>
                         {ringtoneOnSpeaker ?
@@ -613,13 +566,6 @@ const VideoCallerPromptScreen = () => {
                           fill="white"
                         />
                         }
-                        {/* <SvgUri
-                        width="35"
-                        height="35"
-                        fill="white"
-                        source={require('../../../android/app/src/main/assets/CameraSwitch.svg')}
-                        // source={require('../../assets/images/CameraSwitch.svg')}
-                        /> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleMicToggle}>
                         {
@@ -628,31 +574,14 @@ const VideoCallerPromptScreen = () => {
                           width={37} 
                           height={37}
                           fill="white"
-                          // fill="#3DB271"
                           />
                           :
                           <MicOff1
                           width={35} 
                           height={35}
                           fill="white"
-                          // fill="#3DB271"
                         />
                         }
-                        {/* <SvgUri
-                        width="35"
-                        height="35"
-                        fill="white"
-                        source={
-                          isMicOn 
-                          ? require('../../../android/app/src/main/assets/MicOn.svg')
-                          : require('../../../android/app/src/main/assets/MicOff.svg')
-                        }
-                        // source={
-                        //     isMicOn
-                        //     ? require('../../assets/images/MicOn.svg')
-                        //     : require('../../assets/images/MicOff.svg')
-                        // }
-                        /> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleCameraToggle}>
                         {
@@ -668,25 +597,8 @@ const VideoCallerPromptScreen = () => {
                           width={35} 
                           height={35}
                           fill="white"
-                          // fill="#3DB271"
                         />
                         }
-                        {/* <SvgUri
-                        width="35"
-                        height="35"
-                        fill="white"
-                        // fill="#3DB271"
-                        source={
-                          isCameraOn 
-                          ? require('../../../android/app/src/main/assets/CameraOn.svg')
-                          : require('../../../android/app/src/main/assets/CameraOff.svg')
-                        }
-                        // source={
-                        //     isCameraOn
-                        //     ? require('../../assets/images/CameraOn.svg')
-                        //     : require('../../assets/images/CameraOff.svg')
-                        // }
-                        /> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleCallDisconnect}>
                         {/* <SvgUri
