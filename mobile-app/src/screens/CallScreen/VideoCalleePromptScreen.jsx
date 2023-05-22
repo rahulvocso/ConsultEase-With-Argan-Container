@@ -142,7 +142,7 @@ const VideoCalleePromptScreen = () => {
       }
       //clearInterval(ringtoneIntervalId);
       clearTimeout(soundTimeoutRef.current);
-      !proceedToJoinCall && clearTimeout(componentUnmountTimeoutRef);
+      // !proceedToJoinCall && clearTimeout(componentUnmountTimeoutRef);
     }
   }, []);
 

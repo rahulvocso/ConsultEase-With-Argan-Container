@@ -153,8 +153,6 @@ const VideoCallerPromptScreen = () => {
   useEffect(() => {
     if(socketId && callInstanceData !== undefined)
     {
-      dispatch({ type: 'meeting-errors-clear' });
-      key && dispatch({ type: 'join', name, email});
       console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
       dispatch(Actions.IO.joinRoom(callInstanceData._id));
     }
@@ -220,7 +218,9 @@ const VideoCallerPromptScreen = () => {
       }
       //clearInterval(ringtoneIntervalId);
       clearTimeout(soundTimeoutRef.current);
-      !proceedToJoinCall && clearTimeout(componentUnmountTimeoutRef.current);
+      // !proceedToJoinCall && clearTimeout(componentUnmountTimeoutRef.current);
+      dispatch({ type: 'meeting-errors-clear' });
+      key && dispatch({ type: 'join', name, email});
     }
   }, []);
 
