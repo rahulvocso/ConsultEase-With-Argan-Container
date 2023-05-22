@@ -55,6 +55,7 @@ const VideoCalleePromptScreen = () => {
   );
   const callInstanceData = useSelector((state)=> state.webview.callInstanceData);
   const callId = useSelector((state)=> state.webview.callInstanceData._id)
+  const proceedToJoinCall = useSelector((state)=> state.webview.proceedToJoinCall);
 
   const dispatch = useDispatch();
   const socketId = useSelector((state) => state.socket.id);
@@ -165,7 +166,7 @@ const VideoCalleePromptScreen = () => {
       }
       //clearInterval(ringtoneIntervalId);
       clearTimeout(timeoutId);
-      clearTimeout(componentUnmountTimeoutId);
+      proceedToJoinCall && clearTimeout(componentUnmountTimeoutId);
     }
   }, []);
 
@@ -179,6 +180,7 @@ const VideoCalleePromptScreen = () => {
           to: incomingCallDetails.from,
           response: 'accepted'
       })) : null;
+      dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: true }),
       dispatch({ type: 'meeting-errors-clear' });
       key && dispatch({ type: 'join', name, email});
       console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
@@ -201,6 +203,7 @@ const VideoCalleePromptScreen = () => {
   
       console.log('log below -> send call-pickup event by private-socket-message')
     }
+    dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: false }),
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
     dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     dispatch(Actions.Media.releaseLocalVideo());

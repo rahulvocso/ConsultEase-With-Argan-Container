@@ -76,6 +76,7 @@ const VideoCallerPromptScreen = () => {
   const callId = useSelector((state) => state.webview.callInstanceData._id)
   // const incomingCallId = useSelector((state) => state.webview.incomingCallId);
   const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
+  const proceedToJoinCall = useSelector((state)=> state.webview.isCallAccepted);
   const joined = useSelector((state) => state.media.joined)
 
 
@@ -245,7 +246,7 @@ const VideoCallerPromptScreen = () => {
         InCallManager.stop();
       }
       //clearInterval(ringtoneIntervalId);
-      clearTimeout(componentUnmountTimeoutId);
+      proceedToJoinCall && clearTimeout(componentUnmountTimeoutId);
     }
   }, []);
 
@@ -373,6 +374,7 @@ const VideoCallerPromptScreen = () => {
   
       console.log('Call disconnected by caller')
     }
+    dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: false }),
     dispatch(Actions.Media.releaseLocalVideo());
     dispatch(Actions.Media.releaseLocalAudio());
     dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });

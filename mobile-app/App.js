@@ -399,9 +399,13 @@ function App() {
               message,
               JSON.stringify(message),
             );
-            message.response === 'accepted' ? navigation.navigate('Meeting') : null;
+            message.response === 'accepted'
+              ? (dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: true }),
+                navigation.navigate('Meeting'))
+              : null;
             message.response === 'rejected'
               ? (dispatch(Actions.Media.leaveMeeting()),
+                dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: false }),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
                 dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }),
                 navigation.navigate('WebView'))

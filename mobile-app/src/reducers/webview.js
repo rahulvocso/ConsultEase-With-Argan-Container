@@ -11,6 +11,7 @@ const initialState = {
   calleeSocketId: undefined,
   peerSocketID: undefined,
   callInstanceData: {},
+  proceedToJoinCall: false,
   incomingCallDetails: undefined,
   outgoingCallDetails: undefined,
   isInternetConnected: undefined,
@@ -86,6 +87,12 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         isInternetConnected: action.payload,
+      };
+
+    case 'PROCEED_TO_JOIN_CALL':
+      return {
+        ...state,
+        proceedToJoinCall: action.payload,
       };
 
     default:
