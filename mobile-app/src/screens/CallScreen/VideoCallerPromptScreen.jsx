@@ -73,7 +73,6 @@ const VideoCallerPromptScreen = () => {
   const calleeSocketId = useSelector((state)=> state.webview.calleeSocketId);
   const socketId = useSelector((state) => state.socket.id);
   const callInstanceData = useSelector((state) => state.webview.callInstanceData)
-  const callId = useSelector((state) => state.webview.callInstanceData._id)
   // const incomingCallId = useSelector((state) => state.webview.incomingCallId);
   const outgoingCallId = useSelector((state) => state.webview.outgoingCallId);
   const proceedToJoinCall = useSelector((state)=> state.webview.isCallAccepted);
@@ -133,7 +132,7 @@ const VideoCallerPromptScreen = () => {
 
 
   useEffect(() => {
-    if (socketId && callInstanceData && Utils.socket) {
+    if (socketId && callInstanceData !== undefined && Utils.socket) {
       (consulteaseUserProfileData && calleeDetails) ? (
         Utils.socket.emit("messageDirectPrivate",
             {
@@ -155,16 +154,14 @@ const VideoCallerPromptScreen = () => {
   }, [callInstanceData]);
 
   useEffect(() => {
-    if(callId)
+    if(socketId && callInstanceData !== undefined)
     {
       dispatch({ type: 'meeting-errors-clear' });
       key && dispatch({ type: 'join', name, email});
       console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
-      if (socketId && key && callId) {
-        dispatch(Actions.IO.joinRoom(callId));
-      }
+      dispatch(Actions.IO.joinRoom(callInstanceData._id));
     }
-  }, [callId]);
+  }, [callInstanceData]);
 
 
   useEffect(() => {
