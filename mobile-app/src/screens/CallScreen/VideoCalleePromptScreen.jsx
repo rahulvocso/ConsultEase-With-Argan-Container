@@ -65,6 +65,8 @@ const VideoCalleePromptScreen = () => {
   const [ringtone, setRingtone] = useState(false);
   const [ringtoneOnSpeaker, setRingtoneOnSpeaker] = useState(false);
   const [shouldComponentUnmount, setShouldComponentUnmount] = useState(false);
+  const componentUnmountTimeoutRef =  useRef();
+  const soundTimeoutRef = useRef();
 
   // const isDarkMode = useColorScheme() === 'dark';
   // const backgroundStyle = {
@@ -106,7 +108,7 @@ const VideoCalleePromptScreen = () => {
     const playAudioInLoop = () => {
       sound.play();
       InCallManager.setForceSpeakerphoneOn(true);
-      timeoutId = setTimeout(() => {
+      soundTimeoutRef.current = setTimeout(() => {
         playAudioInLoop();
       }, audioDuration);
     };
@@ -130,7 +132,7 @@ const VideoCalleePromptScreen = () => {
 
     //component unmount code starts
     const componentMountDuration = maxDuration; // Duration in milliseconds
-    const componentUnmountTimeoutId = setTimeout(() => {
+    componentUnmountTimeoutRef.current = setTimeout(() => {
       setShouldComponentUnmount(true);
     }, componentMountDuration);
     //component unmount duration code ends
@@ -142,13 +144,16 @@ const VideoCalleePromptScreen = () => {
         sound.release();
       }
       //clearInterval(ringtoneIntervalId);
-      clearTimeout(timeoutId);
-      proceedToJoinCall && clearTimeout(componentUnmountTimeoutId);
+      clearTimeout(soundTimeoutRef.current);
+      !proceedToJoinCall && clearTimeout(componentUnmountTimeoutRef);
     }
   }, []);
 
   function handleCallAccept(){
     // key ? dispatch(Actions.IO.joinRoom(key)) : null;
+    dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: true }),
+    dispatch({ type: 'meeting-errors-clear' });
+    key && dispatch({ type: 'join', name, email});
     if (socketId) {
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",{
@@ -157,9 +162,6 @@ const VideoCalleePromptScreen = () => {
           to: incomingCallDetails.from,
           response: 'accepted'
       })) : null;
-      dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: true }),
-      dispatch({ type: 'meeting-errors-clear' });
-      key && dispatch({ type: 'join', name, email});
       console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
       console.log('handleCallAccept() VideoCalleePromptScreen private-socket-message');
       navigation.navigate('Meeting');

@@ -101,6 +101,8 @@ const VideoCallerPromptScreen = () => {
   const [ringtone, setRingtone] = useState(false);
   const [ringtoneOnSpeaker, setRingtoneOnSpeaker] = useState(false);
   const [shouldComponentUnmount, setShouldComponentUnmount] = useState(false);
+  const componentUnmountTimeoutRef = useRef();
+  const soundTimeoutRef = useRef();
 
   useEffect(() => {
     console.log(
@@ -185,7 +187,7 @@ const VideoCallerPromptScreen = () => {
     const playAudioInLoop = () => {
       sound.stop();
       sound.play();
-      timeoutId = setTimeout(() => {
+      soundTimeoutRef.current = setTimeout(() => {
         playAudioInLoop();
       }, audioDuration);
     };
@@ -209,7 +211,7 @@ const VideoCallerPromptScreen = () => {
 
     //component mount duration code starts
     const componentMountDuration = maxDuration; // Duration in milliseconds
-    const componentUnmountTimeoutId = setTimeout(() => {
+    componentUnmountTimeoutRef.current = setTimeout(() => {
       setShouldComponentUnmount(true);
     }, componentMountDuration);
     //component mount duration code ends
@@ -221,8 +223,8 @@ const VideoCallerPromptScreen = () => {
         InCallManager.stop();
       }
       //clearInterval(ringtoneIntervalId);
-      clearTimeout(timeoutId);
-      !proceedToJoinCall && clearTimeout(componentUnmountTimeoutId);
+      clearTimeout(soundTimeoutRef.current);
+      !proceedToJoinCall && clearTimeout(componentUnmountTimeoutRef.current);
     }
   }, []);
 
