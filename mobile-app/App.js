@@ -383,7 +383,7 @@ function App() {
             dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: message.callInstanceData });
             dispatch({ type: 'SET_PEER_SOCKET_ID', payload: message.from });
             dispatch({ type: 'meeting-key', value: xss(message.callInstanceData._id) });
-            callInstanceData._id ? dispatch({ type: 'meeting-errors-clear' }) : null;
+            message.callInstanceData._id ? dispatch({ type: 'meeting-errors-clear' }) : null;
             console.log(
               'Call ************ Incoming "videocall" messageDirectPrivate received App.js useEffect line~359********',
               message,
