@@ -67,13 +67,14 @@ function MeetingUI() {
 function MeetingScreen() {
   // for testing purpose
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   useEffect(() => {
     return () => {
       dispatch(Actions.Media.releaseLocalVideo());
       dispatch(Actions.Media.releaseLocalAudio());
       dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
       dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
-      navigation.navigate('WebView', { key });
+      navigation.navigate('WebView');
     };
   }, []);
   //

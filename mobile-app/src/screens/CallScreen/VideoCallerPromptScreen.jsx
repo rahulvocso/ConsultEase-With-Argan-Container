@@ -170,10 +170,10 @@ const VideoCallerPromptScreen = () => {
     InCallManager.start();
     const sound = new Sound('instagram_videocall_ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
       if (error) {
-        console.log('******Failed to load the sound', error);
+        console.log('******Failed to load the sound, ERRROR:', error);
         InCallManager.setForceSpeakerphoneOn(false);
       } else {
-        console.log('******Ringtone set', error);
+        console.log('******Ringtone set, ERRROR:', error);
         setRingtone(sound);
       }
     });

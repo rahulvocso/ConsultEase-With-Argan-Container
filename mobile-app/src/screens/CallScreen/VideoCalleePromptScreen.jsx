@@ -81,7 +81,7 @@ const VideoCalleePromptScreen = () => {
     if (socketId && callId) {
       dispatch(Actions.IO.joinRoom(callId));
     }
-  }, [socketId, callId]);
+  }, [callId]);
 
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
