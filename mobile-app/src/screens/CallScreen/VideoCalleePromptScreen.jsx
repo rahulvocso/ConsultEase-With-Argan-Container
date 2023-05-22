@@ -78,7 +78,7 @@ const VideoCalleePromptScreen = () => {
   const [incomingCallAnswer, setIncomingCallAnswer]  = useState();
 
   useEffect(() => {
-    if (socketId && callInstanceData._id) {
+    if (socketId && callInstanceData !== undefined) {
       dispatch(Actions.IO.joinRoom(callInstanceData._id));
     }
   }, [callInstanceData]);
@@ -100,22 +100,10 @@ const VideoCalleePromptScreen = () => {
         setRingtone(sound);
       }
     });
-    //sound.setNumberOfLoops(-1);
-    //sound.setVolume(1.0);
-    // sound.play((success, error) => {
-    //   if (success) {
-    //     console.log('****Ringtone Sound played successfully');
-    //   } else {
-    //     console.log('**** Ringtone Sound playback failed',error);
-    //   }
-    // });
-    // Set the duration of each audio loop in milliseconds
-    // const loopDuration = 5000;
-     // Set the maximum duration for playing the audio
-     const maxDuration = 40000;
-     // Get the actual duration of the audio file
-     const ringtoneDuration = (sound.getDuration() * 1000);
-     const audioDuration = ringtoneDuration <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
+    const maxDuration = 40000;
+    // Get the actual duration of the audio file
+    const ringtoneDuration = (sound.getDuration() * 1000);
+    const audioDuration = ringtoneDuration <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
 
     //  const loopCount = Math.ceil(maxDuration / loopDuration);
     //  const totalDuration = loopDuration * loopCount;
