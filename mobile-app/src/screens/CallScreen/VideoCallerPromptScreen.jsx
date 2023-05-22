@@ -131,27 +131,27 @@ const VideoCallerPromptScreen = () => {
   },[calleeSocketId])
 
 
-  useEffect(() => {
-    if (socketId && callInstanceData !== undefined && Utils.socket) {
-      (consulteaseUserProfileData && calleeDetails) ? (
-        Utils.socket.emit("messageDirectPrivate",
-            {
-              type: 'videoCall',
-              from: socketId,
-              to: calleeSocketId,
-              callInstanceData: callInstanceData,
-              callerDetails: {
-              name: `${consulteaseUserProfileData.fname} ${consulteaseUserProfileData.lname}`,
-              callCategory: calleeDetails.callCategory,
-              photo: consulteaseUserProfileData.photo,
-              },
-            }
-      ),
-      console.log('****messageDirectPrivate for call initiation sent to callee')
-      ) : null;
-      console.log('log below -> call started message event by private-socket-message')
-    }
-  }, [callInstanceData]);
+  // useEffect(() => {
+  //   if (socketId && callInstanceData !== undefined && Utils.socket) {
+  //     (consulteaseUserProfileData && calleeDetails) ? (
+  //       Utils.socket.emit("messageDirectPrivate",
+  //           {
+  //             type: 'videoCall',
+  //             from: socketId,
+  //             to: calleeSocketId,
+  //             callInstanceData: callInstanceData,
+  //             callerDetails: {
+  //             name: `${consulteaseUserProfileData.fname} ${consulteaseUserProfileData.lname}`,
+  //             callCategory: calleeDetails.callCategory,
+  //             photo: consulteaseUserProfileData.photo,
+  //             },
+  //           }
+  //     ),
+  //     console.log('****messageDirectPrivate for call initiation sent to callee')
+  //     ) : null;
+  //     console.log('log below -> call started message event by private-socket-message')
+  //   }
+  // }, [callInstanceData]);
 
   useEffect(() => {
     if(socketId && callInstanceData !== undefined)
@@ -306,6 +306,27 @@ const VideoCallerPromptScreen = () => {
           dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: data.body });
           dispatch({ type: 'meeting-key', value: xss(data.body._id) });
           data.body._id ? dispatch({ type: 'meeting-errors-clear' }) : null;
+          // send message to callee call init
+          if (socketId && callInstanceData !== undefined && Utils.socket) {
+            (consulteaseUserProfileData && calleeDetails) ? (
+              Utils.socket.emit("messageDirectPrivate",
+                  {
+                    type: 'videoCall',
+                    from: socketId,
+                    to: calleeSocketId,
+                    callInstanceData: data.body,
+                    callerDetails: {
+                    name: `${consulteaseUserProfileData.fname} ${consulteaseUserProfileData.lname}`,
+                    callCategory: calleeDetails.callCategory,
+                    photo: consulteaseUserProfileData.photo,
+                    },
+                  }
+            ),
+            console.log('****messageDirectPrivate for call initiation sent to callee')
+            ) : null;
+            console.log('log below -> call started message event by private-socket-message')
+          }
+          //
           console.log(
             '******Successful  VideoCallerPromptScreen.js  initcall() call init POST req 200      *******',
             data.body,
