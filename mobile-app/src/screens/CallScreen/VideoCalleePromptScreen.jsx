@@ -122,6 +122,7 @@ const VideoCalleePromptScreen = () => {
     let timeoutId;
     const playAudioInLoop = () => {
       sound.play();
+      InCallManager.setForceSpeakerphoneOn(true);
       timeoutId = setTimeout(() => {
         playAudioInLoop();
       }, 100);
@@ -165,6 +166,7 @@ const VideoCalleePromptScreen = () => {
       key && dispatch({ type: 'join', name, email});
       console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
       //clearInterval(ringtoneIntervalId);
+      clearTimeout(timeoutId);
       clearTimeout(componentUnmountTimeoutId);
     }
   }, []);
