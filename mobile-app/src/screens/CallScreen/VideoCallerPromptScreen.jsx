@@ -186,9 +186,7 @@ const VideoCallerPromptScreen = () => {
     const playAudioInLoop = () => {
       sound.stop();
       sound.play();
-      soundTimeoutRef.current = setTimeout(() => {
-        playAudioInLoop();
-      }, audioDuration);
+      soundTimeoutRef.current = setTimeout(playAudioInLoop, audioDuration);
     };
 
      playAudioInLoop();

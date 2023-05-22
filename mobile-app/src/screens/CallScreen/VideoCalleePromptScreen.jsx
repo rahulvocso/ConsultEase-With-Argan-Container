@@ -108,9 +108,7 @@ const VideoCalleePromptScreen = () => {
     const playAudioInLoop = () => {
       sound.play();
       InCallManager.setForceSpeakerphoneOn(true);
-      soundTimeoutRef.current = setTimeout(() => {
-        playAudioInLoop();
-      }, audioDuration);
+      soundTimeoutRef.current = setTimeout(playAudioInLoop, audioDuration);
     };
 
      playAudioInLoop();
