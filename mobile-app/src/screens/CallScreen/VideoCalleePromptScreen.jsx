@@ -54,7 +54,6 @@ const VideoCalleePromptScreen = () => {
   state.webview.consulteaseUserProfileData ? state.webview.consulteaseUserProfileData : {},
   );
   const callInstanceData = useSelector((state)=> state.webview.callInstanceData);
-  const callId = useSelector((state)=> state.webview.callInstanceData._id)
   const proceedToJoinCall = useSelector((state)=> state.webview.proceedToJoinCall);
 
   const dispatch = useDispatch();
@@ -79,10 +78,10 @@ const VideoCalleePromptScreen = () => {
   const [incomingCallAnswer, setIncomingCallAnswer]  = useState();
 
   useEffect(() => {
-    if (socketId && callId) {
-      dispatch(Actions.IO.joinRoom(callId));
+    if (socketId && callInstanceData._id) {
+      dispatch(Actions.IO.joinRoom(callInstanceData._id));
     }
-  }, [callId]);
+  }, [callInstanceData]);
 
   useEffect(() => {
     dispatch(Actions.Media.getLocalVideo());
