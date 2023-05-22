@@ -120,9 +120,9 @@ const VideoCalleePromptScreen = () => {
     //  const loopCount = Math.ceil(maxDuration / loopDuration);
     //  const totalDuration = loopDuration * loopCount;
     let timeoutId;
+    InCallManager.setForceSpeakerphoneOn(true);
     const playAudioInLoop = () => {
       sound.play();
-      InCallManager.setForceSpeakerphoneOn(true);
       timeoutId = setTimeout(() => {
         playAudioInLoop();
       }, 100);
