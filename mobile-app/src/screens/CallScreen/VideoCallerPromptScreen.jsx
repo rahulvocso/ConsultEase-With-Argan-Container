@@ -246,6 +246,7 @@ const VideoCallerPromptScreen = () => {
         InCallManager.stop();
       }
       //clearInterval(ringtoneIntervalId);
+      clearTimeout(timeoutId);
       proceedToJoinCall && clearTimeout(componentUnmountTimeoutId);
     }
   }, []);
