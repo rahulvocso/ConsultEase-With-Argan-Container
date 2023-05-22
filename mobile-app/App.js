@@ -399,11 +399,10 @@ function App() {
               message,
               JSON.stringify(message),
             );
-            message.response === 'accepted'
-              ? navigation.navigate('Meeting', { key: callInstanceData._id })
-              : null;
+            message.response === 'accepted' ? navigation.navigate('Meeting') : null;
             message.response === 'rejected'
               ? (navigation.navigate('WebView'),
+                dispatch(Actions.Media.leaveMeeting()),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
                 dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }))
               : null;
