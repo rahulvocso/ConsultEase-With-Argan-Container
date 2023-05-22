@@ -401,24 +401,24 @@ function App() {
             );
             message.response === 'accepted' ? navigation.navigate('Meeting') : null;
             message.response === 'rejected'
-              ? (navigation.navigate('WebView'),
-                dispatch(Actions.Media.leaveMeeting()),
+              ? (dispatch(Actions.Media.leaveMeeting()),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
-                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }))
+                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }),
+                navigation.navigate('WebView'))
               : null;
           } else if (message.type === 'callerResponse') {
             message.response === 'disconnectedByCallerBeforeCalleeResponse'
-              ? (navigation.navigate('WebView'),
-                dispatch(Actions.Media.leaveMeeting()),
+              ? (dispatch(Actions.Media.leaveMeeting()),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
-                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }))
+                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }),
+                navigation.navigate('WebView'))
               : null;
           } else if (message.type === 'callResponse') {
             message.response === 'disconnected'
-              ? (navigation.navigate('WebView'),
-                dispatch(Actions.Media.leaveMeeting()),
+              ? (dispatch(Actions.Media.leaveMeeting()),
                 dispatch({ type: 'SET_CALL_VIEW_ON', payload: false }),
-                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }))
+                dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }),
+                navigation.navigate('WebView'))
               : null;
           }
         })

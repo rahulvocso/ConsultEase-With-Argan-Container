@@ -154,8 +154,14 @@ const VideoCallerPromptScreen = () => {
   }, [callInstanceData]);
 
   useEffect(() => {
-    if (socketId && key && callId) {
-      dispatch(Actions.IO.joinRoom(callId));
+    if(callId)
+    {
+      dispatch({ type: 'meeting-errors-clear' });
+      key && dispatch({ type: 'join', name, email});
+      console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
+      if (socketId && key && callId) {
+        dispatch(Actions.IO.joinRoom(callId));
+      }
     }
   }, [callId]);
 
@@ -238,9 +244,6 @@ const VideoCallerPromptScreen = () => {
         sound.release();
         InCallManager.stop();
       }
-      dispatch({ type: 'meeting-errors-clear' });
-      key && dispatch({ type: 'join', name, email});
-      console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
       //clearInterval(ringtoneIntervalId);
       clearTimeout(componentUnmountTimeoutId);
     }

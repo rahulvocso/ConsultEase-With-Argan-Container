@@ -160,12 +160,9 @@ const VideoCalleePromptScreen = () => {
     return () => {
       if(sound){
         sound.stop();
-        sound.release();
         InCallManager.stop();
+        sound.release();
       }
-      dispatch({ type: 'meeting-errors-clear' });
-      key && dispatch({ type: 'join', name, email});
-      console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
       //clearInterval(ringtoneIntervalId);
       clearTimeout(timeoutId);
       clearTimeout(componentUnmountTimeoutId);
@@ -182,8 +179,11 @@ const VideoCalleePromptScreen = () => {
           to: incomingCallDetails.from,
           response: 'accepted'
       })) : null;
-      navigation.navigate('Meeting', {key: callInstanceData._id});
-      console.log('log below -> send call-pickup event by private-socket-message')
+      dispatch({ type: 'meeting-errors-clear' });
+      key && dispatch({ type: 'join', name, email});
+      console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
+      console.log('handleCallAccept() VideoCalleePromptScreen private-socket-message');
+      navigation.navigate('Meeting');
     }  
   }
 
