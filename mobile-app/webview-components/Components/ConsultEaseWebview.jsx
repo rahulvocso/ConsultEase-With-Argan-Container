@@ -74,8 +74,9 @@ function ConsultEaseWebview({setIsCallViewOn, setCalleeDetails}) {
             "**message data**", messageData,
           );
           dispatch({ type: 'SET_CALL_VIEW_ON', payload: true });
-          navigation.navigate('VideoCallerPrompt');
           dispatch({ type: 'SET_CALLEE_DETAILS', payload: messageData })
+          navigation.navigate('VideoCallerPrompt');
+          // navigation.navigate('Home')
           // dispatch({ type: 'SET_CALLEE_SOCKET_ID' ,payload: messageData.calleeSocketId})
         }
         break;

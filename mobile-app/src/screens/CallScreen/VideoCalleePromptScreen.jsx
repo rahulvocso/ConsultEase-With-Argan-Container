@@ -91,7 +91,7 @@ const VideoCalleePromptScreen = () => {
     console.log('callerDetails.photo inside VideoCalleePrompt', typeof callerDetails.photo)
     InCallManager.setForceSpeakerphoneOn(true);
     InCallManager.start();
-    const sound = new Sound('instagram_videocall_ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+    const sound = new Sound('instagram_videocall_ringtone', Sound.MAIN_BUNDLE , error => {
       if (error) {
         console.log('******Failed to load the sound', error);
       } else {

@@ -153,20 +153,23 @@ const VideoCallerPromptScreen = () => {
   useEffect(() => {
     if(socketId && callInstanceData !== undefined)
     {
-      console.log('*****Joined*****VideoCaller.js effect cleaning', joined)
-      dispatch(Actions.IO.joinRoom(callInstanceData._id));
+      console.log('*****Joined*****VideoCallerPrompt.js', joined)
+      // dispatch(Actions.IO.joinRoom(callInstanceData._id));
+      // dispatch({ type: 'join', name, email});
     }
   }, [callInstanceData]);
 
 
   useEffect(() => {
-    dispatch(Actions.Media.getLocalVideo());
-    //dispatch(Actions.Media.getLocalAudio());
+    // dispatch(Actions.Media.getLocalVideo());
+    // dispatch(Actions.Media.getLocalAudio());
     const audioPath = 'path_to_your_audio_file.mp3';
     //Sound.setCategory('Ambient'); //Playback  Ambient mixes with other audio //deprecated ??
     InCallManager.setForceSpeakerphoneOn(false);
     InCallManager.start();
-    const sound = new Sound('instagram_videocall_ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
+    let sound = null;
+    function soundTimeout() {
+      sound = new Sound('instagram_videocall_ringtone', Sound.MAIN_BUNDLE , error => { // testing('' in place of Sound.MAIN_BUNDLE) 
       if (error) {
         console.log('******Failed to load the sound, ERRROR:', error);
         InCallManager.setForceSpeakerphoneOn(false);
@@ -174,20 +177,17 @@ const VideoCallerPromptScreen = () => {
         console.log('******Ringtone set, ERRROR:', error);
         setRingtone(sound);
       }
-    });
+      });
+    }
     //sound.setNumberOfLoops(-1);
     //sound.setVolume(1.0);
-     const maxDuration = 10000;
-     const ringtoneDuration = (sound.getDuration() * 1000);
-     const audioDuration = ringtoneDuration <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
-
+    const maxDuration = 10000;
     const playAudioInLoop = () => {
-      sound.stop();
+      sound && sound.stop();
       sound.play();
+      const audioDuration = (sound.getDuration() * 1000) <= maxDuration ? (sound.getDuration() * 1000) : maxDuration;
       soundTimeoutRef.current = setTimeout(playAudioInLoop, audioDuration);
     };
-
-     playAudioInLoop();
 
     // Schedule the next audio loop after the loopDuration
     // const ringtoneIntervalId = setInterval(() => {
@@ -210,7 +210,11 @@ const VideoCallerPromptScreen = () => {
     // }, maxDuration);
     //component mount duration code ends
 
+    soundTimeout();
+    playAudioInLoop();
     return () => {
+      // dispatch(Actions.Media.releaseLocalVideo());
+      // dispatch(Actions.Media.releaseLocalAudio());
       if(sound){
         sound.stop();
         sound.release();
@@ -220,16 +224,17 @@ const VideoCallerPromptScreen = () => {
       clearTimeout(soundTimeoutRef.current);
       // !proceedToJoinCall && clearTimeout(componentUnmountTimeoutRef.current);
       dispatch({ type: 'meeting-errors-clear' });
-      key && dispatch({ type: 'join', name, email});
+      // key && dispatch({ type: 'join', name, email});
+      console.log("********** VidoeCallerPromptScreen.js unmounted")
     }
   }, []);
 
-  useEffect(()=>{
-    if(shouldComponentUnmount){
-      console.log("******Navigating to webview, component_mount/call_prompt duration completed, call not answered by callee!!")
-      navigation.navigate('WebView');
-    }
-  },[shouldComponentUnmount])
+  // useEffect(()=>{
+  //   if(shouldComponentUnmount){
+  //     console.log("******Navigating to webview, component_mount/call_prompt duration completed, call not answered by callee!!")
+  //     navigation.navigate('WebView');
+  //   }
+  // },[shouldComponentUnmount])
   
   const getCalleeSocket = async () => {
     // get callee user socket_id related data
@@ -237,7 +242,7 @@ const VideoCallerPromptScreen = () => {
       auth_token: consulteaseUserProfileData.auth_token,
     })
       .then((data) => {
-        console.log('getSocket.js, data', data);
+        console.log('********* getCalleeSocket() VideoCallerPromptScreen.js, data', data.status, data);
         if (data.status == 200) {
           //
           data.body.status === 'Online' &&
@@ -273,7 +278,7 @@ const VideoCallerPromptScreen = () => {
       {
         from_user: consulteaseUserProfileData._id, //caller user_id
         to_user: calleeDetails.user_id, // callee user id,
-        category: consulteaseUserProfileData.auth_token,
+        category: calleeDetails.callCategory,
       },
       { auth_token: consulteaseUserProfileData.auth_token },
     )
@@ -357,7 +362,7 @@ const VideoCallerPromptScreen = () => {
   };
 
   const handleCallDisconnect = () => {
-    if (socketId) {
+    if (socketId && !!calleeSocketId) {
       (socketId && Utils.socket) ? (
         Utils.socket.emit("messageDirectPrivate",
         {
@@ -370,12 +375,12 @@ const VideoCallerPromptScreen = () => {
   
       console.log('Call disconnected by caller')
     }
-    dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: false }),
-    dispatch(Actions.Media.releaseLocalVideo());
-    dispatch(Actions.Media.releaseLocalAudio());
-    dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
-    dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
-    navigation.navigate('WebView', { key });
+    // dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: false }),
+    // dispatch(Actions.Media.releaseLocalVideo());
+    // dispatch(Actions.Media.releaseLocalAudio());
+    // dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+    // dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
+    navigation.navigate('Join');
   }
 
   const styles = StyleSheet.create({
