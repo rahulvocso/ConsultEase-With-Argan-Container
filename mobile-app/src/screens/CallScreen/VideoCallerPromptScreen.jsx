@@ -293,7 +293,7 @@ const VideoCallerPromptScreen = () => {
             (consulteaseUserProfileData && calleeDetails) ? (
               Utils.socket.emit("messageDirectPrivate",
                   {
-                    type: 'videoCall',
+                    type: 'incomingVideoCall',
                     from: socketId,
                     to: calleeSocketId,
                     callInstanceData: data.body,

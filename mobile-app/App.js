@@ -357,11 +357,20 @@ function App() {
           console.log('***current navigation screen', navigation.getCurrentRoute().name);
 
           // incoming call message from peer
-          if (message.type === 'videoCall') {
-            if (
-              !['VideoCallerPrompt', 'VideoCalleePrompt', 'VideoCall'].includes(
+          if (message.type === 'incomingVideoCall') {
+            console.log(
+              'user busy status',
+              ['VideoCallerPrompt', 'VideoCalleePrompt', 'VideoCall'].includes(
                 navigation.getCurrentRoute().name,
-              ) //checks if user is on another call by checking current navigation screen
+              ),
+              `['VideoCallerPrompt', 'VideoCalleePrompt', 'VideoCall'].includes(
+                navigation.getCurrentRoute().name,
+              )`,
+            );
+            if (
+              ['VideoCallerPrompt', 'VideoCalleePrompt', 'VideoCall'].includes(
+                navigation.getCurrentRoute().name,
+              ) === false //checks if user is on another call by checking current navigation screen
             ) {
               dispatch({
                 type: 'SET_CALLER_DETAILS',
@@ -410,7 +419,7 @@ function App() {
             message.response === 'busy'
               ? (navigation.navigate('WebView'), console.log('user is busy on another call')) // pending: add a popup to display user is busy or play some sound
               : null;
-            // message.response === 'disconnected'  // pending: implement logic in videocall component
+            // message.response === 'disconnected'  // pending: implement this logic in videocall component to reduce code redundancy for both caller and callee
             //   ?
             //   :
           } else if (message.type === 'callerResponse') {
