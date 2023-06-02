@@ -356,40 +356,37 @@ function App() {
           );
           console.log('***current navigation screen', navigation.getCurrentRoute().name);
 
-          // response if callee is busy on another call
-          // ['VideoCallerPrompt', 'VideoCalleePrompt', 'VideoCall'].includes(
-          //   navigation.getCurrentRoute().name,
-          // )
-          //   ? Utils.socket.emit('messageDirectPrivate', {
-          //       type: 'calleeResponse',
-          //       from: socketId,
-          //       to: message.from,
-          //       response: 'busy',
-          //     })
-          //   : null;
-
           // incoming call message from peer
-          if (
-            message.type === 'videoCall' &&
-            !['VideoCallerPrompt', 'VideoCalleePrompt', 'VideoCall'].includes(
-              navigation.getCurrentRoute().name, //checks if user is on another call
-            )
-          ) {
-            dispatch({
-              type: 'SET_CALLER_DETAILS',
-              payload: message.callerDetails,
-            });
-            dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: message });
-            dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: message.callInstanceData });
-            dispatch({ type: 'SET_PEER_SOCKET_ID', payload: message.from });
-            dispatch({ type: 'meeting-key', value: xss(message.callInstanceData._id) });
-            message.callInstanceData._id ? dispatch({ type: 'meeting-errors-clear' }) : null;
-            console.log(
-              'Call ************ Incoming "videocall" messageDirectPrivate received App.js useEffect line~359********',
-              message,
-              JSON.stringify(message),
-            );
-            navigation.navigate('VideoCalleePrompt');
+          if (message.type === 'videoCall') {
+            if (
+              !['VideoCallerPrompt', 'VideoCalleePrompt', 'VideoCall'].includes(
+                navigation.getCurrentRoute().name,
+              ) //checks if user is on another call by checking current navigation screen
+            ) {
+              dispatch({
+                type: 'SET_CALLER_DETAILS',
+                payload: message.callerDetails,
+              });
+              dispatch({ type: 'SET_INCOMING_CALL_DETAILS', payload: message });
+              dispatch({ type: 'SET_CALL_INSTANCE_DATA', payload: message.callInstanceData });
+              dispatch({ type: 'SET_PEER_SOCKET_ID', payload: message.from });
+              dispatch({ type: 'meeting-key', value: xss(message.callInstanceData._id) });
+              message.callInstanceData._id ? dispatch({ type: 'meeting-errors-clear' }) : null;
+              console.log(
+                'Call ************ Incoming "videocall" messageDirectPrivate received App.js useEffect line~359********',
+                message,
+                JSON.stringify(message),
+              );
+              navigation.navigate('VideoCalleePrompt');
+            } else {
+              // response if callee is busy on another call
+              Utils.socket.emit('messageDirectPrivate', {
+                type: 'calleeResponse',
+                from: socketId,
+                to: message.from,
+                response: 'busy',
+              });
+            }
           }
 
           // outgoing call back/response message from peer
@@ -410,6 +407,12 @@ function App() {
                 dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' }),
                 navigation.navigate('WebView'))
               : null;
+            message.response === 'busy'
+              ? (navigation.navigate('WebView'), console.log('user is busy on another call')) // pending: add a popup to display user is busy or play some sound
+              : null;
+            // message.response === 'disconnected'  // pending: implement logic in videocall component
+            //   ?
+            //   :
           } else if (message.type === 'callerResponse') {
             message.response === 'disconnectedByCallerBeforeCalleeResponse'
               ? (dispatch(Actions.Media.leaveMeeting()),
