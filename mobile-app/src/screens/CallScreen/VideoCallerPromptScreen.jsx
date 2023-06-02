@@ -375,11 +375,11 @@ const VideoCallerPromptScreen = () => {
   
       console.log('Call disconnected by caller')
     }
-    // dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: false }),
-    // dispatch(Actions.Media.releaseLocalVideo());
-    // dispatch(Actions.Media.releaseLocalAudio());
-    // dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
-    // dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
+    dispatch({ type: 'PROCEED_TO_JOIN_CALL', payload: false }),
+    dispatch(Actions.Media.releaseLocalVideo());
+    dispatch(Actions.Media.releaseLocalAudio());
+    dispatch({ type: 'SET_CALL_VIEW_ON', payload: false });
+    dispatch({ type: 'RESET_WEBVIEW_DERIVED_DATA' });
     navigation.navigate('Join');
   }
 
